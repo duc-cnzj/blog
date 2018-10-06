@@ -45,6 +45,63 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $rendered = parent::render($request, $exception);
+        $statusCode = $rendered->getStatusCode();
+
+        if ($exception instanceof ValidationException) {
+            return $this->invalidJson($request, $exception);
+        }
+
+        return response()->json([
+            'error' => [
+                'code' => $statusCode,
+                'message' => $exception->getMessage(),
+            ]
+        ], $statusCode);
     }
+
+    /**
+     * 重写返回格式
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param ValidationException $exception
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        $result = $this->formatErrors($exception);
+
+        return response()->json([
+            'error' => [
+                'code'    => $exception->status,
+                'message' => $exception->getMessage(),
+                'errors'  => $result,
+            ]
+        ], $exception->status);
+    }
+
+    /**
+     * 重写返回格式
+     *
+     * @param ValidationException $exception
+     * @return array
+     */
+    protected function formatErrors(ValidationException $exception): array
+    {
+        $result = [];
+        $messages = $exception->errors();
+        if ($messages) {
+            foreach ($messages as $field => $errors) {
+                foreach ($errors as $error) {
+                    $result[] = [
+                        'field'   => $field,
+                        'message' => $error,
+                    ];
+                }
+            }
+        }
+
+        return $result;
+    }
+
 }

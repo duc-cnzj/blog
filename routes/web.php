@@ -1,5 +1,15 @@
 <?php
 
+use App\User;
+use App\Article;
+use App\Category;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\CategoryResource;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,6 +21,52 @@
 |
 */
 
+require_once __DIR__.'/admin.php';
+
 $router->get('/', function () use ($router) {
+    return UserResource::collection(User::all());
     return $router->app->version();
+});
+
+$router->get('/articles/{id}', function ($id) {
+    return new ArticleResource(Article::findOrFail($id));
+});
+
+$router->get('/articles', function () {
+    return ArticleResource::collection(Article::latest()->take(10)->get());
+});
+
+$router->get('/home_articles', function () {
+    return ArticleResource::collection(Article::take(3)->get()->each->append('recommend_articles'));
+});
+
+$router->get('/categories', function () {
+    return CategoryResource::collection(Category::all(['name', 'id']));
+});
+
+$router->get('/nav_links', function () {
+    return [
+        "data" => [
+            ["title" => "首页", "link" => "/"],
+            ["title" => "分类", "link" => "/categories"],
+            ["title" => "文章", "link" => "/articles"],
+            // ["title" => "装置", "link" => "/gadgets"],
+            // ["title" => "生活方式", "link" => "/lifestyle"],
+            // ["title" => "视频", "link" => "/video"],
+            // ["title" => "联系", "link" => "/contact"]
+        ]
+    ];
+});
+
+$router->post('/articles/{id}/comments', function ($id, Request $request) {
+    info('request', $request->input());
+    $article = Article::findOrFail($id);
+
+    $comment = $article->comments()->create([
+        'visitor' => $request->ip(),
+        'content' => $request->content,
+        'comment_id' => $request->comment_id ?? 0
+    ]);
+
+    return new CommentResource($comment);
 });

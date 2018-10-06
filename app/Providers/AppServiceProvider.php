@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +14,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Carbon::setlocale(env('CARBON_LOCATE', 'zh'));
     }
 }
