@@ -29,7 +29,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->get('/articles/{id}', function ($id) {
-    return new ArticleResource(Article::findOrFail($id));
+    return new ArticleResource(Article::with('author')->findOrFail($id));
 });
 
 $router->get('/articles', function () {

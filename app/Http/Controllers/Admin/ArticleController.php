@@ -19,4 +19,27 @@ class ArticleController extends Controller
 
         return ArticleResource::collection($articles);
     }
+
+    public function store(Request $request)
+    {
+        $content = $request->content;
+        $parsedown = new \Parsedown();
+
+        $mdContent = $parsedown->text($content);
+
+        $processContent = json_encode([
+            'html' => $mdContent,
+            'md' => $content
+        ]);
+
+        $article = Article::create([
+            'author_id' => \Auth::id(),
+            'head_image' => $request->head_image,
+            'title' => $request->title,
+            'desc' => $request->desc,
+            'content' => $processContent,
+        ]);
+
+        return new ArticleResource($article);
+    }
 }

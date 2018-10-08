@@ -20,4 +20,6 @@ $router->group([
     $router->post('/images', 'ImageController@store');
 
     $router->get('/articles', 'ArticleController@index');
+
+    $router->post('/articles', 'ArticleController@store');
 });
