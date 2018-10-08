@@ -16,11 +16,13 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'author' => [
-               'id' => $this->author->id,
-               'name' => $this->author->name,
-               'avatar' => $this->author->avatar,
-            ],
+            'author' => $this->whenLoaded('author', function () {
+                return [
+                   'id' => $this->author->id,
+                   'name' => $this->author->name,
+                   'avatar' => $this->author->avatar,
+                ];
+            }),
             'headImage' => $this->head_image,
             'category' => array_random(['php', 'Linux', 'Js']),
             'content' => $this->content,
@@ -62,8 +64,6 @@ class ArticleResource extends JsonResource
                 ],
             ],
             'recommendArticles' => $this->when($this->recommendArticles, $this->recommendArticles),
-
-
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
         ];
