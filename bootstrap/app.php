@@ -50,6 +50,11 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton(
+    App\Contracts\ArticleRepoImp::class,
+    App\Services\ArticleRepo::class
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
