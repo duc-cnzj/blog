@@ -1,0 +1,62 @@
+version: "3"
+services:
+  app:
+    image: duccnzj/app:latest
+    networks:
+      - appnet
+    working_dir: /var/www/html
+    environment:
+      XDEBUG_HOST: ${XDEBUG_HOST}
+      APP_ENV: ${APP_ENV}
+      BASH_NAMES:
+    volumes:
+      - .:/var/www/html
+    ports:
+      - ${APP_PORT:-8001}:80
+    depends_on:
+      - redis
+      - db
+  redis:
+    image: redis:alpine
+    networks:
+      - appnet
+    ports:
+      - 6379:6379
+    volumes:
+      - cachedata:/data
+  echo-server:
+      image: lagun4ik/laravel-echo-server
+      ports:
+       - "1194:1194/udp"
+       - "6001:6001"
+      restart: always
+      networks:
+        - appnet
+      volumes:
+       - ./docker/echo-server-data/:/app
+      depends_on:
+        - app
+        - redis
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+    networks:
+      - appnet
+    ports:
+      - 3305:3306
+    volumes:
+      - dbdata:/var/lib/mysql
+networks:
+  appnet:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
+  cachedata:
+    driver: local
+  appdata:
+    driver: local

@@ -3,6 +3,7 @@
 use App\User;
 use App\Article;
 use App\Category;
+use App\Trending;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\ArticleResource;
@@ -28,8 +29,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/articles/{id}', function ($id) {
-    return new ArticleResource(Article::with('author')->findOrFail($id));
+$router->get('/articles/{id}', function ($id, Trending $trending) {
+    $article = Article::with('tags', 'author', 'comments')->findOrFail($id);
+    $trending->push($article);
+
+    return new ArticleResource($article);
 });
 
 $router->get('/articles', function () {
@@ -37,7 +41,15 @@ $router->get('/articles', function () {
 });
 
 $router->get('/home_articles', function () {
-    return ArticleResource::collection(Article::take(3)->get()->each->append('recommend_articles'));
+    return ArticleResource::collection(Article::latest()->take(3)->get());
+});
+
+$router->get('/newest_articles', function () {
+    return ArticleResource::collection(Article::with('author')->latest()->take(13)->get()->each->append('recommend_articles'));
+});
+
+$router->get('/trending_articles', function (Trending $trending) {
+    return ['data' => $trending->get()];
 });
 
 $router->get('/categories', function () {

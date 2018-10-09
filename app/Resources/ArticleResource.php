@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\TagResource;
+use App\Http\Resources\CommentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -25,44 +27,12 @@ class ArticleResource extends JsonResource
             }),
             'headImage' => $this->head_image,
             'category' => array_random(['php', 'Linux', 'Js']),
-            'content' => $this->content,
+            'content' => $this->content_html,
+            'content_md' => $this->content_md,
             'title' => $this->title,
             'desc' => $this->desc,
-            'tags' => [
-              ["id"=> 1, "name"=> "php" ],
-              ["id"=> 2, "name"=> "linux" ],
-              ["id"=> 3, "name"=> "max" ]
-            ],
-            'comments' => [
-                [
-                    "id" => 1,
-                    "created_at" => "2018-10-1",
-                    "author" => [
-                        "id" => 1,
-                        "name" => "duc",
-                        "avatar" => "images/comment_author_1.jpg"
-                    ],
-                    "body" => "这里是评论的主题"
-                ],[
-                    "id" => 2,
-                    "created_at" => "2018-10-1",
-                    "author" => [
-                        "id" => 1,
-                        "name" => "duc",
-                        "avatar" => "images/comment_author_1.jpg"
-                    ],
-                    "body" => "这里是评论的主题"
-                ],[
-                    "id" => 3,
-                    "created_at" => "2018-10-1",
-                    "author" => [
-                        "id" => 1,
-                        "name" => "duc",
-                        "avatar" => "images/comment_author_1.jpg"
-                    ],
-                    "body" => "这里是评论的主题"
-                ],
-            ],
+            'tags' => $this->whenLoaded('tags', TagResource::collection($this->tags)),
+            'comments' => $this->whenLoaded('comments', CommentResource::collection($this->comments)),
             'recommendArticles' => $this->when($this->recommendArticles, $this->recommendArticles),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),

@@ -21,5 +21,15 @@ $router->group([
 
     $router->get('/articles', 'ArticleController@index');
 
+    $router->get('/articles/{id}', 'ArticleController@show');
+
     $router->post('/articles', 'ArticleController@store');
+
+    $router->put('/articles/{id}', 'ArticleController@update');
+
+    $router->delete('/articles/{id}', 'ArticleController@destroy');
+
+    $router->get('/categories', 'CategoryController@index');
+
+    $router->get('/tags', 'TagController@index');
 });
