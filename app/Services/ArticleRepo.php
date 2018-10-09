@@ -22,4 +22,10 @@ class ArticleRepo implements ArticleRepoImp
     {
         return 'article:' . $id;
     }
+
+    public function removeBy($id)
+    {
+        info('移除缓存文章id: ' . $id);
+        Cache::forget($this->cacheKey($id));
+    }
 }
