@@ -29,7 +29,7 @@ class Trending
 
     public function cacheKey()
     {
-        return 'popular_articles';
+        return 'trending_articles';
     }
 
     public function reset()
