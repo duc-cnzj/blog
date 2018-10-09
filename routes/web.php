@@ -37,7 +37,11 @@ $router->get('/articles', function () {
 });
 
 $router->get('/home_articles', function () {
-    return ArticleResource::collection(Article::take(3)->get()->each->append('recommend_articles'));
+    return ArticleResource::collection(Article::latest()->take(13)->get());
+});
+
+$router->get('/newest_articles', function () {
+    return ArticleResource::collection(Article::with('author')->latest()->take(3)->get()->each->append('recommend_articles'));
 });
 
 $router->get('/categories', function () {
