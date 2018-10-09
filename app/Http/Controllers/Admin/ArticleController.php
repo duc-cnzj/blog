@@ -6,6 +6,7 @@ use App\Tag;
 use App\Article;
 use App\Category;
 use Illuminate\Http\Request;
+use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 
@@ -57,14 +58,14 @@ class ArticleController extends Controller
         return new ArticleResource($article);
     }
 
-    public function show($id)
+    public function show($id, ArticleRepoImp $repo)
     {
-        $article = Article::with('tags', 'author', 'comments')->findOrFail($id);
+        $article = $repo->get($id);
 
         return new ArticleResource($article);
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request, ArticleRepoImp $repo)
     {
         $content = $request->content;
         $parsedown = new \Parsedown();
@@ -95,6 +96,8 @@ class ArticleController extends Controller
         ]);
 
         $article->tags()->sync($tagIds);
+
+        $repo->removeBy($id);
 
         return new ArticleResource($article);
     }
