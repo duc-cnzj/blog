@@ -59,7 +59,9 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        return new ArticleResource(Article::with('tags', 'author', 'comments')->findOrFail($id));
+        $article = Article::with('tags', 'author', 'comments')->findOrFail($id);
+
+        return new ArticleResource($article);
     }
 
     public function update($id, Request $request)
