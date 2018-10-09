@@ -5,6 +5,7 @@ use App\Article;
 use App\Category;
 use App\Trending;
 use Illuminate\Http\Request;
+use App\Contracts\ArticleRepoImp;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
@@ -24,13 +25,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__.'/admin.php';
 
-$router->get('/', function () use ($router) {
-    return UserResource::collection(User::all());
+$router->get('/', function (ArticleRepoImp $repo) use ($router) {
     return $router->app->version();
 });
 
-$router->get('/articles/{id}', function ($id, Trending $trending) {
-    $article = Article::with('tags', 'author', 'comments')->findOrFail($id);
+$router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp $repo) {
+    $article = $repo->get($id);
     $trending->push($article);
 
     return new ArticleResource($article);
