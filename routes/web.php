@@ -2,6 +2,7 @@
 
 use App\User;
 use App\Article;
+use App\Comment;
 use App\Category;
 use App\Trending;
 use Illuminate\Http\Request;
@@ -41,15 +42,18 @@ $router->get('/articles', function () {
 });
 
 $router->get('/home_articles', function () {
-    return ArticleResource::collection(Article::latest()->take(3)->get());
+    return ArticleResource::collection(Article::with('author')->latest()->take(3)->get());
 });
 
 $router->get('/newest_articles', function () {
     return ArticleResource::collection(Article::with('author')->latest()->take(13)->get()->each->append('recommend_articles'));
 });
 
-$router->get('/trending_articles', function (Trending $trending) {
-    return ['data' => $trending->get()];
+$router->get('/trending_articles', function (Trending $trending, ArticleRepoImp $repo) {
+    $articleIds = $trending->get();
+    $articles = $repo->getMany($articleIds);
+
+    return ArticleResource::collection(collect($articles));
 });
 
 $router->get('/categories', function () {
@@ -69,6 +73,13 @@ $router->get('/nav_links', function () {
         ]
     ];
 });
+
+$router->get('/articles/{id}/comments', function ($id, Request $request) {
+    $comments = Comment::where('article_id', $id)->latest()->get();
+
+    return CommentResource::collection($comments);
+});
+
 
 $router->post('/articles/{id}/comments', function ($id, Request $request) {
     info('request', $request->input());

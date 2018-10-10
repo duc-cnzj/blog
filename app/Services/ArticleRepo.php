@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Cache;
 
 class ArticleRepo implements ArticleRepoImp
 {
-    protected $cacheTime = 9 * 60; // min
+    // protected $cacheTime = 9 * 60; // min
 
     public function get($id)
     {
-        return Cache::remember($this->cacheKey($id), $this->cacheTime, function () use ($id) {
+        return Cache::rememberForever($this->cacheKey($id), function () use ($id) {
             info('从数据库获取文章id: ' . $id);
-            return Article::with('tags', 'author', 'comments')->findOrFail($id);
+            return Article::with('tags', 'author')->findOrFail($id);
         });
     }
 
@@ -27,5 +27,17 @@ class ArticleRepo implements ArticleRepoImp
     {
         info('移除缓存文章id: ' . $id);
         Cache::forget($this->cacheKey($id));
+    }
+
+    public function getMany($ids)
+    {
+        $arr = [];
+        if ($ids) {
+            foreach ($ids as $id) {
+                $arr[] = $this->get($id);
+            }
+        }
+
+        return $arr;
     }
 }
