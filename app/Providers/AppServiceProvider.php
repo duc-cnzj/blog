@@ -16,4 +16,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setlocale(env('CARBON_LOCATE', 'zh'));
     }
+
+    public function boot()
+    {
+        \DB::listen(function($query) {
+            \Log::info($query->sql, $query->bindings);
+        });
+    }
 }

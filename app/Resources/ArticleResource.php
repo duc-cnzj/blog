@@ -18,7 +18,7 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'author' => $this->whenLoaded('author', function () {
+            'author' => $this->when($this->author, function () {
                 return [
                    'id' => $this->author->id,
                    'name' => $this->author->name,
@@ -31,8 +31,8 @@ class ArticleResource extends JsonResource
             'content_md' => $this->content_md,
             'title' => $this->title,
             'desc' => $this->desc,
-            'tags' => $this->whenLoaded('tags', TagResource::collection($this->tags)),
-            'comments' => $this->whenLoaded('comments', CommentResource::collection($this->comments)),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'recommendArticles' => $this->when($this->recommendArticles, $this->recommendArticles),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
