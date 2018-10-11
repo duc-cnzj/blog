@@ -4,6 +4,8 @@ services:
     image: duccnzj/app
     volumes:
       - /Users/congcong/Lumen/lumen-app:/var/www/html
+      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ./default.conf:/etc/nginx/sites-available/default
     ports:
       - 8001:80
     networks:
@@ -11,6 +13,8 @@ services:
     depends_on:
       - db
       - redis
+    environment:
+      BASH_NAMES: migrate.sh
   redis:
     image: redis:alpine
     networks:
