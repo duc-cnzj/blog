@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     protected $guarded = [];
-    protected $appends = ['recommend_articles'];
 
     public function author()
     {
@@ -29,15 +28,9 @@ class Article extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    public function getRecommendArticlesAttribute($value='')
+    public function getRecommendArticles()
     {
-        return [
-            [
-              "id" =>  3,
-              "category" =>  "Linux",
-              "title" =>  "1"
-            ],
-        ];
+        return static::where('category_id', $this->category_id)->inRandomOrder()->take(3)->get(['id', 'title'])->toArray();
     }
 
     public function getContentHtmlAttribute()

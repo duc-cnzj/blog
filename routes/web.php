@@ -42,12 +42,14 @@ $router->get('/articles', function () {
     return ArticleResource::collection(Article::latest()->take(10)->get());
 });
 
-$router->get('/home_articles', function () {
-    return ArticleResource::collection(Article::with('author')->latest()->take(3)->get());
+$router->get('/home_articles', function (Request $request) {
+    $articles =  Article::with('category:id,name')->latest()->take(3)->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
+
+    return ArticleResource::collection($articles);
 });
 
 $router->get('/newest_articles', function () {
-    return ArticleResource::collection(Article::with('author')->latest()->take(13)->get()->each->append('recommend_articles'));
+    return ArticleResource::collection(Article::with('author')->latest()->take(13)->get());
 });
 
 $router->get('/trending_articles', function (Trending $trending, ArticleRepoImp $repo) {
