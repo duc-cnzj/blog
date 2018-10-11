@@ -12,4 +12,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Article::class);
     }
+
+    public function reply()
+    {
+        return $this->hasMany(Comment::class, 'comment_id');
+    }
 }

@@ -17,11 +17,10 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'body' => $this->content,
+            'comment_id' => $this->comment_id,
             'created_at' => $this->created_at->diffForHumans(),
             "author" => [
-                "id" => 1,
-                "name" => "duc",
-                "avatar" => "images/comment_author_1.jpg"
+                "name" => $this->visitor
             ],
         ];
     }
