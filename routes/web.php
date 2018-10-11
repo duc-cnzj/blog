@@ -26,6 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__.'/admin.php';
 
+
 $router->get('/', function (ArticleRepoImp $repo) use ($router) {
     return $router->app->version();
 });
@@ -75,19 +76,23 @@ $router->get('/nav_links', function () {
 });
 
 $router->get('/articles/{id}/comments', function ($id, Request $request) {
-    $comments = Comment::where('article_id', $id)->latest()->get();
+    $comments = Comment::where('article_id', $id)->get(['visitor', 'content', 'comment_id', 'created_at', 'id']);
 
-    return CommentResource::collection($comments);
+    return response([
+        'data' => array_reverse(c(CommentResource::collection($comments)->toArray($request)))
+    ], 200);
 });
 
 
 $router->post('/articles/{id}/comments', function ($id, Request $request) {
-    info('request', $request->input());
     $article = Article::findOrFail($id);
+    $content = $request->content;
+    $parsedown = new \Parsedown();
+    $htmlContent = $parsedown->text($content);
 
     $comment = $article->comments()->create([
         'visitor' => $request->ip(),
-        'content' => $request->content,
+        'content' => $htmlContent,
         'comment_id' => $request->comment_id ?? 0
     ]);
 
