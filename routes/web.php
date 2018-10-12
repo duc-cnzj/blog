@@ -39,7 +39,7 @@ $router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp
 });
 
 $router->get('/articles', function () {
-    return ArticleResource::collection(Article::latest()->take(10)->get());
+    return ArticleResource::collection(Article::with('author')->latest()->select(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id'])->paginate(1));
 });
 
 $router->get('/home_articles', function (Request $request) {
@@ -49,7 +49,11 @@ $router->get('/home_articles', function (Request $request) {
 });
 
 $router->get('/newest_articles', function () {
-    return ArticleResource::collection(Article::with('author')->latest()->take(13)->get());
+    return ArticleResource::collection(Article::with('author', 'category:id,name')->latest()->take(13)->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
+});
+
+$router->get('/popular_articles', function () {
+    return ArticleResource::collection(Article::with('author', 'category:id,name')->inRandomOrder()->take(8)->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
 });
 
 $router->get('/trending_articles', function (Trending $trending, ArticleRepoImp $repo) {
