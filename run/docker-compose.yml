@@ -2,8 +2,9 @@ version: "3"
 services:
   app:
     image: duccnzj/app
+    working_dir: /var/www/html
     volumes:
-      - /Users/congcong/Lumen/lumen-app:/var/www/html
+      - ../.:/var/www/html
       - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./default.conf:/etc/nginx/sites-available/default
     ports:
@@ -11,16 +12,16 @@ services:
     networks:
       - appnet
     depends_on:
-      - db
       - redis
+      - db
     environment:
-      BASH_NAMES: migrate.sh
+      BASH_NAMES: init.sh,migrate.sh
   redis:
     image: redis:alpine
     networks:
       - appnet
     ports:
-      - 6379:6379
+      - 16379:6379
   db:
     image: mysql:5.7
     environment:
@@ -31,15 +32,15 @@ services:
     networks:
       - appnet
     ports:
-      - 3305:3306
+      - 13306:3306
     volumes:
       - dbdata:/var/lib/mysql
   web:
     image: nginx
     volumes:
      - ./mysite.template:/etc/nginx/conf.d/mysite.template
-     - /Users/congcong/Vue/blog/dist:/usr/share/nginx/html/front
-     - /Users/congcong/Vue/blog-admin/dist:/usr/share/nginx/html/background
+     - ./front:/usr/share/nginx/html/front
+     - ./back:/usr/share/nginx/html/background
     ports:
      - "8003:8009"
      - "8002:8010"

@@ -26,7 +26,7 @@ class ArticleResource extends JsonResource
                 ];
             }),
             'headImage' => $this->head_image,
-            'category' => $this->when($this->category, $this->category->name),
+            'category' => $this->whenloaded('category', $this->category->name),
             'content' => $this->content_html,
             'content_md' => $this->content_md,
             'title' => $this->title,

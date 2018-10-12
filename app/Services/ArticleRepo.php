@@ -14,7 +14,7 @@ class ArticleRepo implements ArticleRepoImp
     {
         return Cache::rememberForever($this->cacheKey($id), function () use ($id) {
             info('从数据库获取文章id: ' . $id);
-            return Article::with('tags', 'author')->findOrFail($id);
+            return Article::with('category', 'tags', 'author')->findOrFail($id);
         });
     }
 
