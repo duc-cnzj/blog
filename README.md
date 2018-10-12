@@ -7,9 +7,9 @@
 
 ## 安装
 --------
-- `$ git clone 本项目` 
-- `$ cd run` 进入到 run 目录下面 :smile:
-- `$ docker-compose up app`
+- `$ git clone --depth 1 git@github.com:DuC-cnZj/blog.git ducblog`
+- `$ cd ducblog/run ` 进入到 run 目录下面 :smile:
+- `run]$ docker-compose up app`
 
 done 🐳 👏
 
