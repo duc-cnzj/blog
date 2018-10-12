@@ -24,6 +24,9 @@ $factory->define(App\Article::class, function () {
         ]),
         'desc' => $faker->sentence,
         'title' => $faker->title,
-        'head_image' => $faker->imageUrl
+        'head_image' => $faker->imageUrl,
+        'category_id' => function () {
+            return factory(App\Category::class)->create()->id;
+        }
     ];
 });
