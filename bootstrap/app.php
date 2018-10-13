@@ -28,6 +28,10 @@ $app->withFacades();
 $app->withEloquent();
 
 $app->configure('cors');
+$app->configure('scout');
+$app->configure('scout_elastic');
+
+$app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
 
 /*
 |--------------------------------------------------------------------------
@@ -93,8 +97,13 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Laravel\Tinker\TinkerServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
+// laravel-lang
 $app->register(Overtrue\LaravelLang\TranslationServiceProvider::class);
+// Predis
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
+// elasticSearch
+$app->register(Laravel\Scout\ScoutServiceProvider::class);
+$app->register(ScoutElastic\ScoutElasticServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
