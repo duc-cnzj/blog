@@ -10,6 +10,8 @@ echo "--------------------- migrate ${DIR} ------------------"
 php artisan migrate --seed
 echo "--------------------- migrate done ------------------"
 
+sleep 5
+
 echo "--------------------- elastic 数据索引创建 ------------------"
 php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator
 echo "--------------------- elastic 数据索引创建成功 ------------------"
