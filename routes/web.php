@@ -1,17 +1,14 @@
 <?php
 
-use App\User;
 use App\Article;
 use App\Comment;
 use App\Category;
 use App\Trending;
 use Illuminate\Http\Request;
 use App\Contracts\ArticleRepoImp;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\CategoryResource;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +21,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 |
 */
 
-require_once __DIR__.'/admin.php';
+require_once __DIR__ . '/admin.php';
 
-
-$router->get('/', function (ArticleRepoImp $repo) use ($router) {
+$router->get('/', function ($router) {
     return $router->app->version();
 });
 
@@ -42,8 +38,19 @@ $router->get('/articles', function () {
     return ArticleResource::collection(Article::with('author')->latest()->select(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id'])->paginate());
 });
 
+$router->get('/search_articles', function (Request $request) {
+    $query = $request->query('q');
+    if (! is_null($query)) {
+        $articles = Article::search($query)
+            ->rule(\App\ES\ArticleRule::class)
+            ->get()->load('author', 'tags', 'category');
+
+        return ArticleResource::collection($articles);
+    }
+});
+
 $router->get('/home_articles', function (Request $request) {
-    $articles =  Article::with('category:id,name')->latest()->take(3)->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
+    $articles = Article::with('category:id,name')->latest()->take(3)->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
 
     return ArticleResource::collection($articles);
 });
@@ -69,15 +76,15 @@ $router->get('/categories', function () {
 
 $router->get('/nav_links', function () {
     return [
-        "data" => [
-            ["title" => "首页", "link" => "/"],
-            ["title" => "分类", "link" => "/categories"],
-            ["title" => "文章", "link" => "/articles"],
+        'data' => [
+            ['title' => '首页', 'link' => '/'],
+            ['title' => '分类', 'link' => '/categories'],
+            ['title' => '文章', 'link' => '/articles'],
             // ["title" => "装置", "link" => "/gadgets"],
             // ["title" => "生活方式", "link" => "/lifestyle"],
             // ["title" => "视频", "link" => "/video"],
             // ["title" => "联系", "link" => "/contact"]
-        ]
+        ],
     ];
 });
 
@@ -85,10 +92,9 @@ $router->get('/articles/{id}/comments', function ($id, Request $request) {
     $comments = Comment::where('article_id', $id)->get(['visitor', 'content', 'comment_id', 'created_at', 'id']);
 
     return response([
-        'data' => array_reverse(c(CommentResource::collection($comments)->toArray($request)))
+        'data' => array_reverse(c(CommentResource::collection($comments)->toArray($request))),
     ], 200);
 });
-
 
 $router->post('/articles/{id}/comments', function ($id, Request $request) {
     $article = Article::findOrFail($id);
@@ -97,9 +103,9 @@ $router->post('/articles/{id}/comments', function ($id, Request $request) {
     $htmlContent = $parsedown->text($content);
 
     $comment = $article->comments()->create([
-        'visitor' => $request->ip(),
-        'content' => $htmlContent,
-        'comment_id' => $request->comment_id ?? 0
+        'visitor'    => $request->ip(),
+        'content'    => $htmlContent,
+        'comment_id' => $request->comment_id ?? 0,
     ]);
 
     return new CommentResource($comment);
