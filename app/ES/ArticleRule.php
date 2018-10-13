@@ -13,27 +13,31 @@ class ArticleRule extends SearchRule
     {
         return [
             'fields' => [
+                'title' => [
+                    'type'     => 'plain',
+                    'pre_tags' => "<span style='color:blue'>",
+                    'post_tags'=> '</span>',
+                ],
+                'article_category.name' => [
+                    'type'     => 'plain',
+                    'pre_tags' => "<span style='color:blue'>",
+                    'post_tags'=> '</span>',
+                ],
                 'content' => [
-                    'type' => 'plain',
-                    "pre_tags"=>"<span style='color:blue'>",
-                    "post_tags"=>"</span>"
+                    'type'     => 'plain',
+                    'pre_tags' => "<span style='color:blue'>",
+                    'post_tags'=> '</span>',
+                    'fragment_size'      => 10,
+                    'number_of_fragments'=> 2,
                 ],
                 'desc' => [
-                    'type' => 'plain',
-                    "fragment_size"=> 150,
-                    "number_of_fragments"=> 3
-                ]
+                    'type'               => 'plain',
+                    'fragment_size'      => 10,
+                    'number_of_fragments'=> 2,
+                ],
             ],
-            "pre_tags"=>"<span style='color:red'>",
-            "post_tags"=>"</span>",
+            'pre_tags' => "<span style='color:red'>",
+            'post_tags'=> '</span>',
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function buildQueryPayload()
-    {
-        //
     }
 }
