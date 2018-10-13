@@ -19,10 +19,10 @@ $factory->define(App\Article::class, function () {
     return [
         'author_id' => 1,
         'content' => json_encode([
-            'html' => $faker->sentence,
-            'md' => $faker->sentence,
+            'html' => $faker->catchPhrase,
+            'md' => $faker->catchPhrase,
         ]),
-        'desc' => $faker->sentence,
+        'desc' => $faker->catchPhrase,
         'title' => $faker->title,
         'head_image' => $faker->imageUrl,
         'category_id' => function () {

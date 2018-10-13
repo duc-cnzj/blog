@@ -15,3 +15,8 @@ if (! function_exists('c')) {
     }
 }
 
+if (! function_exists('config_path')) {
+    function config_path() {
+        return app()->getConfigurationPath();
+    }
+}
