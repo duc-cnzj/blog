@@ -7,7 +7,7 @@
 - 目前支持的功能:
     - 游客评论
     - `markdown` 语法
-    - `emoji` 🤨 表情
+    - `emoji` 🤨 表情，留言区输入 `:` 自动补全 🍩
     - 文章编辑支持图片拖拽上传
     - 文章主题支持语法高亮
     - ~~暂时不支持搜索~~ 🔍
@@ -19,8 +19,8 @@
 ## 安装
 
 - `$ git clone --depth 1 git@github.com:DuC-cnZj/blog.git ducblog`
-- `$ cd ducblog/run ` 进入到 run 目录下面 :smile:
-- `run]$ docker-compose up app`
+- `$ cd ducblog && cp .env.example .env` 复制配置文件
+- `$ cd run && docker-compose up app` 进入到 run 目录下面，运行 app :smile:
 
 done 🐳 👏
 
