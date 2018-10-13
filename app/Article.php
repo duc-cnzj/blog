@@ -59,9 +59,10 @@ class Article extends Model
                 'analyzer'        => 'ik_max_word',
                 'search_analyzer' => 'ik_max_word',
             ],
-            'tags'             => ['type' => 'text'],
         ],
     ];
+
+    protected $appends = ['highlight_content'];
 
     protected $guarded = [];
 
@@ -81,7 +82,6 @@ class Article extends Model
             'content'          => $model->content_md,
             'title'            => $model->title,
             'desc'             => $model->desc,
-            'tags'             => $model->tags()->pluck('name')->toArray(),
         ];
 
         return $result;
@@ -136,5 +136,19 @@ class Article extends Model
         } else {
             return null;
         }
+    }
+
+    public function getHighlightContentAttribute()
+    {
+        $h = optional($this->highlight);
+
+        $categoryField = 'article_category.name';
+
+        return [
+                'content'  => is_null($h->content) ? null : implode('......', $h->content),
+                'desc' => is_null($h->desc) ? null : implode('......', $h->desc),
+                'title' => $h->title[0],
+                'category' => $h->{$categoryField}[0],
+            ];
     }
 }

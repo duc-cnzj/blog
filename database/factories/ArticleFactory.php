@@ -15,12 +15,13 @@ use Faker\Factory;
 // Faker\Generator $faker
 $factory->define(App\Article::class, function () {
     $faker = Factory::create('zh_CN');
+    $content = $faker->catchPhrase;
 
     return [
         'author_id' => 1,
         'content' => json_encode([
-            'html' => $faker->catchPhrase,
-            'md' => $faker->catchPhrase,
+            'html' => $content,
+            'md' => $content,
         ]),
         'desc' => $faker->catchPhrase,
         'title' => $faker->title,
