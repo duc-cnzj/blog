@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "08baef05e05301cabc91599a54921081",
-    "url": "/plugins/font-awesome-4.7.0/less/animated.less"
+    "revision": "898f90e40876883214bbd121b0c20e9f",
+    "url": "/plugins/font-awesome-4.7.0/less/bordered-pulled.less"
   },
   {
     "revision": "3371851dece0ee6f0614",
     "url": "/js/about.3d5d4a34.js"
   },
   {
-    "revision": "34b9648af16753970d77",
-    "url": "/js/app.a96ffd49.js"
+    "revision": "a737bf8bb4b33caee820",
+    "url": "/js/app.719bc9ae.js"
   },
   {
     "revision": "ec8afa61339d7aa37f59",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/plugins/font-awesome-4.7.0/fonts/fontawesome-webfont.eot"
   },
   {
-    "revision": "c65d55cad3e4e7b80479",
-    "url": "/js/chunk-73696324.61ab7ff6.js"
+    "revision": "94076f66930505da4b36",
+    "url": "/js/chunk-73696324.e3702125.js"
   },
   {
     "revision": "65a5528b8c2879158b0e57144cdfed7e",
@@ -172,20 +172,20 @@ self.__precacheManifest = [
     "url": "/styles/category_responsive.css"
   },
   {
-    "revision": "55c40b90249e4fe773664aafa0be3c0e",
-    "url": "/plugins/parallax-js-master/parallax.min.js"
+    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
+    "url": "/robots.txt"
   },
   {
     "revision": "4a37f8008959c75f619bf0a3a4e2d7a2",
     "url": "/plugins/OwlCarousel2-2.2.1/owl.video.play.png"
   },
   {
-    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
-    "url": "/robots.txt"
-  },
-  {
     "revision": "745de655e4fa424b171a627038dec159",
     "url": "/plugins/OwlCarousel2-2.2.1/owl.theme.default.css"
+  },
+  {
+    "revision": "55c40b90249e4fe773664aafa0be3c0e",
+    "url": "/plugins/parallax-js-master/parallax.min.js"
   },
   {
     "revision": "f7fb490d0d763ad98625c726d64f6dd8",
@@ -212,8 +212,8 @@ self.__precacheManifest = [
     "url": "/plugins/font-awesome-4.7.0/scss/_rotated-flipped.scss"
   },
   {
-    "revision": "ab5a9e8388563e097b5ce835601f01d2",
-    "url": "/plugins/font-awesome-4.7.0/scss/_path.scss"
+    "revision": "7107e80b053928271d5fcf422dc29490",
+    "url": "/plugins/font-awesome-4.7.0/scss/_list.scss"
   },
   {
     "revision": "aa2b8f32b403733713d8885f14ab86cc",
@@ -244,8 +244,12 @@ self.__precacheManifest = [
     "url": "/js/regular.js"
   },
   {
-    "revision": "7107e80b053928271d5fcf422dc29490",
-    "url": "/plugins/font-awesome-4.7.0/scss/_list.scss"
+    "revision": "ab5a9e8388563e097b5ce835601f01d2",
+    "url": "/plugins/font-awesome-4.7.0/scss/_path.scss"
+  },
+  {
+    "revision": "9277ab6964a434d499873687b00be906",
+    "url": "/plugins/font-awesome-4.7.0/scss/_fixed-width.scss"
   },
   {
     "revision": "e95931566f6fc6ad5685c4fa9802e206",
@@ -256,20 +260,16 @@ self.__precacheManifest = [
     "url": "/plugins/font-awesome-4.7.0/scss/_core.scss"
   },
   {
-    "revision": "9277ab6964a434d499873687b00be906",
-    "url": "/plugins/font-awesome-4.7.0/scss/_fixed-width.scss"
-  },
-  {
-    "revision": "4cad0df17bf40327feae33fa9a6c6ba2",
-    "url": "/plugins/font-awesome-4.7.0/scss/_bordered-pulled.scss"
+    "revision": "39ff4f359a7b81d6585075715f41e5dc",
+    "url": "/plugins/font-awesome-4.7.0/scss/_animated.scss"
   },
   {
     "revision": "c1f9ce3b7ae378e2e50bc92e1e97e517",
     "url": "/plugins/easing/easing.js"
   },
   {
-    "revision": "39ff4f359a7b81d6585075715f41e5dc",
-    "url": "/plugins/font-awesome-4.7.0/scss/_animated.scss"
+    "revision": "4cad0df17bf40327feae33fa9a6c6ba2",
+    "url": "/plugins/font-awesome-4.7.0/scss/_bordered-pulled.scss"
   },
   {
     "revision": "518e2b2d263982d2caa1e6514b4b4eac",
@@ -284,24 +284,24 @@ self.__precacheManifest = [
     "url": "/plugins/font-awesome-4.7.0/less/rotated-flipped.less"
   },
   {
-    "revision": "a8c41460c42a4fe9e98550f00c8b3f19",
-    "url": "/plugins/font-awesome-4.7.0/less/path.less"
+    "revision": "8cb65280c0f889daf72626c21a7c8628",
+    "url": "/plugins/font-awesome-4.7.0/less/larger.less"
   },
   {
     "revision": "269550530cc127b6aa5a35925a7de6ce",
     "url": "/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
   },
   {
-    "revision": "975571323cf880a4a30601998236b027",
-    "url": "/plugins/font-awesome-4.7.0/less/list.less"
-  },
-  {
-    "revision": "8cb65280c0f889daf72626c21a7c8628",
-    "url": "/plugins/font-awesome-4.7.0/less/larger.less"
-  },
-  {
     "revision": "fbb1f2f1ab96ba020c7f14208aac72b8",
     "url": "/plugins/font-awesome-4.7.0/less/mixins.less"
+  },
+  {
+    "revision": "a8c41460c42a4fe9e98550f00c8b3f19",
+    "url": "/plugins/font-awesome-4.7.0/less/path.less"
+  },
+  {
+    "revision": "975571323cf880a4a30601998236b027",
+    "url": "/plugins/font-awesome-4.7.0/less/list.less"
   },
   {
     "revision": "5e07ec001f8d21bd279c12ee542813f7",
@@ -320,16 +320,16 @@ self.__precacheManifest = [
     "url": "/plugins/font-awesome-4.7.0/css/font-awesome.css"
   },
   {
+    "revision": "08baef05e05301cabc91599a54921081",
+    "url": "/plugins/font-awesome-4.7.0/less/animated.less"
+  },
+  {
     "revision": "a1e5be58e81e919ba2e579cd1c65283e",
     "url": "/plugins/font-awesome-4.7.0/HELP-US-OUT.txt"
   },
   {
-    "revision": "898f90e40876883214bbd121b0c20e9f",
-    "url": "/plugins/font-awesome-4.7.0/less/bordered-pulled.less"
-  },
-  {
-    "revision": "01395c8248aa4f03bd43e15fe9498976",
-    "url": "/images/next_arrow_2.svg"
+    "revision": "b90023ee911fd1f5a95e2a5016bad86c",
+    "url": "/images/next_arrow.svg"
   },
   {
     "revision": "e3fed490af1ec1997b1a2e8eb199c099",
@@ -408,8 +408,16 @@ self.__precacheManifest = [
     "url": "/images/post_12.jpg"
   },
   {
+    "revision": "1fdea66f3af01c8a5d7c3d4c524c38b0",
+    "url": "/images/video_1.jpg"
+  },
+  {
     "revision": "e066959ff57bc3a43928a43d5bcacca4",
     "url": "/images/video_4.jpg"
+  },
+  {
+    "revision": "7e11942da92a8c9f8cfb9ae847de137d",
+    "url": "/images/video_2.jpg"
   },
   {
     "revision": "390a06399b640766a817300d88996e65",
@@ -420,20 +428,12 @@ self.__precacheManifest = [
     "url": "/images/vid_4.jpg"
   },
   {
-    "revision": "1fdea66f3af01c8a5d7c3d4c524c38b0",
-    "url": "/images/video_1.jpg"
-  },
-  {
-    "revision": "7e11942da92a8c9f8cfb9ae847de137d",
-    "url": "/images/video_2.jpg"
+    "revision": "0a43ba5a7a8e8bed9cc28c118006eab8",
+    "url": "/images/vid_3.jpg"
   },
   {
     "revision": "9e05bb9827165ed4587abd3b77dea933",
     "url": "/images/vid_2.jpg"
-  },
-  {
-    "revision": "0a43ba5a7a8e8bed9cc28c118006eab8",
-    "url": "/images/vid_3.jpg"
   },
   {
     "revision": "189067dba852275019193419e371c3ae",
@@ -444,20 +444,16 @@ self.__precacheManifest = [
     "url": "/images/top_4.jpg"
   },
   {
-    "revision": "fa8cd97482f3d0a96e68b6351785a61d",
-    "url": "/images/top_3.jpg"
-  },
-  {
     "revision": "564d48d49e52e1ffd3e282f314be1504",
     "url": "/images/top_1.jpg"
   },
   {
-    "revision": "e2370abfc7c0896dbbd83a921cdd6ff8",
-    "url": "/images/top_2.jpg"
+    "revision": "fa8cd97482f3d0a96e68b6351785a61d",
+    "url": "/images/top_3.jpg"
   },
   {
-    "revision": "3e1795aef6773cdccf9471b9ccfda9ca",
-    "url": "/images/prev_arrow.svg"
+    "revision": "e2370abfc7c0896dbbd83a921cdd6ff8",
+    "url": "/images/top_2.jpg"
   },
   {
     "revision": "413134e31120e5850bbac1c0f4819a2e",
@@ -476,12 +472,16 @@ self.__precacheManifest = [
     "url": "/images/post_2.jpg"
   },
   {
-    "revision": "029d3fc1182910a45f183cbaeaceba42",
-    "url": "/images/prev_arrow_2.svg"
+    "revision": "3e1795aef6773cdccf9471b9ccfda9ca",
+    "url": "/images/prev_arrow.svg"
   },
   {
     "revision": "ab97164d315c0c88d96e46fe7e744b6b",
     "url": "/images/post_4.jpg"
+  },
+  {
+    "revision": "029d3fc1182910a45f183cbaeaceba42",
+    "url": "/images/prev_arrow_2.svg"
   },
   {
     "revision": "64c8ef8b2b370ebee2fc955014cd7961",
@@ -492,8 +492,8 @@ self.__precacheManifest = [
     "url": "/images/post_5.jpg"
   },
   {
-    "revision": "b90023ee911fd1f5a95e2a5016bad86c",
-    "url": "/images/next_arrow.svg"
+    "revision": "01395c8248aa4f03bd43e15fe9498976",
+    "url": "/images/next_arrow_2.svg"
   },
   {
     "revision": "df11d3db2f48d7f5bb5bb5b01fe111fe",
@@ -532,7 +532,7 @@ self.__precacheManifest = [
     "url": "/images/post_17.jpg"
   },
   {
-    "revision": "63516fdf061cd983840c5d5a340e6770",
+    "revision": "c9ac1b6ec76a7e0306abd57197dd2f16",
     "url": "/index.html"
   },
   {
@@ -540,12 +540,12 @@ self.__precacheManifest = [
     "url": "/images/post_22.jpg"
   },
   {
-    "revision": "299ae4ef609e13ca6381d2aa27bd3a9e",
-    "url": "/images/post_16.jpg"
-  },
-  {
     "revision": "16663e6326e81c8b31d13f7feef400e8",
     "url": "/images/post_18.jpg"
+  },
+  {
+    "revision": "299ae4ef609e13ca6381d2aa27bd3a9e",
+    "url": "/images/post_16.jpg"
   },
   {
     "revision": "3c187a8110081407cc6dc90798fa1da8",
@@ -556,11 +556,11 @@ self.__precacheManifest = [
     "url": "/images/post_15.jpg"
   },
   {
-    "revision": "7e5d34311ee4f02c7f70d9e150ac9f61",
-    "url": "/images/cloud.png"
+    "revision": "76010b01cbbcd4a0cc5591ff72b8516f",
+    "url": "/images/author.jpg"
   },
   {
-    "revision": "34b9648af16753970d77",
+    "revision": "a737bf8bb4b33caee820",
     "url": "/css/app.d03e01b3.css"
   },
   {
@@ -584,20 +584,20 @@ self.__precacheManifest = [
     "url": "/images/arrow_l.png"
   },
   {
-    "revision": "d0b7d17cb416d31ca61e442756eb7e9c",
-    "url": "/images/arrow_r.svg"
-  },
-  {
-    "revision": "72b2b0987c51946f3c14a895630b503a",
-    "url": "/images/arrow_r.png"
+    "revision": "7e5d34311ee4f02c7f70d9e150ac9f61",
+    "url": "/images/cloud.png"
   },
   {
     "revision": "2cc19b6f6b5718b35b64",
     "url": "/css/chunk-5f41e35f.cbcaa59d.css"
   },
   {
-    "revision": "76010b01cbbcd4a0cc5591ff72b8516f",
-    "url": "/images/author.jpg"
+    "revision": "72b2b0987c51946f3c14a895630b503a",
+    "url": "/images/arrow_r.png"
+  },
+  {
+    "revision": "d0b7d17cb416d31ca61e442756eb7e9c",
+    "url": "/images/arrow_r.svg"
   },
   {
     "revision": "fa735b6f44fa6d18ebfe",
@@ -616,7 +616,7 @@ self.__precacheManifest = [
     "url": "/css/chunk-a8ab0ed4.7ac988f6.css"
   },
   {
-    "revision": "c65d55cad3e4e7b80479",
+    "revision": "94076f66930505da4b36",
     "url": "/css/chunk-73696324.ff1d7fbf.css"
   },
   {
