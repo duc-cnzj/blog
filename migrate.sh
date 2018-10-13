@@ -13,7 +13,7 @@ echo "--------------------- migrate done ------------------"
 sleep 5
 
 echo "--------------------- elastic 数据索引创建 ------------------"
-php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator
+php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator > /dev/null 2>&1
 echo "--------------------- elastic 数据索引创建成功 ------------------"
 
 
