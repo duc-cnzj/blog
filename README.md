@@ -20,7 +20,7 @@
 
 - `$ git clone --depth 1 git@github.com:DuC-cnZj/blog.git ducblog`
 - `$ cd ducblog && cp .env.example .env` 复制配置文件
-- `$ cd run && docker-compose up app` 进入到 run 目录下面 :smile:
+- `$ cd run && docker-compose up app` 进入到 run 目录下面，运行 app :smile:
 
 done 🐳 👏
 
