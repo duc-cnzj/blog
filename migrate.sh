@@ -10,7 +10,8 @@ echo "--------------- migrate ${DIR} ---------------"
 php artisan migrate --seed
 echo "------------------- migrate done -----------------"
 
-sleep 5
+echo "为了确保 ElasticSearch 索引创建成功，请等待 15s"
+sleep 15
 
 echo "--------------------- elastic 数据索引创建 ------------------"
 php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator > /dev/null 2>&1
