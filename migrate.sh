@@ -6,9 +6,9 @@ cd ${DIR}
 bash ./wait-for-it.sh db:3306 -- echo "db is up"
 
 echo "------------------- 数据库创建 ---------------------"
-echo "--------------------- migrate ${DIR} ------------------"
+echo "--------------- migrate ${DIR} ---------------"
 php artisan migrate --seed
-echo "--------------------- migrate done ------------------"
+echo "------------------- migrate done -----------------"
 
 sleep 5
 
