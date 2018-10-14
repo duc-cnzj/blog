@@ -26,7 +26,9 @@ class ArticleResource extends JsonResource
                 ];
             }),
             'headImage' => $this->head_image,
-            'category' => $this->whenloaded('category', $this->category->name),
+            'category' => $this->whenloaded('category', function () {
+                return $this->category->name;
+            }),
             'content' => $this->content_html,
             'content_md' => $this->content_md,
             'title' => $this->title,
@@ -35,7 +37,7 @@ class ArticleResource extends JsonResource
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'recommendArticles' => $this->when($request->path() === 'home_articles', $this->getRecommendArticles()),
             'created_at' => $this->created_at->diffForHumans(),
-            'highlight' => $this->highlight_content
+            'highlight' => $this->when($request->path() === 'search_articles', $this->highlight_content)
             // 'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }

@@ -14,9 +14,10 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $articles = Article::where('author_id', \Auth::id())
+        $articles = Article::with('category', 'tags')
+            ->where('author_id', \Auth::id())
             ->latest()
-            ->select('id', 'title', 'created_at', 'updated_at')
+            ->select('id', 'title', 'created_at', 'updated_at', 'category_id')
             ->paginate($request->page_size ?? 10);
 
         return ArticleResource::collection($articles);
@@ -44,6 +45,7 @@ class ArticleController extends Controller
         $tagNames = $request->tags; // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);
 
+        /** @var Article $article */
         $article = Article::create([
             'author_id' => \Auth::id(),
             'head_image' => $request->head_image,
