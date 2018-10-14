@@ -35,7 +35,7 @@ $router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp
 });
 
 $router->get('/articles', function () {
-    return ArticleResource::collection(Article::with('author')->latest()->select(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id'])->paginate());
+    return ArticleResource::collection(Article::with('author')->latest()->select(['id', 'category_id', 'head_image', 'title', 'desc', 'created_at', 'author_id'])->paginate());
 });
 
 $router->get('/search_articles', function (Request $request) {
