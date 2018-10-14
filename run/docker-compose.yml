@@ -22,13 +22,14 @@ services:
       - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./default.conf:/etc/nginx/sites-available/default
     ports:
-      - 8001:80
+      - ${API_PORT:-8001}:80
     networks:
       - appnet
     depends_on:
       - elasticsearch
       - redis
       - db
+      - web
     environment:
       BASH_NAMES: init.sh,migrate.sh
   redis:
@@ -57,8 +58,8 @@ services:
      - ./front:/usr/share/nginx/html/front
      - ./back:/usr/share/nginx/html/background
     ports:
-     - "8003:8009"
-     - "8002:8010"
+     - ${FRONT_PORT:-8003}:8009
+     - ${BACK_PORT:-8002}:8010
     environment:
      - FRONT_PORT=8009
      - BACK_PORT=8010
