@@ -15,17 +15,22 @@ class ArticleRule extends SearchRule
             'fields' => [
                 'title' => [
                     'type'     => 'plain',
-                    'pre_tags' => "<span style='color:blue'>",
+                    'pre_tags' => "<span style='background-color:#bfa;padding:1px;'>",
+                    'post_tags'=> '</span>',
+                ],
+                'tags' => [
+                    'type'     => 'plain',
+                    'pre_tags' => "<span style='background-color:#bfa;padding:1px;'>",
                     'post_tags'=> '</span>',
                 ],
                 'article_category.name' => [
                     'type'     => 'plain',
-                    'pre_tags' => "<span style='color:blue'>",
+                    'pre_tags' => "<span style='background-color:#bfa;padding:1px;'>",
                     'post_tags'=> '</span>',
                 ],
                 'content' => [
                     'type'     => 'plain',
-                    'pre_tags' => "<span style='color:blue'>",
+                    'pre_tags' => "<span style='background-color:#bfa;padding:1px;'>",
                     'post_tags'=> '</span>',
                     'fragment_size'      => 10,
                     'number_of_fragments'=> 2,

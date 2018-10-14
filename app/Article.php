@@ -6,10 +6,12 @@ use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\ES\ArticleIndexConfigurator;
 use Illuminate\Database\Eloquent\Model;
+use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Article extends Model
 {
-    use Searchable;
+    use Searchable, PivotEventTrait;
+
     protected $indexConfigurator = ArticleIndexConfigurator::class;
 
     protected $searchRules = [
@@ -59,12 +61,28 @@ class Article extends Model
                 'analyzer'        => 'ik_max_word',
                 'search_analyzer' => 'ik_max_word',
             ],
+            'tags'             => ['type' => 'text'],
         ],
     ];
 
     protected $appends = ['highlight_content'];
 
     protected $guarded = [];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
+            if (! $model->shouldBeSearchable()) {
+                $model->unsearchable();
+
+                return;
+            }
+            info('here');
+            $model->searchable();
+        });
+    }
 
     public function toSearchableArray()
     {
@@ -82,7 +100,10 @@ class Article extends Model
             'content'          => $model->content_md,
             'title'            => $model->title,
             'desc'             => $model->desc,
+            'tags'             => $model->tags()->pluck('name')->toArray(),
         ];
+
+        info('searchable', $result);
 
         return $result;
     }
@@ -146,9 +167,10 @@ class Article extends Model
 
         return [
                 'content'  => is_null($h->content) ? null : implode('......', $h->content),
-                'desc' => is_null($h->desc) ? null : implode('......', $h->desc),
-                'title' => $h->title[0],
+                'desc'     => is_null($h->desc) ? null : implode('......', $h->desc),
+                'title'    => $h->title[0],
                 'category' => $h->{$categoryField}[0],
+                'tags'     => is_null($h->tags) ? null : implode(',', $h->tags),
             ];
     }
 }
