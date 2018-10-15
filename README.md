@@ -26,7 +26,7 @@
 - `$ cd ducblog && cp .env.example .env` 复制配置文件
 - `$ cd run && docker-compose up app` 进入到 run 目录下面，运行 app
 
-Done 🐳 
+Done 🐳
 
 
 ## 🔧  Configuration
@@ -34,7 +34,6 @@ Done 🐳
 > 如果不修改，那么使用默认配置
 
 ❗️ __在 run 目录下__, 添加 `.env` 文件, 并且在其中添加相关配置
-- `API_PORT=your_port` 后台 api 端口配置, `defaut: 8001`
 - `BACK_PORT=your_port` 博客后台端口,  `defaut: 8002`
 - `FRONT_PORT=your_port` 博客主页端口, `defaut: 8003`
 
@@ -46,7 +45,7 @@ Done 🐳
 ## 🎓 Usage
 
 运行程序命令
-- `docker-compose up app` 
+- `docker-compose up app`
 - 在此命令下按 `ctrl + c` 即可退出
 
 
