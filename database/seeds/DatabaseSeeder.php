@@ -12,10 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (! User::whereMobile('18888780080')->exists()) {
+        $adminMobile = env('ADMIN_MOBILE', '123456789');
+        $adminPwd = env('ADMIN_PWD', 'secret');
+
+        if (! User::whereMobile($adminMobile)->exists()) {
             factory(User::class)->create([
-                'name' => 'duc',
-                'mobile' => '18888780080'
+                'name' => 'admin',
+                'mobile' => $adminMobile,
+                'password' => bcrypt($adminPwd),
             ]);
         }
         // $this->call('UsersTableSeeder');

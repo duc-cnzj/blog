@@ -38,6 +38,10 @@ Done 🐳
 - `BACK_PORT=your_port` 博客后台端口,  `defaut: 8002`
 - `FRONT_PORT=your_port` 博客主页端口, `defaut: 8003`
 
+❗️ __在根目录下的 `.env` 中__
+- `ADMIN_MOBILE=18888XXXXXX` 设置博客后台管理员的账号 `default: 123456789`
+- `ADMIN_PWD=secret` 设置博客后台管理员的密码 `default: secret`
+
 
 ## 🎓 Usage
 
