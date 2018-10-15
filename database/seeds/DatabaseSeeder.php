@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,14 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $adminMobile = env('ADMIN_MOBILE', '123456789');
-        $adminPwd = env('ADMIN_PWD', 'secret');
+        $adminMobile = env('ADMIN_MOBILE');
+        $adminPwd = env('ADMIN_PWD');
 
         if (! User::whereMobile($adminMobile)->exists()) {
             factory(User::class)->create([
                 'name' => 'admin',
-                'mobile' => $adminMobile,
-                'password' => bcrypt($adminPwd),
+                'mobile' => $adminMobile ?: '123456789',
+                'password' => Hash::make($adminPwd ?: 'secret'),
             ]);
         }
         // $this->call('UsersTableSeeder');

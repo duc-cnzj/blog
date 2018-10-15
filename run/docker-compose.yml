@@ -22,7 +22,7 @@ services:
       - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
       - ./default.conf:/etc/nginx/sites-available/default
     ports:
-      - ${API_PORT:-8001}:80
+      - 8001:80
     networks:
       - appnet
     depends_on:
