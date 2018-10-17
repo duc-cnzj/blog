@@ -82,6 +82,7 @@ class ArticleController extends Controller
     {
         list($processContent, $category, $tagIds) = $this->dealRequest($request);
 
+        /** @var Article $article */
         $article = Article::findOrFail($id);
 
         $article->update([

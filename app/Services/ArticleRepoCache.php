@@ -12,8 +12,6 @@ class ArticleRepoCache implements ArticleRepoImp
      */
     protected $article;
 
-    // protected $cacheTime = 9 * 60; // min
-
     /**
      * ArticleRepoCache constructor.
      *
