@@ -35,7 +35,11 @@ $router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp
 });
 
 $router->get('/articles', function () {
-    return ArticleResource::collection(Article::with('author')->latest()->select(['id', 'category_id', 'head_image', 'title', 'desc', 'created_at', 'author_id'])->paginate());
+    return ArticleResource::collection(Article::with('author')
+        ->latest()
+        ->select(['id', 'category_id', 'head_image', 'title', 'desc', 'created_at', 'author_id'])
+        ->paginate()
+    );
 });
 
 $router->get('/search_articles', function (Request $request) {
@@ -43,24 +47,34 @@ $router->get('/search_articles', function (Request $request) {
     if (! is_null($query)) {
         $articles = Article::search($query)
             ->rule(\App\ES\ArticleRule::class)
-            ->get()->load('author', 'tags', 'category');
+            ->get()
+            ->load('author', 'tags', 'category');
 
         return ArticleResource::collection($articles);
     }
 });
 
-$router->get('/home_articles', function (Request $request) {
-    $articles = Article::with('category:id,name')->latest()->take(3)->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
+$router->get('/home_articles', function () {
+    $articles = Article::with('category:id,name')
+        ->latest()
+        ->take(3)
+        ->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
 
     return ArticleResource::collection($articles);
 });
 
 $router->get('/newest_articles', function () {
-    return ArticleResource::collection(Article::with('author', 'category:id,name')->latest()->take(13)->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
+    return ArticleResource::collection(Article::with('author', 'category:id,name')
+        ->latest()
+        ->take(13)
+        ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
 });
 
 $router->get('/popular_articles', function () {
-    return ArticleResource::collection(Article::with('author', 'category:id,name')->inRandomOrder()->take(8)->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
+    return ArticleResource::collection(Article::with('author', 'category:id,name')
+        ->inRandomOrder()
+        ->take(8)
+        ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
 });
 
 $router->get('/trending_articles', function (Trending $trending, ArticleRepoImp $repo) {
@@ -80,25 +94,24 @@ $router->get('/nav_links', function () {
             ['title' => '首页', 'link' => '/'],
             ['title' => '分类', 'link' => '/categories'],
             ['title' => '文章', 'link' => '/articles'],
-            // ["title" => "装置", "link" => "/gadgets"],
-            // ["title" => "生活方式", "link" => "/lifestyle"],
-            // ["title" => "视频", "link" => "/video"],
-            // ["title" => "联系", "link" => "/contact"]
         ],
     ];
 });
 
 $router->get('/articles/{id}/comments', function ($id, Request $request) {
-    $comments = Comment::where('article_id', $id)->get(['visitor', 'content', 'comment_id', 'created_at', 'id']);
+    $comments = Comment::where('article_id', $id)
+        ->get(['visitor', 'content', 'comment_id', 'created_at', 'id']);
 
     return response([
-        'data' => array_reverse(c(CommentResource::collection($comments)->toArray($request))),
+        'data' => array_reverse(
+            c(CommentResource::collection($comments)->toArray($request))
+        ),
     ], 200);
 });
 
 $router->post('/articles/{id}/comments', function ($id, Request $request) {
     $article = Article::findOrFail($id);
-    $content = $request->content;
+    $content = $request->input('content');
     $parsedown = new \Parsedown();
     $htmlContent = $parsedown->text($content);
 

@@ -12,12 +12,21 @@ class Article extends Model
 {
     use Searchable, PivotEventTrait;
 
+    /**
+     * @var string
+     */
     protected $indexConfigurator = ArticleIndexConfigurator::class;
 
+    /**
+     * @var array
+     */
     protected $searchRules = [
         ArticleRule::class,
     ];
 
+    /**
+     * @var array
+     */
     protected $mapping = [
         'properties' => [
             'author'           => [
@@ -65,10 +74,20 @@ class Article extends Model
         ],
     ];
 
+    /**
+     * @var array
+     */
     protected $appends = ['highlight_content'];
 
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
+    /**
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public static function boot()
     {
         parent::boot();
@@ -79,11 +98,16 @@ class Article extends Model
 
                 return;
             }
-            info('here');
+
             $model->searchable();
         });
     }
 
+    /**
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function toSearchableArray()
     {
         $model = $this->load(['category', 'author', 'tags']);
@@ -108,26 +132,51 @@ class Article extends Model
         return $result;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'article_tag');
     }
 
+    /**
+     * @return $this
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class)->latest();
     }
 
+    /**
+     * @return mixed
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getRecommendArticles()
     {
         return static::where('category_id', $this->category_id)
@@ -137,6 +186,11 @@ class Article extends Model
             ->toArray();
     }
 
+    /**
+     * @return null
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getContentHtmlAttribute()
     {
         $arr = json_decode($this->content);
@@ -148,6 +202,11 @@ class Article extends Model
         }
     }
 
+    /**
+     * @return null
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getContentMdAttribute()
     {
         $arr = json_decode($this->content);
@@ -159,6 +218,11 @@ class Article extends Model
         }
     }
 
+    /**
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getHighlightContentAttribute()
     {
         $h = optional($this->highlight);

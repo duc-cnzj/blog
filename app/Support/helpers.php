@@ -1,7 +1,14 @@
 <?php
 
 if (! function_exists('c')) {
-    function c($comments, $pid = 0) {
+    /**
+     * @param array $comments
+     * @param int   $pid
+     *
+     * @return array
+     * @author duc <1025434218@qq.com>
+     */
+    function c(array $comments, $pid = 0) {
         $arr = [];
         foreach ($comments as $item) {
             if ($item['comment_id'] === $pid) {
@@ -16,6 +23,11 @@ if (! function_exists('c')) {
 }
 
 if (! function_exists('config_path')) {
+    /**
+     * @return string
+     *
+     * @author duc <1025434218@qq.com>
+     */
     function config_path() {
         return app()->getConfigurationPath();
     }

@@ -29,9 +29,9 @@ class ArticleRule extends SearchRule
                     'post_tags'=> '</span>',
                 ],
                 'content' => [
-                    'type'     => 'plain',
-                    'pre_tags' => "<span style='background-color:#bfa;padding:1px;'>",
-                    'post_tags'=> '</span>',
+                    'type'               => 'plain',
+                    'pre_tags'           => "<span style='background-color:#bfa;padding:1px;'>",
+                    'post_tags'          => '</span>',
                     'fragment_size'      => 10,
                     'number_of_fragments'=> 2,
                 ],

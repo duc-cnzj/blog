@@ -12,6 +12,13 @@ use App\Http\Resources\ArticleResource;
 
 class ArticleController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index(Request $request)
     {
         $articles = Article::with('category', 'tags')
@@ -23,36 +30,25 @@ class ArticleController extends Controller
         return ArticleResource::collection($articles);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return ArticleResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function store(Request $request)
     {
-        $content = $request->content;
-        $parsedown = new \Parsedown();
-
-        $mdContent = $parsedown->text($content);
-
-        $processContent = json_encode([
-            'html' => $mdContent,
-            'md' => $content
-        ]);
-
-
-        $category = Category::firstOrCreate([
-            'name' => $request->category, // string 'php'
-        ], [
-           'user_id' => \Auth::id()
-        ]);
-
-        $tagNames = $request->tags; // array ['php', 'js']
-        $tagIds = $this->getTagIdsBy($tagNames);
+        list($processContent, $category, $tagIds) = $this->dealRequest($request);
 
         /** @var Article $article */
         $article = Article::create([
-            'author_id' => \Auth::id(),
-            'head_image' => $request->head_image,
-            'title' => $request->title,
-            'desc' => $request->desc,
-            'content' => $processContent,
-            'category_id' => $category->id
+            'author_id'   => \Auth::id(),
+            'head_image'  => $request->head_image,
+            'title'       => $request->title,
+            'desc'        => $request->desc,
+            'content'     => $processContent,
+            'category_id' => $category->id,
         ]);
 
         $article->tags()->sync($tagIds);
@@ -60,41 +56,41 @@ class ArticleController extends Controller
         return new ArticleResource($article);
     }
 
-    public function show($id, ArticleRepoImp $repo)
+    /**
+     * @param int            $id
+     * @param ArticleRepoImp $repo
+     *
+     * @return ArticleResource
+     * @author duc <1025434218@qq.com>
+     */
+    public function show(int $id, ArticleRepoImp $repo)
     {
         $article = $repo->get($id);
 
         return new ArticleResource($article);
     }
 
-    public function update($id, Request $request, ArticleRepoImp $repo)
+    /**
+     * @param int            $id
+     * @param Request        $request
+     * @param ArticleRepoImp $repo
+     *
+     * @return ArticleResource
+     * @author duc <1025434218@qq.com>
+     */
+    public function update(int $id, Request $request, ArticleRepoImp $repo)
     {
-        $content = $request->content;
-        $parsedown = new \Parsedown();
-
-        $mdContent = $parsedown->text($content);
-
-        $processContent = json_encode([
-            'html' => $mdContent,
-            'md' => $content
-        ]);
-        $category = Category::firstOrCreate([
-            'name' => $request->category, // string 'php'
-        ], [
-           'user_id' => \Auth::id()
-        ]);
-
-        $tagNames = $request->tags; // array ['php', 'js']
-        $tagIds = $this->getTagIdsBy($tagNames);
+        list($processContent, $category, $tagIds) = $this->dealRequest($request);
 
         $article = Article::findOrFail($id);
+
         $article->update([
-            'author_id' => \Auth::id(),
-            'head_image' => $request->head_image,
-            'title' => $request->title,
-            'desc' => $request->desc,
-            'content' => $processContent,
-            'category_id' => $category->id
+            'author_id'   => \Auth::id(),
+            'head_image'  => $request->head_image,
+            'title'       => $request->title,
+            'desc'        => $request->desc,
+            'content'     => $processContent,
+            'category_id' => $category->id,
         ]);
 
         $article->tags()->sync($tagIds);
@@ -104,27 +100,75 @@ class ArticleController extends Controller
         return new ArticleResource($article);
     }
 
-    public function destroy($id)
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @author duc <1025434218@qq.com>
+     */
+    public function destroy(int $id)
     {
         Article::findOrFail($id)->delete();
 
         return response([], 204);
     }
 
+    /**
+     * @param array $names
+     *
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getTagIdsBy(array $names): array
     {
         $ids = [];
-        foreach ($names as $name) {
 
+        foreach ($names as $name) {
             $tag = Tag::firstOrCreate([
-                'name' => $name
+                'name' => $name,
             ], [
-                'user_id' => \Auth::id()
+                'user_id' => \Auth::id(),
             ]);
 
             $ids[] = $tag->id;
         }
 
         return $ids;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    private function dealRequest(Request $request): array
+    {
+        $content = $request->input('content');
+        $parsedown = new \Parsedown();
+
+        $mdContent = $parsedown->text($content);
+
+        $processContent = json_encode(
+            [
+                'html' => $mdContent,
+                'md'   => $content,
+            ]
+        );
+
+        $category = Category::firstOrCreate(
+            [
+                'name' => $request->category, // string 'php'
+            ],
+            [
+            'user_id' => \Auth::id(),
+        ]);
+
+        $tagNames = $request->tags; // array ['php', 'js']
+        $tagIds = $this->getTagIdsBy($tagNames);
+
+        return [$processContent, $category, $tagIds];
     }
 }

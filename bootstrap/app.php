@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
     (new Dotenv\Dotenv(dirname(__DIR__)))->load();
@@ -56,7 +56,11 @@ $app->singleton(
 
 $app->singleton(
     App\Contracts\ArticleRepoImp::class,
-    App\Services\ArticleRepo::class
+    function () {
+        return new \App\Services\ArticleRepoCache(
+            new \App\Services\ArticleRepo
+        );
+    }
 );
 
 /*
@@ -119,7 +123,7 @@ $app->register(ScoutElastic\ScoutElasticServiceProvider::class);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;
