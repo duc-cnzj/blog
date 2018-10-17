@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redis;
 
 class Trending
 {
-    public function get()
+    public function get(): array
     {
         return Redis::zrevrange($this->cacheKey(), 0, 12);
     }
@@ -18,7 +18,7 @@ class Trending
         Redis::zincrby($this->cacheKey(), 1, $article->id);
     }
 
-    public function cacheKey()
+    public function cacheKey(): string
     {
         return 'trending_articles';
     }

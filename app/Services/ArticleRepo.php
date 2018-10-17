@@ -4,40 +4,41 @@ namespace App\Services;
 
 use App\Article;
 use App\Contracts\ArticleRepoImp;
-use Illuminate\Support\Facades\Cache;
 
 class ArticleRepo implements ArticleRepoImp
 {
-    // protected $cacheTime = 9 * 60; // min
-
-    public function get($id)
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|static|static[]
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function get(int $id)
     {
-        return Cache::rememberForever($this->cacheKey($id), function () use ($id) {
-            info('从数据库获取文章id: ' . $id);
-            return Article::with('category', 'tags', 'author')->findOrFail($id);
-        });
+        return Article::with('category', 'tags', 'author')->findOrFail($id);
     }
 
-    public function cacheKey($id)
+    /**
+     * @param array $ids
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function getMany(array $ids)
     {
-        return 'article:' . $id;
+        return Article::with('category', 'tags', 'author')->findMany($ids);
     }
 
+    /**
+     * @param $id
+     *
+     * @author duc <1025434218@qq.com>
+     * @return mixed|void
+     */
     public function removeBy($id)
     {
-        info('移除缓存文章id: ' . $id);
-        Cache::forget($this->cacheKey($id));
-    }
-
-    public function getMany($ids)
-    {
-        $arr = [];
-        if ($ids) {
-            foreach ($ids as $id) {
-                $arr[] = $this->get($id);
-            }
-        }
-
-        return $arr;
+        // 没有缓存所以不需要 do anything
     }
 }

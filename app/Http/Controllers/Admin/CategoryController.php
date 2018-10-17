@@ -9,6 +9,13 @@ use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index(Request $request)
     {
         $category = Category::where('name', 'LIKE', "%{$request->q}%")->get();

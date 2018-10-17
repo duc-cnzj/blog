@@ -20,9 +20,9 @@ class ArticleIndexConfigurator extends IndexConfigurator
         'analysis'           => [
             'analyzer' => [
                 'es_std' => [
-                    'type' => 'standard',
-                    'stopwords' => '_spanish_'
-                ]
+                    'type'      => 'standard',
+                    'stopwords' => '_spanish_',
+                ],
             ],
         ],
     ];
