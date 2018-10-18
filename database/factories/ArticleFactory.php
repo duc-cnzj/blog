@@ -18,16 +18,18 @@ $factory->define(App\Article::class, function () {
     $content = $faker->catchPhrase;
 
     return [
-        'author_id' => 1,
+        'author_id' => function () {
+            return app()->environment() === 'testing' ? factory(\App\User::class)->create()->id : 1;
+        },
         'content' => json_encode([
             'html' => $content,
-            'md' => $content,
+            'md'   => $content,
         ]),
-        'desc' => $faker->catchPhrase,
-        'title' => $faker->title,
-        'head_image' => $faker->imageUrl,
+        'desc'        => $faker->catchPhrase,
+        'title'       => $faker->title,
+        'head_image'  => $faker->imageUrl,
         'category_id' => function () {
             return factory(App\Category::class)->create()->id;
-        }
+        },
     ];
 });
