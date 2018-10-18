@@ -3,8 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -48,6 +50,18 @@ class Handler extends ExceptionHandler
     {
         $rendered = parent::render($request, $exception);
         $statusCode = $rendered->getStatusCode();
+
+        if ($exception instanceof Missing404Exception) {
+            try {
+                Artisan::call('elastic:create-index', [
+                    'index-configurator' => 'App\\ES\\ArticleIndexConfigurator'
+                ]);
+                Artisan::call('refresh-scout:import', ['model'=>'App\\Article']);
+                info('重新创建索引成功');
+            } catch (\Exception $e) {
+                info('重新创建索引失败');
+            }
+        }
 
         if ($exception instanceof ValidationException) {
             return $this->invalidJson($request, $exception);
