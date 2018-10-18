@@ -13,13 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $adminMobile = env('ADMIN_MOBILE');
+        $adminMobile = env('ADMIN_MOBILE') ?: '123456789';
         $adminPwd = env('ADMIN_PWD');
 
-        if (! User::whereMobile($adminMobile)->exists()) {
+        if (! User::where('mobile', $adminMobile)->exists()) {
             factory(User::class)->create([
-                'name' => 'admin',
-                'mobile' => $adminMobile ?: '123456789',
+                'name'     => 'admin',
+                'mobile'   => $adminMobile,
                 'password' => Hash::make($adminPwd ?: 'secret'),
             ]);
         }

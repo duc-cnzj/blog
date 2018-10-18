@@ -17,10 +17,10 @@ $factory->define(App\User::class, function () {
     $faker = Factory::create('zh_CN');
 
     return [
-        'name' => $faker->name,
-        'mobile' => $faker->phoneNumber,
-        'avatar' => $faker->imageUrl,
-        'email' => $faker->unique()->safeEmail,
+        'name'     => $faker->name,
+        'email'    => str_random(12) . $faker->unique()->safeEmail,
+        'mobile'   => $faker->phoneNumber,
+        'avatar'   => $faker->imageUrl,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         // 'remember_token' => str_random(10),
     ];
