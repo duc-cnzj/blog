@@ -31,7 +31,7 @@ services:
       - db
       - web
     environment:
-      BASH_NAMES: init.sh,migrate.sh
+      BASH_NAMES: ./shell/init.sh,./shell/migrate.sh,./shell/test.sh
   redis:
     image: redis:alpine
     networks:

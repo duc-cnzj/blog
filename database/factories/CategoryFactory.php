@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Faker\Factory;
 
 /*
@@ -17,7 +18,9 @@ $factory->define(App\Category::class, function () {
     $faker = Factory::create('zh_CN');
 
     return [
-        'user_id' => 1,
-        'name' => $faker->word
+        'user_id' => function () {
+            return app()->environment() === 'testing' ? factory(User::class)->create()->id : 1;
+        },
+        'name' => $faker->word,
     ];
 });
