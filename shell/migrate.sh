@@ -21,3 +21,8 @@ echo "--------------------- elastic 数据索引创建成功 ------------------"
 echo "----------------- 文章初始数据添加 start -------------"
 php artisan db:seed --class=ArticleTableSeeder
 echo "----------------- 文章初始数据添加 done -------------"
+
+echo "----------------- phpunit -------------"
+./vendor/bin/phpunit
+echo "-------------- phpunit done -------------"
+
