@@ -40,7 +40,8 @@
             "tests/"
         ],
         "files": [
-            "app/Support/helpers.php"
+            "app/Support/helpers.php",
+            "tests/utilities/functions.php"
         ]
     },
     "scripts": {
