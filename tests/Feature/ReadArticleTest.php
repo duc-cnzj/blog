@@ -19,7 +19,6 @@ class ReadArticleTest extends TestCase
     /** @test */
     public function guest_can_get_articles()
     {
-        create(Article::class, [], 100);
         create(Article::class, ['desc' => 'this is articles test 1']);
         create(Article::class, ['desc' => 'this is articles test 2']);
 
