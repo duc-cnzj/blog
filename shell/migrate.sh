@@ -16,6 +16,7 @@ sleep 15
 
 echo "-------------- elastic 数据索引创建 ----------------"
 php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator > /dev/null 2>&1
+php artisan scout:import "App\Article" > /dev/null 2>&1
 echo "-------------- elastic 数据索引创建 done ------------"
 
 
