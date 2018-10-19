@@ -1,7 +1,7 @@
 version: "3"
 services:
   elasticsearch:
-    image: duccnzj/elastic:latest
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/elasticsearch_with_ik:6.4.2
     container_name: elasticsearch
     environment:
       - cluster.name=docker-cluster
@@ -15,7 +15,7 @@ services:
     networks:
       - appnet
   app:
-    image: duccnzj/app
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/app:latest
     working_dir: /var/www/html
     volumes:
       - ../.:/var/www/html
