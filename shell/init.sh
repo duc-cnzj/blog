@@ -5,7 +5,7 @@ cd ${DIR}
 
 [ -d vendor ] && echo "依赖已经存在" || (
     echo "----------------- 下载相关依赖 -------------"
-    composer install
+    composer install --no-suggest
     echo "----------------- 依赖下载完成 -------------"
 )
 
