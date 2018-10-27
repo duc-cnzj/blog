@@ -3,6 +3,7 @@
 一个花了两周左右时间完成的博客项目。
 
 [![Build Status](https://travis-ci.org/DuC-cnZj/blog.svg?branch=master)](https://travis-ci.org/DuC-cnZj/blog)
+![StyleCI build status](https://github.styleci.io/repos/152713623/shield) 
 
 ## Features
 
