@@ -15,5 +15,4 @@ before_install:
   - composer install
 
 script:
-  - cat database/factories/UserFactory.php
   - vendor/bin/phpunit
