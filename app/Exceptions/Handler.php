@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof Missing404Exception) {
             try {
                 Artisan::call('elastic:create-index', [
-                    'index-configurator' => 'App\\ES\\ArticleIndexConfigurator'
+                    'index-configurator' => 'App\\ES\\ArticleIndexConfigurator',
                 ]);
                 Artisan::call('refresh-scout:import', ['model'=>'App\\Article']);
                 info('重新创建索引成功');
@@ -69,9 +69,9 @@ class Handler extends ExceptionHandler
 
         return response()->json([
             'error' => [
-                'code' => $statusCode,
+                'code'    => $statusCode,
                 'message' => $exception->getMessage(),
-            ]
+            ],
         ], $statusCode);
     }
 
@@ -91,7 +91,7 @@ class Handler extends ExceptionHandler
                 'code'    => $exception->status,
                 'message' => $exception->getMessage(),
                 'errors'  => $result,
-            ]
+            ],
         ], $exception->status);
     }
 
@@ -118,5 +118,4 @@ class Handler extends ExceptionHandler
 
         return $result;
     }
-
 }

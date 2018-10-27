@@ -24,7 +24,7 @@ interface ArticleRepoImp
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(Array $ids);
+    public function getMany(array $ids);
 
     /**
      * 移除文章
