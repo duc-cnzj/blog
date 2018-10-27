@@ -44,8 +44,6 @@ class ArticleRepoCache implements ArticleRepoImp
     public function get(int $id)
     {
         return Cache::rememberForever($this->cacheKey($id), function () use ($id) {
-            info('从数据库获取文章id: ' . $id);
-
             return $this->article->get($id);
         });
     }
@@ -58,7 +56,6 @@ class ArticleRepoCache implements ArticleRepoImp
      */
     public function removeBy(int $id)
     {
-        info('移除缓存文章id: ' . $id);
         Cache::forget($this->cacheKey($id));
     }
 
