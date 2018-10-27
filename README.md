@@ -3,7 +3,12 @@
 一个花了两周左右时间完成的博客项目。
 
 [![Build Status](https://travis-ci.org/DuC-cnZj/blog.svg?branch=master)](https://travis-ci.org/DuC-cnZj/blog)
-![StyleCI build status](https://github.styleci.io/repos/152713623/shield) 
+![StyleCI build status](https://github.styleci.io/repos/152713623/shield)
+![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)
+![GitHub language count](https://img.shields.io/github/languages/count/badges/shields.svg)
+![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)
+
+
 
 ## Features
 
