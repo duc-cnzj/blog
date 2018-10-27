@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ConsoleMakeCommand extends GeneratorCommand
+class ModelMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
