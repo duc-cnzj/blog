@@ -30,7 +30,7 @@ services:
       - db
       - web
     environment:
-      BASH_NAMES: ./shell/init.sh,./shell/migrate.sh,./shell/test.sh
+      BASH_NAMES: ./shell/init.sh,./shell/migrate.sh
   redis:
     image: redis:alpine
     networks:
