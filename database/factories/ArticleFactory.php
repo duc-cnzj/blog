@@ -19,7 +19,13 @@ $factory->define(App\Article::class, function () {
 
     return [
         'author_id' => function () {
-            return app()->environment() === 'testing' ? factory(\App\User::class)->create()->id : 1;
+            return app()->environment() === 'testing'
+                ? factory(App\User::class)->create([
+                    'mobile'   => str_random(32),
+                    'avatar'   => 'test1234567',
+                    'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
+                ])->id
+                : 1;
         },
         'content' => json_encode([
             'html' => $content,

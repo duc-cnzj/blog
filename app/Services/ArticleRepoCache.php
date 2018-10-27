@@ -23,13 +23,13 @@ class ArticleRepoCache implements ArticleRepoImp
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return string
      *
      * @author duc <1025434218@qq.com>
      */
-    public function cacheKey($id)
+    public function cacheKey(int $id)
     {
         return 'article:' . $id;
     }
@@ -41,7 +41,7 @@ class ArticleRepoCache implements ArticleRepoImp
      *
      * @author duc <1025434218@qq.com>
      */
-    public function get($id)
+    public function get(int $id)
     {
         return Cache::rememberForever($this->cacheKey($id), function () use ($id) {
             info('从数据库获取文章id: ' . $id);
@@ -51,12 +51,12 @@ class ArticleRepoCache implements ArticleRepoImp
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @author duc <1025434218@qq.com>
      * @return mixed|void
      */
-    public function removeBy($id)
+    public function removeBy(int $id)
     {
         info('移除缓存文章id: ' . $id);
         Cache::forget($this->cacheKey($id));

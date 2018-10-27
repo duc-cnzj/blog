@@ -37,7 +37,7 @@ class ArticleRepo implements ArticleRepoImp
      * @author duc <1025434218@qq.com>
      * @return mixed|void
      */
-    public function removeBy($id)
+    public function removeBy(int $id)
     {
         // 没有缓存所以不需要 do anything
     }

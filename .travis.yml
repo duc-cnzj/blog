@@ -1,0 +1,19 @@
+language: php
+
+php:
+  # - 7.0
+  - 7.1
+  - 7.2
+
+git:
+  depth: 1
+
+services:
+  - redis-server
+
+before_install:
+  - composer install
+
+script:
+  - cat database/factories/UserFactory.php
+  - vendor/bin/phpunit
