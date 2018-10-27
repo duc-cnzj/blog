@@ -22,7 +22,7 @@ class ArticleTableSeeder extends Seeder
         factory(App\Category::class, $this->tagNums)->create();
         factory(App\Tag::class, $this->categoryNums)->create();
         factory(App\Article::class, $this->articleNums)->create([
-            'category_id' => random_int(1, $this->categoryNums)
+            'category_id' => random_int(1, $this->categoryNums),
         ])->each(function ($item) {
             $item->tags()->sync(
                 array_random(
