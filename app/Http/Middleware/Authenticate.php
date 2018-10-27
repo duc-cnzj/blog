@@ -38,9 +38,9 @@ class Authenticate
         if ($this->auth->guard($guard)->guest()) {
             return response([
                   'error' => [
-                    'code' => 401,
-                    'message' => 'Unauthorized.'
-                ]
+                    'code'    => 401,
+                    'message' => 'Unauthorized.',
+                ],
             ], 401);
         }
 
