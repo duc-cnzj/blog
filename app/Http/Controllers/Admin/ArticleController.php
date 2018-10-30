@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
+use Emojione\Client;
+use Emojione\Ruleset;
 use Illuminate\Http\Request;
 use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;
@@ -148,6 +150,10 @@ class ArticleController extends Controller
     private function dealRequest(Request $request): array
     {
         $content = $request->input('content');
+        $client = new Client(new Ruleset());
+        $client->ascii = true;
+        $content = $client->shortnameToImage($content);
+
         $parsedown = new \Parsedown();
 
         $mdContent = $parsedown->text($content);
