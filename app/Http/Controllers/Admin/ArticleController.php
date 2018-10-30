@@ -151,8 +151,7 @@ class ArticleController extends Controller
     {
         $content = $request->input('content');
         $client = new Client(new Ruleset());
-        $client->ascii = true;
-        $content = $client->shortnameToImage($content);
+        $content = $client->shortnameToUnicode($content);
 
         $parsedown = new \Parsedown();
 
