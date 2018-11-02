@@ -93,7 +93,7 @@ $router->get('/nav_links', function () {
     return [
         'data' => [
             ['title' => '首页', 'link' => '/'],
-            ['title' => '分类', 'link' => '/categories'],
+            // ['title' => '分类', 'link' => '/categories'],
             ['title' => '文章', 'link' => '/articles'],
         ],
     ];
