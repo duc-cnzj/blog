@@ -122,5 +122,10 @@ $router->post('/articles/{id}/comments', function ($id, Request $request) {
         'comment_id' => $request->comment_id ?? 0,
     ]);
 
-    return new CommentResource($comment);
+    return (new CommentResource($comment))
+        ->additional([
+            'data' => [
+                'replies' => [],
+            ]
+        ]);
 });
