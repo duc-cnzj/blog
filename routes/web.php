@@ -126,6 +126,6 @@ $router->post('/articles/{id}/comments', function ($id, Request $request) {
         ->additional([
             'data' => [
                 'replies' => [],
-            ]
+            ],
         ]);
 });
