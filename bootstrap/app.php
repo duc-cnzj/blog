@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Filesystem\FilesystemServiceProvider;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
@@ -29,8 +31,9 @@ $app->withEloquent();
 
 $app->configure('cors');
 $app->configure('scout');
+$app->configure('filesystems');
 $app->configure('scout_elastic');
-
+$app->configure('backup-manager');
 $app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
 
 /*
@@ -108,6 +111,8 @@ $app->register(Illuminate\Redis\RedisServiceProvider::class);
 // elasticSearch
 $app->register(Laravel\Scout\ScoutServiceProvider::class);
 $app->register(ScoutElastic\ScoutElasticServiceProvider::class);
+$app->register(BackupManager\Laravel\Lumen55ServiceProvider::class);
+$app->register(FilesystemServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

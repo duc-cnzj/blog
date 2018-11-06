@@ -20,6 +20,7 @@ services:
     volumes:
       - ../.:/var/www/html
       - ./default.conf:/etc/nginx/sites-available/default
+      - appdata:/usr/bin
     ports:
       - 8001:80
     networks:
