@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
             Storage::delete($olders); // 删除旧的备份文件
 
             $schedule->command("db:backup --database=mysql --destination=local --destinationPath=backups/ --timestamp='Y_m_d_H_i_s' --compression=gzip
-            ")->everyMinute();
+            ")->at('02:00');
 
             // 备份数据恢复
             // $lastDumpFile = array_last(Illuminate\Support\Facades\Storage::files('backups'));
