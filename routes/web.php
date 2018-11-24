@@ -57,7 +57,7 @@ $router->get('/search_articles', function (Request $request) {
 
 $router->get('/home_articles', function () {
     $articles = Article::with('category:id,name')
-        ->latest()
+        ->inRandomOrder()
         ->take(3)
         ->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
 
