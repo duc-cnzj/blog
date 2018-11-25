@@ -46,9 +46,10 @@ $router->get('/articles', function () {
 $router->get('/search_articles', function (Request $request) {
     $query = $request->query('q');
     if (! is_null($query)) {
-        $articles = Article::search($query)
-            ->rule(\App\ES\ArticleRule::class)
-            ->get()
+        $q = Article::search($query)
+            ->rule(\App\ES\ArticleRule::class);
+        $q->limit = 10000;
+        $articles = $q->get()
             ->load('author', 'tags', 'category');
 
         return ArticleResource::collection($articles);
