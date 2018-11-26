@@ -49,7 +49,8 @@ $router->get('/search_articles', function (Request $request) {
         $q = Article::search($query)
             ->rule(\App\ES\ArticleRule::class);
         $q->limit = 10000;
-        $articles = $q->get()
+        $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
+            ->get()
             ->load('author', 'tags', 'category');
 
         return ArticleResource::collection($articles);
