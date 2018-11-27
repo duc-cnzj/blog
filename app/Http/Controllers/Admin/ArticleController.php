@@ -114,7 +114,7 @@ class ArticleController extends Controller
     {
         Article::findOrFail($id)->delete();
         $repo->removeBy($id);
-        
+
         return response([], 204);
     }
 
