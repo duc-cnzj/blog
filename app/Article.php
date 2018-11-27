@@ -3,8 +3,8 @@
 namespace App;
 
 use App\ES\ArticleRule;
-use App\Events\ArticleCreated;
 use ScoutElastic\Searchable;
+use App\Events\ArticleCreated;
 use App\ES\ArticleIndexConfigurator;
 use Illuminate\Database\Eloquent\Model;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
