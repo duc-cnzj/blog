@@ -105,14 +105,16 @@ class ArticleController extends Controller
 
     /**
      * @param int $id
+     * @param ArticleRepoImp $repo
      *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @author duc <1025434218@qq.com>
      */
-    public function destroy(int $id)
+    public function destroy(int $id, ArticleRepoImp $repo)
     {
         Article::findOrFail($id)->delete();
-
+        $repo->removeBy($id);
+        
         return response([], 204);
     }
 
