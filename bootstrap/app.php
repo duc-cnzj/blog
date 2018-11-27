@@ -32,6 +32,7 @@ $app->withEloquent();
 $app->configure('cors');
 $app->configure('scout');
 $app->configure('filesystems');
+$app->configure('broadcasting');
 $app->configure('scout_elastic');
 $app->configure('backup-manager');
 $app->instance('path.config', app()->basePath() . DIRECTORY_SEPARATOR . 'config');
@@ -101,7 +102,7 @@ $app->routeMiddleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 $app->register(Laravel\Tinker\TinkerServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 // laravel-lang

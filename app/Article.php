@@ -3,6 +3,7 @@
 namespace App;
 
 use App\ES\ArticleRule;
+use App\Events\ArticleCreated;
 use ScoutElastic\Searchable;
 use App\ES\ArticleIndexConfigurator;
 use Illuminate\Database\Eloquent\Model;
@@ -91,6 +92,11 @@ class Article extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::created(function ($model) {
+            info('static::created', $model->toArray());
+            event(new ArticleCreated($model->makeHidden('content')->load('author')));
+        });
 
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
             if (! $model->shouldBeSearchable()) {
