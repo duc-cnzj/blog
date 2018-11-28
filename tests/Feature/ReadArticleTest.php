@@ -84,5 +84,8 @@ class ReadArticleTest extends TestCase
 
         $this->json('DELETE', "/admin/articles/{$article->id}")->seeStatusCode(204);
         $this->assertFalse(\Illuminate\Support\Facades\Cache::has("article:{$article->id}"));
+
+        $count = count((new Trending)->get());
+        $this->assertEquals(0, $count);
     }
 }

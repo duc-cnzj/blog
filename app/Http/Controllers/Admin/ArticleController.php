@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
+use App\Trending;
 use Emojione\Client;
 use Emojione\Ruleset;
 use Illuminate\Http\Request;
@@ -104,16 +105,19 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param int            $id
      * @param ArticleRepoImp $repo
+     *
+     * @param Trending       $trending
      *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @author duc <1025434218@qq.com>
      */
-    public function destroy(int $id, ArticleRepoImp $repo)
+    public function destroy(int $id, ArticleRepoImp $repo, Trending $trending)
     {
         Article::findOrFail($id)->delete();
         $repo->removeBy($id);
+        $trending->remove($id);
 
         return response([], 204);
     }
