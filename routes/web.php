@@ -21,8 +21,6 @@ use App\Http\Resources\CategoryResource;
 |
 */
 
-require_once __DIR__ . '/admin.php';
-
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });

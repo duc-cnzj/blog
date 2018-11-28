@@ -35,7 +35,7 @@ class ReadArticleTest extends TestCase
     /** @test */
     public function guest_can_see_single_article()
     {
-        $article = create(Article::class, ['title' => 'article 1']);
+        create(Article::class, ['title' => 'article 1']);
         create(Article::class, ['title' => 'article 2']);
 
         DB::enableQueryLog();
@@ -48,8 +48,41 @@ class ReadArticleTest extends TestCase
         DB::flushQueryLog();
 
         DB::enableQueryLog();
-        $r = $this->json('GET', '/articles/1');
+        $this->json('GET', '/articles/1')->seeStatusCode(200);
         DB::disableQueryLog();
         $this->assertEquals(0, count(DB::getQueryLog()));
+    }
+
+    /** @test */
+    public function after_article_created_it_will_broadcast_everyone()
+    {
+        $this->expectsEvents(\App\Events\ArticleCreated::class);
+
+        $this->actingAs(create(\App\User::class), 'api');
+
+        $article = make(Article::class, ['title' => 'test', 'content' => 'content']);
+        $tag = create(\App\Tag::class);
+        $category = create(\App\Category::class);
+
+        $this->json('POST', '/admin/articles', array_merge($article->toArray(), [
+            'tags'     => [$tag->name],
+            'category' => $category->name,
+        ]))->seeStatusCode(201);
+
+        $this->seeInDatabase('articles', ['title' => 'test']);
+        $this->assertEquals(1, Article::count());
+    }
+
+    /** @test */
+    public function after_article_deleted_cache_also_deleted()
+    {
+        $this->actingAs(create(\App\User::class), 'api');
+        $article = create(Article::class);
+
+        $this->json('GET', "/articles/{$article->id}")->seeStatusCode(200);
+        $this->assertTrue(\Illuminate\Support\Facades\Cache::has("article:{$article->id}"));
+
+        $this->json('DELETE', "/admin/articles/{$article->id}")->seeStatusCode(204);
+        $this->assertFalse(\Illuminate\Support\Facades\Cache::has("article:{$article->id}"));
     }
 }
