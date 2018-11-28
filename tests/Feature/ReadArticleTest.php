@@ -58,7 +58,7 @@ class ReadArticleTest extends TestCase
     {
         $this->expectsEvents(\App\Events\ArticleCreated::class);
 
-        $this->actingAs(create(\App\User::class), 'api');
+        $this->signIn();
 
         $article = make(Article::class, ['title' => 'test', 'content' => 'content']);
         $tag = create(\App\Tag::class);
@@ -76,7 +76,7 @@ class ReadArticleTest extends TestCase
     /** @test */
     public function after_article_deleted_cache_also_deleted()
     {
-        $this->actingAs(create(\App\User::class), 'api');
+        $this->signIn();
         $article = create(Article::class);
 
         $this->json('GET', "/articles/{$article->id}")->seeStatusCode(200);
