@@ -11,9 +11,14 @@ class Trending
         return Redis::zrevrange($this->cacheKey(), 0, 12);
     }
 
-    public function push($article)
+    public function push($article): int
     {
-        Redis::zincrby($this->cacheKey(), 1, $article->id);
+        return Redis::zincrby($this->cacheKey(), 1, $article->id);
+    }
+
+    public function remove(int $id): int
+    {
+        return Redis::zrem($this->cacheKey(), $id);
     }
 
     public function cacheKey(): string
@@ -21,8 +26,8 @@ class Trending
         return 'trending_articles';
     }
 
-    public function reset()
+    public function reset(): int
     {
-        Redis::del($this->cacheKey());
+        return Redis::del($this->cacheKey());
     }
 }
