@@ -92,4 +92,25 @@ class AuthController extends Controller
             'expires_in'   => \Auth::factory()->getTTL() * 60,
         ]);
     }
+
+    public function updateInfo(Request $request)
+    {
+        info('更新用户信息，user_id：' . \Auth::id());
+        if ($request->has('avatar')) {
+            $image = $request->file('avatar');
+            $folder = base_path('public/images');
+            $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
+
+            $image->move($folder, $filename);
+            $attributes = ['avatar' => (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename)];
+        } else {
+            $attributes = $request->only('bio', 'email');
+        }
+
+        \Auth::user()->update($attributes);
+
+        return response()->json([
+            'data' => new UserResource(\Auth::user())
+        ], 201);
+    }
 }
