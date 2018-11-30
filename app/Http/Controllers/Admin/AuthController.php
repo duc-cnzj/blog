@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -21,6 +21,8 @@ class AuthController extends Controller
 
     /**
      * Get a JWT via given credentials.
+     *
+     * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -93,24 +95,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function updateInfo(Request $request)
+    public function updateInfo(Request $request, ArticleRepoImp $imp)
     {
         info('更新用户信息，user_id：' . \Auth::id());
+        $attributes = $request->only('bio', 'email');
+
         if ($request->has('avatar')) {
-            $image = $request->file('avatar');
+            $image = $request->avatar;
             $folder = base_path('public/images');
             $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
 
-            $image->move($folder, $filename);
-            $attributes = ['avatar' => (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename)];
-        } else {
-            $attributes = $request->only('bio', 'email');
+            if (app()->environment() !== 'testing') {
+                $image->move($folder, $filename);
+            }
+
+            $attributes['avatar'] = (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename);
         }
 
-        \Auth::user()->update($attributes);
+        $user = \Auth::user();
+        $user->update($attributes);
+
+        // reset articles cache
+        $imp->resetArticleCacheByUser($user);
 
         return response()->json([
-            'data' => new UserResource(\Auth::user())
+            'data' => new UserResource(\Auth::user()),
         ], 201);
     }
 }

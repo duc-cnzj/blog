@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\User;
 use App\Article;
 use App\Contracts\ArticleRepoImp;
 
@@ -22,13 +23,13 @@ class ArticleRepo implements ArticleRepoImp
     /**
      * @param array $ids
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return array
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids)
+    public function getMany(array $ids): array
     {
-        return Article::with('category', 'tags', 'author')->findMany($ids);
+        return Article::with('category', 'tags', 'author')->findMany($ids)->toArray();
     }
 
     /**
@@ -40,5 +41,14 @@ class ArticleRepo implements ArticleRepoImp
     public function removeBy(int $id)
     {
         // 没有缓存所以不需要 do anything
+    }
+
+    /**
+     * @param User $user
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function resetArticleCacheByUser(User $user): void
+    {
     }
 }

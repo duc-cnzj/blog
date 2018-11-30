@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\ArticleRepoImp;
+use App\User;
 use Illuminate\Support\Facades\Cache;
 
 class ArticleRepoCache implements ArticleRepoImp
@@ -72,7 +73,7 @@ class ArticleRepoCache implements ArticleRepoImp
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids)
+    public function getMany(array $ids): array
     {
         $arr = [];
         if ($ids) {
@@ -82,5 +83,14 @@ class ArticleRepoCache implements ArticleRepoImp
         }
 
         return $arr;
+    }
+
+    public function resetArticleCacheByUser(User $user)
+    {
+        $articleIds = $user->articles()->pluck('id');
+
+        foreach ($articleIds as $id) {
+            $this->removeBy($id);
+        }
     }
 }

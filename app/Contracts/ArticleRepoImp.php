@@ -2,6 +2,9 @@
 
 namespace App\Contracts;
 
+use App\User;
+use Illuminate\Database\Eloquent\Model;
+
 interface ArticleRepoImp
 {
     /**
@@ -9,7 +12,7 @@ interface ArticleRepoImp
      *
      * @param $id
      *
-     * @return mixed
+     * @return Model
      *
      * @author duc <1025434218@qq.com>
      */
@@ -20,11 +23,11 @@ interface ArticleRepoImp
      *
      * @param array $ids
      *
-     * @return mixed
+     * @return array
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids);
+    public function getMany(array $ids): array;
 
     /**
      * 移除文章
@@ -36,4 +39,13 @@ interface ArticleRepoImp
      * @author duc <1025434218@qq.com>
      */
     public function removeBy(int $id);
+
+    /**
+     * @param User $user
+     *
+     * @return void
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function resetArticleCacheByUser(User $user);
 }
