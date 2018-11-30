@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Contracts\ArticleRepoImp;
 use App\User;
+use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\Cache;
 
 class ArticleRepoCache implements ArticleRepoImp
