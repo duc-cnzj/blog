@@ -110,7 +110,7 @@ class AuthController extends Controller
         \Auth::user()->update($attributes);
 
         return response()->json([
-            'data' => new UserResource(\Auth::user())
+            'data' => new UserResource(\Auth::user()),
         ], 201);
     }
 }
