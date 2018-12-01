@@ -25,7 +25,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $articles = Article::with('category', 'tags')
-            ->whole(!! $request->all)
+            ->whole(! ! $request->all)
             ->latest()
             ->select('id', 'title', 'created_at', 'updated_at', 'category_id')
             ->paginate($request->page_size ?? 10);
@@ -193,11 +193,13 @@ class ArticleController extends Controller
                 ->rule(\App\ES\ArticleRule::class);
             $q->limit = 10000;
             $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
-                ->when(\Auth::user()->isAdmin() && !! $request->all, function ($q) {
+                ->when(\Auth::user()->isAdmin() && ! ! $request->all, function ($q) {
                     info('amdin search all');
+
                     return $q;
                 }, function ($q) {
                     info('amdin search not all');
+
                     return $q->where('author.id', \Auth::id());
                 })
                 ->get()
