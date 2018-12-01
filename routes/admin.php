@@ -21,6 +21,8 @@ $router->group([
 
     $router->get('/articles', 'ArticleController@index');
 
+    $router->get('/search_articles', 'ArticleController@search');
+
     $router->get('/articles/{id}', 'ArticleController@show');
 
     $router->post('/articles', 'ArticleController@store');

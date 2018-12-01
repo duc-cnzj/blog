@@ -43,6 +43,7 @@ $router->get('/articles', function () {
 
 $router->get('/search_articles', function (Request $request) {
     $query = $request->query('q');
+
     if (! is_null($query)) {
         $q = Article::search($query)
             ->rule(\App\ES\ArticleRule::class);
@@ -52,6 +53,8 @@ $router->get('/search_articles', function (Request $request) {
             ->load('author', 'tags', 'category');
 
         return ArticleResource::collection($articles);
+    } else {
+        return ArticleResource::collection([]);
     }
 });
 

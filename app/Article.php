@@ -32,7 +32,7 @@ class Article extends Model
         'properties' => [
             'author'           => [
                 'properties' => [
-                    'id'   => ['type' => 'integer'],
+                    'id'   => ['type' => 'keyword'],
                     'name' => [
                         'type'            => 'text',
                         'analyzer'        => 'ik_max_word',
@@ -42,7 +42,7 @@ class Article extends Model
             ],
             'article_category' => [
                 'properties' => [
-                    'id'   => ['type' => 'integer'],
+                    'id'   => ['type' => 'keyword'],
                     'name' => [
                         'type'            => 'text',
                         'analyzer'        => 'ik_max_word',
@@ -138,6 +138,15 @@ class Article extends Model
         return $result;
     }
 
+    public function scopeWhole($q, $all)
+    {
+        if (\Auth::user()->isAdmin() && $all) {
+            return $q;
+        } else {
+            return $q->where('author_id', \Auth::id());
+        }
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      *
@@ -169,7 +178,7 @@ class Article extends Model
     }
 
     /**
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      * @author duc <1025434218@qq.com>
      */

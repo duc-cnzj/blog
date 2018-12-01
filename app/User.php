@@ -36,6 +36,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Article::class, 'author_id');
     }
 
+    public function isAdmin()
+    {
+        return true;
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
