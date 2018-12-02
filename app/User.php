@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\URL;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-         'name', 'email', 'avatar', 'mobile', 'bio', 'password'
+         'name', 'email', 'avatar', 'mobile', 'bio', 'password',
      ];
 
     /**
