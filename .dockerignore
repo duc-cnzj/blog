@@ -4,5 +4,6 @@ docker-compose.yml
 .git
 .gitignore
 run
+shell
 .env
 /vendor
