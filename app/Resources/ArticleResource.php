@@ -14,6 +14,10 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
+        if (is_array($this->resource)) {
+            return $this->resource;
+        }
+
         return [
             'id'     => $this->id,
             'author' => $this->whenLoaded('author', function () {

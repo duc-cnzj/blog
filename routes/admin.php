@@ -15,6 +15,8 @@ $router->group([
     'middleware' => 'auth',
     'namespace'  => 'Admin',
 ], function ($router) {
+    $router->post('/users', 'UserController@store');
+
     $router->post('/update_info', 'AuthController@updateInfo');
 
     $router->post('/images', 'ImageController@store');
