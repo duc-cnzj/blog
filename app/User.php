@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -19,7 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-         'name', 'email', 'avatar', 'mobile', 'bio',
+         'name', 'email', 'avatar', 'mobile', 'bio', 'password'
      ];
 
     /**
@@ -39,6 +41,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function isAdmin()
     {
         return true;
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        return is_null($value) ? URL::asset('blog/default-avatar.png') : $value;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
     }
 
     /**
