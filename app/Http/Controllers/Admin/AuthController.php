@@ -100,7 +100,7 @@ class AuthController extends Controller
     public function updateInfo(Request $request, ArticleRepoImp $imp)
     {
         info('更新用户信息，user_id：' . \Auth::id());
-        $attributes = $request->only('bio', 'email');
+        $attributes = $request->only('bio', 'email', 'name');
 
         if ($request->has('avatar')) {
             $image = $request->avatar;
