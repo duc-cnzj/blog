@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
-use App\Trending;
 use Emojione\Client;
 use Emojione\Ruleset;
 use Illuminate\Http\Request;
