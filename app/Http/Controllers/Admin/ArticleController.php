@@ -88,7 +88,6 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
 
         $article->update([
-            'author_id'   => \Auth::id(),
             'head_image'  => $request->head_image,
             'title'       => $request->title,
             'desc'        => $request->desc,
