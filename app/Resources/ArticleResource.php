@@ -44,7 +44,7 @@ class ArticleResource extends JsonResource
                 return $this->getRecommendArticles();
             }),
             'created_at'        => $this->created_at->diffForHumans(),
-            'highlight'         => $this->when($request->path() === 'search_articles', $this->highlight_content),
+            'highlight'         => $this->when(str_contains($request->path(),'search_articles'), $this->highlight_content),
         ];
     }
 }

@@ -76,7 +76,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(\Auth::refresh());
     }
 
     /**
@@ -93,6 +93,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type'   => 'bearer',
                 'expires_in'   => \Auth::factory()->getTTL() * 60,
+                'refresh_ttl'   => \Auth::blacklist()->getRefreshTTL() * 60,
             ],
         ]);
     }
