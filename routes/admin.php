@@ -15,6 +15,10 @@ $router->group([
     'middleware' => 'auth',
     'namespace'  => 'Admin',
 ], function ($router) {
+    $router->get('/users', 'UserController@index');
+
+    $router->delete('/users/{user}', 'UserController@destroy');
+
     $router->post('/users', 'UserController@store');
 
     $router->post('/update_info', 'AuthController@updateInfo');

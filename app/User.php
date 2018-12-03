@@ -40,7 +40,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function isAdmin()
     {
-        return true;
+        return $this->id === 1;
     }
 
     public function getAvatarAttribute($value)
