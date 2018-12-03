@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Contracts\ArticleRepoImp;
 use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\Events\ArticleCreated;
@@ -96,6 +97,11 @@ class Article extends Model
         static::created(function ($model) {
             info('static::created', $model->toArray());
             event(new ArticleCreated($model->makeHidden('content')->load('author')));
+        });
+
+        static::deleted(function ($model) {
+            app(ArticleRepoImp::class)->removeBy($model->id);
+            app(Trending::class)->remove($model->id);
         });
 
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {

@@ -105,19 +105,19 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param int            $id
-     * @param ArticleRepoImp $repo
+     * @param int $id
      *
-     * @param Trending       $trending
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      *
-     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @author duc <1025434218@qq.com>
      */
-    public function destroy(int $id, ArticleRepoImp $repo, Trending $trending)
+    public function destroy(int $id)
     {
+        if (\Auth::id() !== $id) {
+            return $this->fail('这篇文章不是你的，不能删除', 403);
+        }
+
         Article::findOrFail($id)->delete();
-        $repo->removeBy($id);
-        $trending->remove($id);
 
         return response([], 204);
     }
