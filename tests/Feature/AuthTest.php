@@ -38,7 +38,7 @@ class AuthTest extends TestCase
         $this->assertEquals($user->fresh()->bio, $newBio);
         $this->assertNotEquals($user->fresh()->bio, 'blabla...');
 
-        $newEmail = 'b.com';
+        $newEmail = '1025434218@qq.com';
         $this->json('POST', '/admin/update_info', [
             'email' => $newEmail,
         ])->seeStatusCode(201);
@@ -48,15 +48,15 @@ class AuthTest extends TestCase
         $this->json('POST', '/admin/update_info', [
             'name' => $newName,
         ])->seeStatusCode(201);
-        $this->assertNotEquals($user->fresh()->name, $newName);
-        $this->assertEquals($user->fresh()->name, 'duc');
+        $this->assertEquals($user->fresh()->name, $newName);
+        $this->assertNotEquals($user->fresh()->name, 'duc');
 
         $this->post('/admin/update_info', [
-            'email'  => 'da',
+            'email'  => '1025434218@qq.com',
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ]);
 
-        $this->assertEquals($user->fresh()->email, 'da');
+        $this->assertEquals($user->fresh()->email, '1025434218@qq.com');
         $this->assertNotEquals($user->fresh()->avatar, 'http://example.com/avatar.png');
     }
 
@@ -87,7 +87,7 @@ class AuthTest extends TestCase
         $this->assertEquals(0, count(DB::getQueryLog()));
 
         $this->post('/admin/update_info', [
-            'email'  => 'da',
+            'email'  => '1025434218@qq.com',
             'avatar' => UploadedFile::fake()->image('avatar.jpg'),
         ])->seeStatusCode(201);
 
@@ -95,7 +95,7 @@ class AuthTest extends TestCase
         app(ArticleRepoImp::class)->getMany(range(1, 10));
         DB::disableQueryLog();
         $this->assertNotEquals(0, count(DB::getQueryLog()));
-        $this->assertEquals($user->fresh()->email, 'da');
+        $this->assertEquals($user->fresh()->email, '1025434218@qq.com');
         $this->assertNotEquals($user->fresh()->avatar, 'http://example.com/avatar.png');
     }
 }
