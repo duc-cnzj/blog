@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
-use App\Trending;
 use Emojione\Client;
 use Emojione\Ruleset;
 use Illuminate\Http\Request;
@@ -113,7 +112,7 @@ class ArticleController extends Controller
      */
     public function destroy(int $id)
     {
-        if (\Auth::id() !== $id) {
+        if (\Auth::id() !== $id && ! \Auth::user()->isAdmin()) {
             return $this->fail('这篇文章不是你的，不能删除', 403);
         }
 
@@ -176,7 +175,8 @@ class ArticleController extends Controller
             ],
             [
             'user_id' => \Auth::id(),
-        ]);
+        ]
+        );
 
         $tagNames = $request->tags; // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);

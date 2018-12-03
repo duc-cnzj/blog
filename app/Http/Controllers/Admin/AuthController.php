@@ -93,7 +93,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type'   => 'bearer',
                 'expires_in'   => \Auth::factory()->getTTL() * 60,
-                'refresh_ttl'   => \Auth::blacklist()->getRefreshTTL() * 60,
+                'refresh_ttl'  => \Auth::blacklist()->getRefreshTTL() * 60,
             ],
         ]);
     }
@@ -101,6 +101,13 @@ class AuthController extends Controller
     public function updateInfo(Request $request, ArticleRepoImp $imp)
     {
         info('更新用户信息，user_id：' . \Auth::id());
+        $this->validate($request, [
+            'avatar' => 'image',
+            'bio'    => 'string',
+            'email'  => 'email',
+            'name'   => 'string|max:20',
+        ]);
+
         $attributes = $request->only('bio', 'email', 'name');
 
         if ($request->has('avatar')) {
