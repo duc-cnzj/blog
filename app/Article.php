@@ -2,10 +2,10 @@
 
 namespace App;
 
-use App\Contracts\ArticleRepoImp;
 use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\Events\ArticleCreated;
+use App\Contracts\ArticleRepoImp;
 use App\ES\ArticleIndexConfigurator;
 use Illuminate\Database\Eloquent\Model;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
