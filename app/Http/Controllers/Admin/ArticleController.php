@@ -116,7 +116,7 @@ class ArticleController extends Controller
     public function destroy(int $id)
     {
         if (\Auth::id() !== $id && ! \Auth::user()->isAdmin()) {
-            return $this->fail('这篇文章不是你的，不能删除', 403);
+            return $this->fail('这篇文章不是你的，不能删除！', 403);
         }
 
         Article::findOrFail($id)->delete();

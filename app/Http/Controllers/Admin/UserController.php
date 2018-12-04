@@ -46,11 +46,31 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
+    public function update(int $id, Request $request)
+    {
+        $this->validate($request, [
+            'name'     => 'string',
+            'email'    => ['string', Rule::unique('users')->ignore($id)],
+            'bio'      => 'string',
+        ]);
+
+        if (! \Auth::user()->isAdmin() && $id !== \Auth::id()) {
+            abort(403, '你没有权限修改其他用户资料！');
+        }
+
+        $user = User::findOrFail($id);
+
+        $user->update($request->only('name', 'email', 'bio'));
+
+        return response([], 204);
+    }
+
     public function destroy(int $id)
     {
         if ($id === 1) {
             return $this->fail('超级管理员不能删除', 403);
         }
+
         if (\Auth::user()->isAdmin()) {
             User::findOrFail($id)->delete();
 
