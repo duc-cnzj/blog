@@ -44,7 +44,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         });
     }
 
-
     public function articles()
     {
         return $this->hasMany(Article::class, 'author_id');
