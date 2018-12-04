@@ -23,8 +23,8 @@ class UserResource extends JsonResource
             'mobile'     => $this->mobile,
             'avatar'     => $this->avatar,
             'bio'        => $this->bio,
-            'created_at' => $this->created_at->diffForHumans(),
-            'updated_at' => $this->updated_at->diffForHumans(),
+            'created_at' => optional($this->created_at)->diffForHumans(),
+            'updated_at' => optional($this->updated_at)->diffForHumans(),
         ];
     }
 }

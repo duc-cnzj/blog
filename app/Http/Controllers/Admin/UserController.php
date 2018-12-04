@@ -46,6 +46,11 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
+    public function show(int $id)
+    {
+        return new UserResource(User::findOrFail($id, ['id', 'name', 'email', 'avatar', 'bio']));
+    }
+
     public function update(int $id, Request $request)
     {
         $this->validate($request, [
@@ -54,13 +59,11 @@ class UserController extends Controller
             'bio'      => 'string',
         ]);
 
-        if (! \Auth::user()->isAdmin() && $id !== \Auth::id()) {
+        if (! \Auth::user()->isAdmin() && $id!== \Auth::id()) {
             abort(403, '你没有权限修改其他用户资料！');
         }
 
-        $user = User::findOrFail($id);
-
-        $user->update($request->only('name', 'email', 'bio'));
+        User::findOrFail($id)->update($request->only('name', 'email', 'bio'));
 
         return response([], 204);
     }
