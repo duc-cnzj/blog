@@ -146,7 +146,7 @@ class Article extends Model
 
     public function scopeWhole($q, $all)
     {
-        if (\Auth::user()->isAdmin() && $all) {
+        if ($all) {
             return $q;
         } else {
             return $q->where('author_id', \Auth::id());
