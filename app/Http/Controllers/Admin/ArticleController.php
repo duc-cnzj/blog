@@ -87,6 +87,10 @@ class ArticleController extends Controller
         /** @var Article $article */
         $article = Article::findOrFail($id);
 
+        if (! \Auth::user()->isAdmin() && $article->author_id !== \Auth::id()) {
+            abort(403, '你没有权限修改此文章！');
+        }
+
         $article->update([
             'author_id'   => \Auth::id(),
             'head_image'  => $request->head_image,
@@ -193,7 +197,7 @@ class ArticleController extends Controller
                 ->rule(\App\ES\ArticleRule::class);
             $q->limit = 10000;
             $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
-                ->when(\Auth::user()->isAdmin() && ! ! $request->all, function ($q) {
+                ->when(! ! $request->all, function ($q) {
                     info('amdin search all');
 
                     return $q;
