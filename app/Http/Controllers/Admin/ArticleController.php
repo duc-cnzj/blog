@@ -178,8 +178,7 @@ class ArticleController extends Controller
             ],
             [
             'user_id' => \Auth::id(),
-        ]
-        );
+        ]);
 
         $tagNames = $request->tags; // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);

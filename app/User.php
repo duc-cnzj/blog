@@ -33,9 +33,31 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($user) {
+            $user->articles->each->delete();
+            $user->categories->each->update(['user_id' => 0]);
+            $user->tags->each->update(['user_id' => 0]);
+        });
+    }
+
+
     public function articles()
     {
         return $this->hasMany(Article::class, 'author_id');
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 
     public function isAdmin()

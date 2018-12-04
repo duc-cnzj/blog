@@ -55,7 +55,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name'     => 'string',
-            'email'    => ['string', Rule::unique('users')->ignore($id)],
+            'email'    => ['email', Rule::unique('users')->ignore($id)],
             'bio'      => 'string',
         ]);
 
