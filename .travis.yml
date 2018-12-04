@@ -13,6 +13,7 @@ services:
 
 before_install:
   - composer install
+  - php artisan cache:clear
 
 script:
   - vendor/bin/phpunit
