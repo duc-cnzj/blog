@@ -63,6 +63,10 @@ class Handler extends ExceptionHandler
             }
         }
 
+        if ($exception instanceof HttpException) {
+            return $this->formatHttpException($exception);
+        }
+
         if ($exception instanceof ValidationException) {
             return $this->invalidJson($request, $exception);
         }
@@ -117,5 +121,22 @@ class Handler extends ExceptionHandler
         }
 
         return $result;
+    }
+
+    /**
+     * @param HttpException $exception
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    protected function formatHttpException(HttpException $exception)
+    {
+        return response()->json([
+            'error' => [
+                'code'    => $exception->getStatusCode(),
+                'message' => $exception->getMessage(),
+            ],
+        ], $exception->getStatusCode());
     }
 }

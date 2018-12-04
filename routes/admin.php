@@ -17,6 +17,8 @@ $router->group([
 ], function ($router) {
     $router->get('/users', 'UserController@index');
 
+    $router->put('/users/{user}', 'UserController@update');
+
     $router->delete('/users/{user}', 'UserController@destroy');
 
     $router->post('/users', 'UserController@store');
