@@ -10,7 +10,7 @@ class UserFeatureTest extends TestCase
     public function only_admin_can_update_other_user_profile()
     {
         $user = $this->signIn(['name'=>'admin']);
-        $user2 = create(\App\User::class, [
+        $user2 = $this->newTestUser([
             'name'  => 'user2',
             'email' => '2@q.com',
         ]);
