@@ -11,17 +11,17 @@ class UserFeatureTest extends TestCase
     {
         $user = $this->signIn(['name'=>'admin']);
         $user2 = create(\App\User::class, [
-            'name' => 'user2',
+            'name'  => 'user2',
             'email' => '2@q.com',
         ]);
 
         $this->json('PUT', "/admin/users/{$user2->id}", [
-           'name' => 'user3',
+           'name'  => 'user3',
            'email' => '1234..', // fail
         ])->seeStatusCode(422);
 
         $this->json('PUT', "/admin/users/{$user2->id}", [
-           'name' => 'user3',
+           'name'  => 'user3',
            'email' => '7@q.com', // fail
         ])->seeStatusCode(204);
         $this->assertEquals('user3', $user2->fresh()->name);
