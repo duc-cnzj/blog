@@ -38,8 +38,8 @@ class UserFeatureTest extends TestCase
     public function only_admin_can_delete_any_user_except_admin()
     {
         $user = $this->signIn();
-        $user2 = create(\App\User::class);
-        $user3 = create(\App\User::class);
+        $user2 = $this->newTestUser();
+        $user3 = $this->newTestUser();
         $this->assertEquals(3, \App\User::count());
         $this->json('DELETE', "/admin/users/{$user->id}")
             ->seeStatusCode(403)
@@ -56,7 +56,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_articles_also_deleted()
     {
-        $user = create(\App\User::class);
+        $user = $this->newTestUser();
         create(\App\Article::class, ['author_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->articles()->count());
@@ -67,7 +67,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_categories_set_zero()
     {
-        $user = create(\App\User::class);
+        $user = $this->newTestUser();
         create(\App\Category::class, ['user_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->categories()->count());
@@ -78,7 +78,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_tags_set_zero()
     {
-        $user = create(\App\User::class);
+        $user = $this->newTestUser();
         create(\App\Tag::class, ['user_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->tags()->count());
