@@ -59,7 +59,7 @@ class UserController extends Controller
             'bio'      => 'string',
         ]);
 
-        if (! \Auth::user()->isAdmin() && $id!== \Auth::id()) {
+        if (! \Auth::user()->isAdmin() && $id !== \Auth::id()) {
             abort(403, '你没有权限修改其他用户资料！');
         }
 
