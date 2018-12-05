@@ -102,6 +102,7 @@ class Article extends Model
         static::deleted(function ($model) {
             app(ArticleRepoImp::class)->removeBy($model->id);
             app(Trending::class)->remove($model->id);
+            $model->comments->each->delete();
         });
 
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
