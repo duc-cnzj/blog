@@ -19,9 +19,24 @@ class CommentResource extends JsonResource
             'body'       => $this->content,
             'comment_id' => $this->comment_id,
             'created_at' => $this->created_at->diffForHumans(),
-            'author'     => [
-                'name' => $this->visitor,
-            ],
+            'author'     => $this->whenLoaded('user', function () {
+                if (is_null($this->user->id)) {
+                    $data = [
+                        'name' => $this->visitor,
+                        'avatar' => '',
+                    ];
+                } else {
+                    $data = [
+                        'name' => $this->user->name,
+                        'avatar' => $this->user->avatar,
+                    ];
+                }
+
+                return $data;
+            }),
+            'article' => $this->whenLoaded('article', function () {
+                return new ArticleResource($this->article);
+            }),
         ];
     }
 }

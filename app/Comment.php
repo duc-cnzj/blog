@@ -11,6 +11,8 @@ class Comment extends Model
      */
     protected $guarded = [];
 
+    protected $with = ['user'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      *
@@ -19,6 +21,11 @@ class Comment extends Model
     public function article()
     {
         return $this->belongsTo(Article::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withDefault();
     }
 
     /**
