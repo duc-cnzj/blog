@@ -15,6 +15,12 @@ $router->group([
     'middleware' => 'auth',
     'namespace'  => 'Admin',
 ], function ($router) {
+    $router->get('/comments/{id}', 'CommentController@show');
+
+    $router->get('/comments', 'CommentController@index');
+
+    $router->post('/articles/{articleId}/comments', 'CommentController@store');
+
     $router->get('/users', 'UserController@index');
 
     $router->get('/users/{id}', 'UserController@show');

@@ -104,7 +104,7 @@ $router->get('/nav_links', function () {
 
 $router->get('/articles/{id}/comments', function ($id, Request $request) {
     $comments = Comment::where('article_id', $id)
-        ->get(['visitor', 'content', 'comment_id', 'created_at', 'id']);
+        ->get(['visitor', 'content', 'comment_id', 'created_at', 'id', 'user_id']);
 
     return response([
         'data' => array_reverse(
@@ -119,13 +119,15 @@ $router->post('/articles/{id}/comments', function ($id, Request $request) {
     $parsedown = new \Parsedown();
     $htmlContent = $parsedown->text($content);
 
+    /** @var Article $article */
     $comment = $article->comments()->create([
         'visitor'    => $request->ip(),
         'content'    => $htmlContent,
-        'comment_id' => $request->comment_id ?? 0,
+        'comment_id' => $request->input('comment_id', 0),
+        'user_id'    => \Auth::hasUser() ? \Auth::id() : 0,
     ]);
 
-    return (new CommentResource($comment))
+    return (new CommentResource($comment->load('user')))
         ->additional([
             'data' => [
                 'replies' => [],

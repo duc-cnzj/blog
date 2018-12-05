@@ -43,7 +43,7 @@ class ArticleResource extends JsonResource
             'recommendArticles' => $this->when($request->path() === 'home_articles', function () {
                 return $this->getRecommendArticles();
             }),
-            'created_at'        => $this->created_at->diffForHumans(),
+            'created_at'        => optional($this->created_at)->diffForHumans(),
             'highlight'         => $this->when(str_contains($request->path(), 'search_articles'), $this->highlight_content),
         ];
     }
