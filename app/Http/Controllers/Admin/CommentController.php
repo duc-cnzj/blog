@@ -53,8 +53,8 @@ class CommentController extends Controller
 
         return (new CommentResource($comment))->additional([
             'data' => [
-                'my_comments' => $userComments
-            ]
+                'my_comments' => $userComments,
+            ],
         ]);
     }
 }
