@@ -90,6 +90,21 @@ class ReadArticleTest extends TestCase
     }
 
     /** @test */
+    public function after_article_deleted_comments_also_deleted()
+    {
+        $this->signIn();
+        $article = create(Article::class);
+
+        $this->json('GET', "/articles/{$article->id}")->seeStatusCode(200);
+        $this->post("/articles/{$article->id}/comments", [
+            'content' => 'leave a reply.',
+        ])->seeStatusCode(201);
+        $this->assertEquals(1, $article->comments->count());
+        $article->delete();
+        $this->assertEquals(0, \App\Comment::where('article_id', $article->id)->count());
+    }
+
+    /** @test */
     public function guest_can_leave_comments()
     {
         $article = create(Article::class);
