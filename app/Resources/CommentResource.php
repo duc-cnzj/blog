@@ -22,12 +22,12 @@ class CommentResource extends JsonResource
             'author'     => $this->whenLoaded('user', function () {
                 if (is_null($this->user->id)) {
                     $data = [
-                        'name' => $this->visitor,
+                        'name'   => $this->visitor,
                         'avatar' => '',
                     ];
                 } else {
                     $data = [
-                        'name' => $this->user->name,
+                        'name'   => $this->user->name,
                         'avatar' => $this->user->avatar,
                     ];
                 }

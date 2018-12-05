@@ -98,7 +98,7 @@ class ReadArticleTest extends TestCase
         ]);
         $res->seeStatusCode(201);
         $res->seeJsonContains([
-           'avatar' => ''
+           'avatar' => '',
         ]);
 
         $this->assertEquals(1, $article->comments->count());
@@ -130,7 +130,7 @@ class ReadArticleTest extends TestCase
         ]);
         $res->seeStatusCode(201);
         $res->seeJsonContains([
-           'name' => $user->name,
+           'name'   => $user->name,
            'avatar' => $user->avatar,
         ]);
 
