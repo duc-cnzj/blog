@@ -236,17 +236,17 @@ class ReadArticleTest extends TestCase
     public function article_should_apply_rule()
     {
         // <h1>dadsaa↵</h1>
-        $doc = "duc dadsaa↵↵ duc1 123456u";
+        $doc = 'duc dadsaa↵↵ duc1 123456u';
 
         $user = $this->signIn();
 
         create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
             'express' => '^duc',
-            'replace' => '#'
+            'replace' => '#',
         ]]);
         create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
             'express' => 'duc1',
-            'replace' => '##'
+            'replace' => '##',
         ]]);
 
         $res = $this->post('/admin/articles', [

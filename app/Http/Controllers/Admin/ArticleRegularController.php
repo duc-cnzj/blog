@@ -57,7 +57,7 @@ class ArticleRegularController extends Controller
         $rule = ArticleRegular::findOrFail($request->input('id'));
 
         $rule->update([
-            'status' => !$rule->status
+            'status' => ! $rule->status,
         ]);
 
         return response([], 204);

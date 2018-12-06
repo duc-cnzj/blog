@@ -26,7 +26,7 @@ $factory->define(App\ArticleRegular::class, function () use ($rules) {
     $faker = Factory::create('zh_CN');
 
     return [
-        'rule' => array_random($rules),
+        'rule'    => array_random($rules),
         'user_id' => function () {
             return app()->environment() === 'testing'
                 ? factory(App\User::class)->create([
@@ -36,6 +36,6 @@ $factory->define(App\ArticleRegular::class, function () use ($rules) {
                 ])->id
                 : 1;
         },
-        'status' => $faker->boolean
+        'status' => $faker->boolean,
     ];
 });
