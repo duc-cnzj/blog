@@ -76,26 +76,21 @@ class ArticleTest extends TestCase
     /** @test */
     public function it_has_content_html()
     {
-        $content = json_encode([
-            'html' => 'content html',
-            'md'   => 'content md',
-        ]);
+        $content = 'content';
 
         $article = create(Article::class, ['content' => $content]);
-        $this->assertEquals('content html', $article->content_html);
+        $this->assertEquals('<p>content</p>', $article->content_html);
         $this->assertNotEquals('content html bla..', $article->content_html);
     }
 
     /** @test */
     public function it_has_content_md()
     {
-        $content = json_encode([
-            'html' => 'content html',
-            'md'   => 'content md',
-        ]);
+        $content = '# content';
 
         $article = create(Article::class, ['content' => $content]);
-        $this->assertEquals('content md', $article->content_md);
+        $this->assertEquals('# content', $article->content_md);
+        $this->assertEquals('<h1>content</h1>', $article->content_html);
         $this->assertNotEquals('content html bla..', $article->content_md);
     }
 }
