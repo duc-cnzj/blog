@@ -236,17 +236,23 @@ class ReadArticleTest extends TestCase
     public function article_should_apply_rule()
     {
         // <h1>dadsaa↵</h1>
-        $doc = 'duc dadsaa↵↵ duc1 123456u';
+        $doc = '# a123b456c789';
 
         $user = $this->signIn();
 
         create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
-            'express' => '^duc',
-            'replace' => '#',
+            'express' => 'a',
+            'replace' => 'A',
         ]]);
+
         create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
-            'express' => 'duc1',
-            'replace' => '##',
+            'express' => 'b',
+            'replace' => 'B',
+        ]]);
+
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+            'express' => '[a-z]',
+            'replace' => '*',
         ]]);
 
         $res = $this->post('/admin/articles', [
@@ -257,6 +263,8 @@ class ReadArticleTest extends TestCase
             'category'   => 'php',
             'tags'       => ['php', 'js'],
         ]);
-        dd(json_decode($res->response->content()));
+
+        $data = data_get(json_decode($res->response->content()), 'data.content');
+        $this->assertEquals('<h1>A123B456*789</h1>', $data);
     }
 }

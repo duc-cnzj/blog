@@ -34,6 +34,10 @@ class RegularRule implements TransformImp
 
     public function getRules()
     {
+        if (\Auth::guest()) {
+            return [];
+        }
+
         $rules = \Auth::user()->activeArticleRules->pluck(['rule'])->toArray();
 
         return $rules;

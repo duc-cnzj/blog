@@ -264,9 +264,14 @@ class Article extends Model
 
     public function setContentAttribute($value)
     {
+        // 应用自定义转化规则
         $value = app()->makeWith('rule', [$value])->apply();
+
+        // 解析成 html 格式
         $parsedown = new \Parsedown();
         $mdContent = $parsedown->text($value);
+
+        // 表情转化处理
         $client = new Client(new Ruleset());
         $content = $client->shortnameToUnicode($mdContent);
 
