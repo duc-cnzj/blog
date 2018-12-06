@@ -41,15 +41,24 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        list($processContent, $category, $tagIds) = $this->dealRequest($request);
+        $this->validate($request, [
+            'head_image'  => 'required|string',
+            'title'       => 'required|string',
+            'desc'        => 'required|string|max:100',
+            'content'     => 'required|string',
+            'category'    => 'required|string',
+            'tags'        => 'required|array',
+        ]);
+
+        list($category, $tagIds) = $this->dealRequest($request);
 
         /** @var Article $article */
         $article = Article::create([
             'author_id'   => \Auth::id(),
-            'head_image'  => $request->head_image,
-            'title'       => $request->title,
-            'desc'        => $request->desc,
-            'content'     => $processContent,
+            'head_image'  => $request->input('head_image'),
+            'title'       => $request->input('title'),
+            'desc'        => $request->input('desc'),
+            'content'     => $request->input('content'),
             'category_id' => $category->id,
         ]);
 
@@ -82,7 +91,15 @@ class ArticleController extends Controller
      */
     public function update(int $id, Request $request, ArticleRepoImp $repo)
     {
-        list($processContent, $category, $tagIds) = $this->dealRequest($request);
+        $this->validate($request, [
+            'head_image'  => 'required|string',
+            'title'       => 'required|string',
+            'desc'        => 'required|string|max:100',
+            'content'     => 'required|string',
+            'category'    => 'required|string',
+            'tags'        => 'required|array',
+        ]);
+        list($category, $tagIds) = $this->dealRequest($request);
 
         /** @var Article $article */
         $article = Article::findOrFail($id);
@@ -92,10 +109,10 @@ class ArticleController extends Controller
         }
 
         $article->update([
-            'head_image'  => $request->head_image,
-            'title'       => $request->title,
-            'desc'        => $request->desc,
-            'content'     => $processContent,
+            'head_image'  => $request->input('head_image'),
+            'title'       => $request->input('title'),
+            'desc'        => $request->input('desc'),
+            'content'     => $request->input('content'),
             'category_id' => $category->id,
         ]);
 
@@ -157,33 +174,18 @@ class ArticleController extends Controller
      */
     private function dealRequest(Request $request): array
     {
-        $content = $request->input('content');
-        $client = new Client(new Ruleset());
-        $content = $client->shortnameToUnicode($content);
-
-        $parsedown = new \Parsedown();
-
-        $mdContent = $parsedown->text($content);
-
-        $processContent = json_encode(
-            [
-                'html' => $mdContent,
-                'md'   => $content,
-            ]
-        );
-
         $category = Category::firstOrCreate(
             [
-                'name' => $request->category, // string 'php'
+                'name' => $request->input('category'), // string 'php'
             ],
             [
             'user_id' => \Auth::id(),
         ]);
 
-        $tagNames = $request->tags; // array ['php', 'js']
+        $tagNames = $request->input('tags'); // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);
 
-        return [$processContent, $category, $tagIds];
+        return [$category, $tagIds];
     }
 
     public function search(Request $request)

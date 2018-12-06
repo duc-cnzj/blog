@@ -49,6 +49,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Comment::class);
     }
 
+    public function articleRules()
+    {
+        return $this->hasMany(ArticleRegular::class, 'user_id');
+    }
+
+    public function activeArticleRules()
+    {
+        return $this->hasMany(ArticleRegular::class, 'user_id')->where('status', true);
+    }
+
     public function articles()
     {
         return $this->hasMany(Article::class, 'author_id');
