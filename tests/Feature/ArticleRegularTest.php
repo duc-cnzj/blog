@@ -1,8 +1,5 @@
 <?php
 
-use App\Trending;
-use App\Contracts\ArticleRepoImp;
-use Illuminate\Http\UploadedFile;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class ArticleRegularTest extends TestCase
@@ -15,8 +12,8 @@ class ArticleRegularTest extends TestCase
         $this->signIn();
         $rule = '^\d+';
         $res = $this->json('post', '/admin/article_regulars', [
-            'rule' => ['express' => $rule, 'replace' => 'duc'],
-            'status' => 1
+            'rule'   => ['express' => $rule, 'replace' => 'duc'],
+            'status' => 1,
         ]);
 
         $res->seeStatusCode(201);

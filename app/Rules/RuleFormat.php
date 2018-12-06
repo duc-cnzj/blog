@@ -15,7 +15,7 @@ class RuleFormat implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (isset($value['express']) && isset($value['replace'])) {
+        if (isset($value['express'], $value['replace'])) {
             return true;
         } else {
             return false;

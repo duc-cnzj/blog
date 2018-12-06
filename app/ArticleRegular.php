@@ -13,8 +13,8 @@ class ArticleRegular extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'rule' => 'array',
-        'status' => 'boolean'
+        'rule'   => 'array',
+        'status' => 'boolean',
     ];
 
     protected $table = 'article_regular_rules';
@@ -26,7 +26,7 @@ class ArticleRegular extends Model
 
     public function setRuleAttribute($value)
     {
-        $value['express'] =  trim($value['express'], '/');
+        $value['express'] = trim($value['express'], '/');
         $value['express'] = (new HandleRule($value['express']))->apply();
 
         $this->attributes['rule'] = json_encode($value);
