@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
-use Emojione\Client;
-use Emojione\Ruleset;
 use Illuminate\Http\Request;
 use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;

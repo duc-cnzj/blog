@@ -30,7 +30,7 @@ class DashboardController extends Controller
                     'article_count' => $articleCount,
                     'cache_rate'    => $cacheRate,
                     'comment_count' => $commentCount,
-                    'author_count' => $authorCount,
+                    'author_count'  => $authorCount,
                 ],
             ],
             200
