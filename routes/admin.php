@@ -15,6 +15,18 @@ $router->group([
     'middleware' => 'auth',
     'namespace'  => 'Admin',
 ], function ($router) {
+    $router->post('/article_regulars/change_status', 'ArticleRegularController@changeStatus');
+
+    $router->post('/article_regulars/test', 'ArticleRegularController@test');
+
+    $router->get('/article_regulars', 'ArticleRegularController@index');
+
+    $router->delete('/article_regulars/{id}', 'ArticleRegularController@destroy');
+
+    $router->post('/article_regulars', 'ArticleRegularController@store');
+
+    $router->get('/dashboard', 'DashboardController@index');
+
     $router->get('/comments/{id}', 'CommentController@show');
 
     $router->get('/comments', 'CommentController@index');

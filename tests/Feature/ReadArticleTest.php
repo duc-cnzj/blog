@@ -154,4 +154,109 @@ class ReadArticleTest extends TestCase
         $this->assertEquals($user->id, \App\Comment::first()->user->id);
         $this->assertEquals(1, $user->comments->count());
     }
+
+    /** @test */
+    public function article_content_always_has_md_and_html()
+    {
+        $content = '# h1';
+        $parsedown = new \Parsedown();
+
+        $mdContent = $parsedown->text($content);
+        $article = create(Article::class, ['content' => $content]);
+        $this->assertEquals(json_encode([
+            'html' => $mdContent,
+            'md'   => $content,
+        ]), $article->content);
+    }
+
+    /** @test */
+    public function user_create_article_always_has_md_and_html()
+    {
+        $content = '# h1';
+        $user = $this->signIn();
+        $res = $this->post('/admin/articles', [
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'content'    => $content,
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ]);
+
+        $res->seeStatusCode(201);
+//        exit;
+        $parsedown = new \Parsedown();
+
+        $mdContent = $parsedown->text($content);
+        $this->assertEquals(json_encode([
+            'html' => $mdContent,
+            'md'   => $content,
+        ]), $user->articles()->first()->content);
+    }
+
+    /** @test */
+    public function user_update_article_always_has_md_and_html()
+    {
+        $content = '# h1';
+        $user = $this->signIn();
+        $res = $this->post('/admin/articles', [
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'content'    => $content,
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ]);
+
+        $res->seeStatusCode(201);
+        $articleId = data_get(json_decode($res->response->content()), 'data.id');
+
+        $newContent = '## h1';
+        $r = $this->json('put', "/admin/articles/{$articleId}", [
+            'content'    => $newContent,
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ]);
+
+        $parsedown = new \Parsedown();
+
+        $mdContent = $parsedown->text($newContent);
+
+        $r->seeStatusCode(200);
+        $this->assertEquals(json_encode([
+            'html' => $mdContent,
+            'md'   => $newContent,
+        ]), $user->articles()->first()->content);
+    }
+
+    /** @test */
+    public function article_should_apply_rule()
+    {
+        // <h1>dadsaa↵</h1>
+        $doc = "duc dadsaa↵↵ duc1 123456u";
+
+        $user = $this->signIn();
+
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+            'express' => '^duc',
+            'replace' => '#'
+        ]]);
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+            'express' => 'duc1',
+            'replace' => '##'
+        ]]);
+
+        $res = $this->post('/admin/articles', [
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'content'    => $doc,
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ]);
+        dd(json_decode($res->response->content()));
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Emojione\Client;
+use Emojione\Ruleset;
 use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\Events\ArticleCreated;
@@ -258,5 +260,21 @@ class Article extends Model
                 'category' => $h->{$categoryField}[0],
                 'tags'     => is_null($h->tags) ? null : implode(',', $h->tags),
             ];
+    }
+
+    public function setContentAttribute($value)
+    {
+        $value = app()->makeWith('rule', [$value])->apply();
+        $parsedown = new \Parsedown();
+        $mdContent = $parsedown->text($value);
+        $client = new Client(new Ruleset());
+        $content = $client->shortnameToUnicode($mdContent);
+
+        $this->attributes['content'] = json_encode(
+            [
+                'html' => $content,
+                'md'   => $value,
+            ]
+        );
     }
 }

@@ -22,6 +22,11 @@ use App\Http\Resources\CategoryResource;
 */
 
 $router->get('/', function () use ($router) {
+    $string = 'April 15, 2003';
+    $pattern = '/(\w+) (\d+), (\d+)/i';
+    $replacement = '${1}1,$3';
+    return preg_replace($pattern, $replacement, $string);
+    return app()->makeWith('rule', ['daa'])->apply();
     return $router->app->version();
 });
 

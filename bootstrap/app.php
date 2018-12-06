@@ -31,6 +31,7 @@ $app->withEloquent();
 
 $app->configure('cors');
 $app->configure('scout');
+$app->configure('cache');
 $app->configure('filesystems');
 $app->configure('broadcasting');
 $app->configure('scout_elastic');
@@ -57,6 +58,14 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
+
+$app->singleton(\App\Contracts\TransformImp::class, function ($app, $params) {
+    return new \App\Services\RegularRule(
+        new \App\Services\ArticleTransformRule($params[0])
+    );
+});
+
+$app->alias(\App\Contracts\TransformImp::class, 'rule');
 
 $app->singleton(
     App\Contracts\ArticleRepoImp::class,
