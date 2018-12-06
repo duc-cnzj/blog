@@ -41,6 +41,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $user->articles->each->delete();
             $user->categories->each->update(['user_id' => 0]);
             $user->tags->each->update(['user_id' => 0]);
+            $user->articleRules->each->delete();
         });
     }
 

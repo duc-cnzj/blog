@@ -85,4 +85,15 @@ class UserFeatureTest extends TestCase
         $user->delete();
         $this->assertEquals(0, \App\Tag::where('user_id', $user->id)->count());
     }
+
+    /** @test */
+    public function when_user_deleted_all_rules_also_deleted()
+    {
+        $user = $this->newTestUser();
+        create(\App\ArticleRegular::class, ['user_id' => $user->id], 5);
+
+        $this->assertEquals(5, $user->articleRules()->count());
+        $user->delete();
+        $this->assertEquals(0, \App\ArticleRegular::where('user_id', $user->id)->count());
+    }
 }
