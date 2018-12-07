@@ -13,7 +13,7 @@ class ArticleRegularController extends Controller
     public function index()
     {
         $regulars = ArticleRegular::where('user_id', \Auth::id())
-            ->paginate($request->page_size ?? 10);
+            ->get();
 
         return ArticleRegularResource::collection($regulars);
     }
