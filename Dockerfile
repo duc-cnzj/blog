@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/duc-cnzj/application:7.3
+FROM registry.cn-hangzhou.aliyuncs.com/duc-cnzj/application:7.2
 
 LABEL maintainer="ducong"
 
