@@ -28,7 +28,7 @@ $factory->define(App\ArticleRegular::class, function () use ($rules) {
     return [
         'rule'    => array_random($rules),
         'user_id' => function () {
-            return app()->environment() === 'testing'
+            return app()->environment('testing')
                 ? factory(App\User::class)->create([
                     'mobile'   => str_random(32),
                     'avatar'   => 'test1234567',

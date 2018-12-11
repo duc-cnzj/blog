@@ -34,7 +34,7 @@ class UserController extends Controller
             $folder = base_path('public/images');
             $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
 
-            if (app()->environment() !== 'testing') {
+            if (! app()->environment('testing')) {
                 $image->move($folder, $filename);
             }
 
