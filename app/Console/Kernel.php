@@ -30,10 +30,6 @@ class Kernel extends ConsoleKernel
 
         if ($enabled) {
             // 数据备份
-            $olders = Storage::files('backups');
-            $last = array_pop($olders); // 最新的那份
-            Storage::delete($olders); // 删除旧的备份文件
-
             $schedule->command("db:backup --database=mysql --destination=local --destinationPath=backups/ --timestamp='Y_m_d_H_i_s' --compression=gzip
             ")->at('02:00');
 
