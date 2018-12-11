@@ -23,7 +23,7 @@ class Trending
 
     public function cacheKey(): string
     {
-        return 'trending_articles';
+        return app()->environment('testing') ? 'testing_trending_articles' : 'trending_articles';
     }
 
     public function reset(): int
