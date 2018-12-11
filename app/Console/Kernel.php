@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\RefreshImportCommand;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -28,6 +29,14 @@ class Kernel extends ConsoleKernel
         $enabled = env('BACKUP_ENABLED', false);
 
         if ($enabled) {
+            $schedule->call(function () {
+                $olders = Storage::files('backups');
+                if (count($olders) > 3) {
+                    $deleteFileNames = array_slice($olders, 0, -3);
+                    Storage::delete($deleteFileNames); // 删除旧的备份文件
+                }
+            })->at('02:10');
+
             // 数据备份
             $schedule->command("db:backup --database=mysql --destination=local --destinationPath=backups/ --timestamp='Y_m_d_H_i_s' --compression=gzip
             ")->at('02:00');
