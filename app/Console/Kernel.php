@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\RefreshImportCommand;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
