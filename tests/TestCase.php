@@ -15,6 +15,13 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         return require __DIR__.'/../bootstrap/app.php';
     }
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->withoutEvents();
+    }
+
+
     public function newTestUser($custom = [])
     {
         $faker = Factory::create();
