@@ -21,7 +21,6 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         $this->withoutEvents();
     }
 
-
     public function newTestUser($custom = [])
     {
         $faker = Factory::create();
