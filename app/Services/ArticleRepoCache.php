@@ -5,7 +5,6 @@ namespace App\Services;
 use App\User;
 use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ArticleRepoCache implements ArticleRepoImp
 {
