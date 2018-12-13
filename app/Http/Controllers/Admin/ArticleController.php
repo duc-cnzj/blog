@@ -195,7 +195,7 @@ class ArticleController extends Controller
             $q = Article::search($query)
                 ->rule(\App\ES\ArticleRule::class);
             $q->limit = 10000;
-            $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
+            $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display'])
                 ->when(! ! $request->input('all'), function ($q) {
                     info('amdin search all');
 
