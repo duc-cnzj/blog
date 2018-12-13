@@ -3,7 +3,6 @@
 use App\Article;
 use App\Trending;
 use App\Contracts\ArticleRepoImp;
-use Illuminate\Support\Facades\Artisan;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class ReadArticleTest extends TestCase
@@ -347,6 +346,7 @@ class ReadArticleTest extends TestCase
         $r = $this->json('GET', '/articles/' . $article->id);
         $r->seeStatusCode(404);
     }
+
 //
 //    /** @test */
 //    public function user_can_search_visible_article()
