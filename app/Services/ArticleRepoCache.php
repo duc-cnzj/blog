@@ -5,6 +5,7 @@ namespace App\Services;
 use App\User;
 use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ArticleRepoCache implements ArticleRepoImp
 {
@@ -92,5 +93,10 @@ class ArticleRepoCache implements ArticleRepoImp
         foreach ($articleIds as $id) {
             $this->removeBy($id);
         }
+    }
+
+    public function hasArticleCacheById(int $id): bool
+    {
+        return Cache::has($this->cacheKey($id));
     }
 }

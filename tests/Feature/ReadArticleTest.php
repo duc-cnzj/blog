@@ -2,18 +2,31 @@
 
 use App\Article;
 use App\Trending;
+use App\Contracts\ArticleRepoImp;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class ReadArticleTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /**
+     * @var ArticleRepoImp
+     */
+    protected $articleRepoImp;
+    /**
+     * @var Trending
+     */
+    protected $trending;
+
     public function setUp()
     {
         parent::setUp();
 
-        $trending = new Trending();
-        $trending->reset();
+        $this->articleRepoImp = app(ArticleRepoImp::class);
+
+        $this->trending = new Trending();
+        $this->trending->reset();
     }
 
     /** @test */
@@ -80,10 +93,10 @@ class ReadArticleTest extends TestCase
         $article = create(Article::class);
 
         $this->json('GET', "/articles/{$article->id}")->seeStatusCode(200);
-        $this->assertTrue(\Illuminate\Support\Facades\Cache::has("article:{$article->id}"));
+        $this->assertTrue($this->articleRepoImp->hasArticleCacheById($article->id));
 
         $this->json('DELETE', "/admin/articles/{$article->id}")->seeStatusCode(204);
-        $this->assertFalse(\Illuminate\Support\Facades\Cache::has("article:{$article->id}"));
+        $this->assertFalse($this->articleRepoImp->hasArticleCacheById($article->id));
 
         $count = count((new Trending)->get());
         $this->assertEquals(0, $count);
@@ -181,6 +194,7 @@ class ReadArticleTest extends TestCase
             'content'    => $content,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ]);
 
         $res->seeStatusCode(201);
@@ -206,6 +220,7 @@ class ReadArticleTest extends TestCase
             'content'    => $content,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ]);
 
         $res->seeStatusCode(201);
@@ -230,6 +245,24 @@ class ReadArticleTest extends TestCase
             'html' => $mdContent,
             'md'   => $newContent,
         ]), $user->articles()->first()->content);
+    }
+
+    /** @test */
+    public function when_article_updated_it_will_remove_cache()
+    {
+        $article = create(Article::class, ['title' => 'title1']);
+
+        $this->assertEquals('title1', $article->title);
+        $this->assertFalse($this->articleRepoImp->hasArticleCacheById($article->id));
+        $this->assertEquals('title1', $this->articleRepoImp->get($article->id)->title);
+        $r = $this->json('GET', '/articles/' . $article->id);
+        $r->seeStatusCode(200);
+
+        $this->assertTrue($this->articleRepoImp->hasArticleCacheById($article->id));
+
+        $article->update(['title' => 'title2']);
+        $this->assertFalse($this->articleRepoImp->hasArticleCacheById($article->id));
+        $this->assertEquals('title2', $this->articleRepoImp->get($article->id)->title);
     }
 
     /** @test */
@@ -262,9 +295,132 @@ class ReadArticleTest extends TestCase
             'content'    => $doc,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ]);
 
         $data = data_get(json_decode($res->response->content()), 'data.content');
         $this->assertEquals('<h1>A123B456*789</h1>', $data);
+    }
+
+    /** @test */
+    public function can_not_see_invisible_article()
+    {
+        $article = create(Article::class, ['display' => false]);
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        Article::visible()->findOrFail($article->id);
+    }
+
+    /** @test */
+    public function can_see_visible_article()
+    {
+        $article = create(Article::class, ['display' => true]);
+        Article::visible()->findOrFail($article->id);
+        $this->assertEquals($article->id, Article::findOrFail($article->id)->id);
+    }
+
+    /** @test */
+    public function user_can_not_see_not_displayed_article()
+    {
+        $article = create(Article::class, ['display' => false]);
+
+        $r = $this->json('GET', '/articles');
+        $this->assertEquals(0, count(data_get(json_decode($r->response->content()), 'data')));
+        $r->seeStatusCode(200);
+
+        $article->update(['display' => true]);
+        $r = $this->json('GET', '/articles');
+        $this->assertEquals(1, count(data_get(json_decode($r->response->content()), 'data')));
+        $r->seeStatusCode(200);
+    }
+
+    /** @test */
+    public function user_can_not_see_not_display_article_in_detail_page()
+    {
+        $article = create(Article::class);
+
+        $r = $this->json('GET', '/articles/' . $article->id);
+        $r->seeStatusCode(200);
+        $this->assertTrue($this->articleRepoImp->hasArticleCacheById($article->id));
+
+        $article->update(['display' => false]);
+        $this->assertFalse($this->articleRepoImp->hasArticleCacheById($article->id));
+        $r = $this->json('GET', '/articles/' . $article->id);
+        $r->seeStatusCode(404);
+    }
+//
+//    /** @test */
+//    public function user_can_search_visible_article()
+//    {
+//        create(Article::class, ['title' => 'duc']);
+//
+//        $r = $this->get('/search_articles?q=duc');
+//
+//        $r->seeJsonContains([
+//            'title' => 'duc',
+//        ]);
+//    }
+
+//    /** @test */
+//    public function user_can_not_search_invisible_article()
+//    {
+//        $article = create(Article::class, ['title' => 'duc', 'display' => false]);
+//
+//        $r = $this->get('/search_articles?q=duc');
+//
+//        $a = data_get(json_decode($r->response->content()), 'data');
+//        $this->assertEquals(0, count($a));
+//        $r->dontSeeJson([
+//            'title' => 'duc',
+//        ]);
+//
+//        $article->update(['display' => true]);
+//
+//        $r = $this->get('/search_articles?q=duc');
+//        $a = data_get(json_decode($r->response->content()), 'data');
+//
+//        $this->assertEquals(1, count($a));
+//
+//        $r->seeJsonContains([
+//            'title' => 'duc',
+//        ]);
+//    }
+
+    /** @test */
+    public function user_can_not_see_invisible_article_in_trending_articles()
+    {
+        $article = create(Article::class, ['title' => 'duc']);
+        $article2 = create(Article::class, ['title' => 'duc2']);
+
+        $this->json('GET', '/articles/' . $article->id);
+        $this->json('GET', '/articles/' . $article2->id);
+        $this->json('GET', '/articles/' . $article2->id);
+        $this->assertTrue($this->articleRepoImp->hasArticleCacheById($article->id));
+        $this->assertTrue($this->trending->hasKey($article->id));
+
+        $ids = $this->trending->get();
+        $this->assertSame(['2', '1'], $ids);
+
+        $article->update(['display' => false]);
+        $this->assertFalse($this->articleRepoImp->hasArticleCacheById($article->id));
+        $this->assertTrue($this->trending->hasKey($article->id));
+        $ids = $this->trending->get();
+
+        $this->assertSame(['2'], $ids);
+        $article->update(['display' => true]);
+        $ids = $this->trending->get();
+        $this->assertSame(['2', '1'], $ids);
+    }
+
+    /** @test */
+    public function admin_can_see_invisible_article()
+    {
+        $user = $this->signIn();
+        $article = create(Article::class, ['title' => 'duc', 'display' => false, 'author_id' => $user->id]);
+
+        $r = $this->json('GET', '/admin/articles/' . $article->id);
+        $r->seeStatusCode(200);
+        $r = $this->json('GET', '/admin/articles');
+
+        $this->assertEquals(1, count(data_get(json_decode($r->response->content()), 'data')));
     }
 }

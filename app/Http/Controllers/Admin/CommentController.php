@@ -10,7 +10,7 @@ use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $comments = Comment::with(['article:id,title', 'user'])
             ->whereHas('article', function ($q) {
@@ -19,7 +19,7 @@ class CommentController extends Controller
             ->where('user_id', '<>', \Auth::id())
             ->latest()
             ->select('id', 'content', 'created_at', 'article_id', 'visitor')
-            ->paginate($request->page_size ?? 10);
+            ->paginate($request->input('page_size') ?? 10);
 
         return CommentResource::collection($comments);
     }

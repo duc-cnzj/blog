@@ -49,6 +49,8 @@ $router->group([
 
     $router->get('/articles', 'ArticleController@index');
 
+    $router->put('/article_change_display/{id}', 'ArticleController@changeDisplay');
+
     $router->get('/search_articles', 'ArticleController@search');
 
     $router->get('/articles/{id}', 'ArticleController@show');

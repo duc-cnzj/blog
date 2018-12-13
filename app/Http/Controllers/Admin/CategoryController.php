@@ -18,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $category = Category::where('name', 'LIKE', "%{$request->q}%")->get();
+        $category = Category::where('name', 'LIKE', "%{$request->input('q')}%")->get();
 
         return CategoryResource::collection($category);
     }

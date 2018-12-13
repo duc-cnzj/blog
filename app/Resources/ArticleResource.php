@@ -38,6 +38,7 @@ class ArticleResource extends JsonResource
             'content_md'        => $this->content_md,
             'title'             => $this->title,
             'desc'              => $this->desc,
+            'display'           => $this->display,
             'tags'              => TagResource::collection($this->whenLoaded('tags')),
             'comments'          => CommentResource::collection($this->whenLoaded('comments')),
             'recommendArticles' => $this->when($request->path() === 'home_articles', function () {
