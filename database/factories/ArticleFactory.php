@@ -37,5 +37,6 @@ $factory->define(App\Article::class, function () {
         'category_id' => function () {
             return factory(App\Category::class)->create()->id;
         },
+        'display' => true,
     ];
 });

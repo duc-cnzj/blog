@@ -10,6 +10,7 @@ use App\Events\ArticleCreated;
 use App\Contracts\ArticleRepoImp;
 use App\ES\ArticleIndexConfigurator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Article extends Model
@@ -75,6 +76,7 @@ class Article extends Model
                 'search_analyzer' => 'ik_max_word',
             ],
             'tags'             => ['type' => 'text'],
+            'display'          => ['type' => 'keyword'],
         ],
     ];
 
@@ -87,6 +89,10 @@ class Article extends Model
      * @var array
      */
     protected $guarded = [];
+
+    protected $casts = [
+        'display' => 'boolean',
+    ];
 
     /**
      *
@@ -107,6 +113,16 @@ class Article extends Model
             $model->comments->each->delete();
         });
 
+        static::updated(function ($model) {
+            if ($model->isDirty('display')) {
+                $model->getDirty()['display']
+                    ? app(Trending::class)->removeInvisible($model->id)
+                    : app(Trending::class)->addInvisible($model->id);
+            }
+
+            app(ArticleRepoImp::class)->removeBy($model->id);
+        });
+
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
             if (! $model->shouldBeSearchable()) {
                 $model->unsearchable();
@@ -118,6 +134,11 @@ class Article extends Model
         });
     }
 
+    public function scopeVisible(Builder $query)
+    {
+        return $query->where('display', true);
+    }
+
     /**
      * @return array
      *
@@ -127,6 +148,7 @@ class Article extends Model
     {
         $model = $this->load(['category', 'author', 'tags']);
 
+//        dd($model->display);
         $result = [
             'author'           => [
                 'id'   => $model->author->id,
@@ -140,6 +162,7 @@ class Article extends Model
             'title'            => $model->title,
             'desc'             => $model->desc,
             'tags'             => $model->tags()->pluck('name')->toArray(),
+            'display'          => $model->display,
         ];
 
         info('searchable', $result);
@@ -203,7 +226,7 @@ class Article extends Model
      */
     public function getRecommendArticles()
     {
-        return static::where('category_id', $this->category_id)
+        return static::visible()->where('category_id', $this->category_id)
             ->inRandomOrder()
             ->take(3)
             ->get(['id', 'title'])

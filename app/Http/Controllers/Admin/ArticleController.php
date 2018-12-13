@@ -6,7 +6,6 @@ use App\Tag;
 use App\Article;
 use App\Category;
 use Illuminate\Http\Request;
-use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 
@@ -22,10 +21,10 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $articles = Article::with('category', 'tags')
-            ->whole(! ! $request->all)
+            ->whole(! ! $request->input('all'))
             ->latest()
-            ->select('id', 'title', 'created_at', 'updated_at', 'category_id')
-            ->paginate($request->page_size ?? 10);
+            ->select('id', 'title', 'created_at', 'updated_at', 'category_id', 'display')
+            ->paginate($request->input('page_size') ?? 10);
 
         return ArticleResource::collection($articles);
     }
@@ -46,6 +45,7 @@ class ArticleController extends Controller
             'content'     => 'required|string',
             'category'    => 'required|string',
             'tags'        => 'required|array',
+            'display'     => 'required|boolean',
         ]);
 
         list($category, $tagIds) = $this->dealRequest($request);
@@ -57,6 +57,7 @@ class ArticleController extends Controller
             'title'       => $request->input('title'),
             'desc'        => $request->input('desc'),
             'content'     => $request->input('content'),
+            'display'     => $request->input('display'),
             'category_id' => $category->id,
         ]);
 
@@ -67,14 +68,13 @@ class ArticleController extends Controller
 
     /**
      * @param int            $id
-     * @param ArticleRepoImp $repo
      *
      * @return ArticleResource
      * @author duc <1025434218@qq.com>
      */
-    public function show(int $id, ArticleRepoImp $repo)
+    public function show(int $id)
     {
-        $article = $repo->get($id);
+        $article = Article::with('category', 'tags', 'author')->findOrFail($id);
 
         return new ArticleResource($article);
     }
@@ -82,12 +82,11 @@ class ArticleController extends Controller
     /**
      * @param int            $id
      * @param Request        $request
-     * @param ArticleRepoImp $repo
      *
      * @return ArticleResource
      * @author duc <1025434218@qq.com>
      */
-    public function update(int $id, Request $request, ArticleRepoImp $repo)
+    public function update(int $id, Request $request)
     {
         $this->validate($request, [
             'head_image'  => 'required|string',
@@ -97,6 +96,7 @@ class ArticleController extends Controller
             'category'    => 'required|string',
             'tags'        => 'required|array',
         ]);
+
         list($category, $tagIds) = $this->dealRequest($request);
 
         /** @var Article $article */
@@ -116,8 +116,6 @@ class ArticleController extends Controller
 
         $article->tags()->sync($tagIds);
 
-        $repo->removeBy($id);
-
         return new ArticleResource($article);
     }
 
@@ -130,11 +128,13 @@ class ArticleController extends Controller
      */
     public function destroy(int $id)
     {
-        if (\Auth::id() !== $id && ! \Auth::user()->isAdmin()) {
+        $article = Article::findOrFail($id);
+
+        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
             return $this->fail('这篇文章不是你的，不能删除！', 403);
         }
 
-        Article::findOrFail($id)->delete();
+        $article->delete();
 
         return response([], 204);
     }
@@ -178,7 +178,8 @@ class ArticleController extends Controller
             ],
             [
             'user_id' => \Auth::id(),
-        ]);
+            ]
+        );
 
         $tagNames = $request->input('tags'); // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);
@@ -195,7 +196,7 @@ class ArticleController extends Controller
                 ->rule(\App\ES\ArticleRule::class);
             $q->limit = 10000;
             $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
-                ->when(! ! $request->all, function ($q) {
+                ->when(! ! $request->input('all'), function ($q) {
                     info('amdin search all');
 
                     return $q;
@@ -211,5 +212,18 @@ class ArticleController extends Controller
         } else {
             return ArticleResource::collection([]);
         }
+    }
+
+    public function changeDisplay(int $id)
+    {
+        $article = Article::findOrFail($id);
+
+        if ($article->author_id !== \Auth::id()&& ! \Auth::user()->isAdmin()) {
+            return $this->fail('这篇文章不是你的，不能修改！', 403);
+        }
+
+        $article->update(['display' => ! $article->display]);
+
+        return response([], 204);
     }
 }
