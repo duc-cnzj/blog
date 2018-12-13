@@ -218,7 +218,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if ($article->author_id !== \Auth::id()&& ! \Auth::user()->isAdmin()) {
+        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
             return $this->fail('这篇文章不是你的，不能修改！', 403);
         }
 

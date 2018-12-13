@@ -49,12 +49,14 @@ class Trending
     public function addInvisible(int $id)
     {
         info('add invisible: ' . $id);
+
         return Redis::SADD($this->invisibleKey(), $id);
     }
 
     public function removeInvisible(int $id)
     {
         info('remove invisible: ' . $id);
+
         return Redis::SREM($this->invisibleKey(), $id);
     }
 
