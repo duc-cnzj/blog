@@ -51,4 +51,9 @@ class ArticleRepo implements ArticleRepoImp
     public function resetArticleCacheByUser(User $user): void
     {
     }
+
+    public function hasArticleCacheById(int $id): bool
+    {
+        return false;
+    }
 }

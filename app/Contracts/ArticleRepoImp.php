@@ -19,6 +19,15 @@ interface ArticleRepoImp
     public function get(int $id);
 
     /**
+     * @param int $id
+     *
+     * @return bool
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function hasArticleCacheById(int $id): bool;
+
+    /**
      * 获取多篇文章
      *
      * @param array $ids

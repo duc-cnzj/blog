@@ -27,6 +27,11 @@ $router->get('/', function () use ($router) {
 
 $router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp $repo) {
     $article = $repo->get($id);
+
+    if (in_array($article->id, $trending->getInvisibleIds())) {
+        throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
+    }
+
     $trending->push($article);
 
     return new ArticleResource($article);
@@ -35,6 +40,7 @@ $router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp
 $router->get('/articles', function () {
     return ArticleResource::collection(
         Article::with('author')
+            ->visible()
             ->latest()
             ->select(['id', 'category_id', 'head_image', 'title', 'desc', 'created_at', 'author_id'])
             ->paginate()
@@ -48,9 +54,10 @@ $router->get('/search_articles', function (Request $request) {
         $q = Article::search($query)
             ->rule(\App\ES\ArticleRule::class);
         $q->limit = 10000;
-        $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at'])
+        $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display'])
             ->get()
-            ->load('author', 'tags', 'category');
+            ->load('author', 'tags', 'category')
+            ->where('display', true);
 
         return ArticleResource::collection($articles);
     } else {
@@ -60,6 +67,7 @@ $router->get('/search_articles', function (Request $request) {
 
 $router->get('/home_articles', function () {
     $articles = Article::with('category:id,name')
+        ->visible()
         ->latest()
         ->take(3)
         ->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
@@ -69,6 +77,7 @@ $router->get('/home_articles', function () {
 
 $router->get('/newest_articles', function () {
     return ArticleResource::collection(Article::with('author', 'category:id,name')
+        ->visible()
         ->latest()
         ->take(13)
         ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
@@ -76,6 +85,7 @@ $router->get('/newest_articles', function () {
 
 $router->get('/popular_articles', function () {
     return ArticleResource::collection(Article::with('author', 'category:id,name')
+        ->visible()
         ->inRandomOrder()
         ->take(8)
         ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
@@ -114,7 +124,7 @@ $router->get('/articles/{id}/comments', function ($id, Request $request) {
 });
 
 $router->post('/articles/{id}/comments', function ($id, Request $request) {
-    $article = Article::findOrFail($id);
+    $article = Article::visible()->findOrFail($id);
     $content = $request->input('content');
     $parsedown = new \Parsedown();
     $htmlContent = $parsedown->text($content);
