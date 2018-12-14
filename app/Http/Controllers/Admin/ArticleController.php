@@ -240,4 +240,24 @@ class ArticleController extends Controller
 
         return response([], 204);
     }
+
+    public function setTop(int $id)
+    {
+        $article = Article::findOrFail($id);
+
+        /** @var Article $article */
+        $article->setTop();
+
+        return response([], 204);
+    }
+
+    public function cancelSetTop(int $id)
+    {
+        $article = Article::findOrFail($id);
+
+        /** @var Article $article */
+        $article->cancelSetTop();
+
+        return response([], 204);
+    }
 }

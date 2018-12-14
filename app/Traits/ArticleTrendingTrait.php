@@ -9,9 +9,9 @@ trait ArticleTrendingTrait
     public static function bootArticleTrendingTrait()
     {
         static::created(function ($model) {
-            $model->display
-                ? app(Trending::class)->removeInvisible($model->id)
-                : app(Trending::class)->addInvisible($model->id);
+            if (! $model->display) {
+                app(Trending::class)->addInvisible($model->id);
+            }
         });
 
         static::updated(function ($model) {

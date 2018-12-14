@@ -83,6 +83,13 @@ $app->singleton(
     }
 );
 
+$app->singleton(
+    App\Contracts\TopArticleImp::class,
+    function () {
+        return new \App\TopArticle();
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware

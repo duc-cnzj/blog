@@ -61,6 +61,10 @@ $router->group([
 
     $router->delete('/articles/{id}', 'ArticleController@destroy');
 
+    $router->put('/article_set_top/{id}', 'ArticleController@setTop');
+
+    $router->put('/article_cancel_set_top/{id}', 'ArticleController@cancelSetTop');
+
     $router->get('/categories', 'CategoryController@index');
 
     $router->get('/tags', 'TagController@index');

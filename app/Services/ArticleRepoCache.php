@@ -32,7 +32,7 @@ class ArticleRepoCache implements ArticleRepoImp
      */
     public function cacheKey(int $id)
     {
-        return 'article:' . $id;
+        return app()->environment('testing') ? 'testing_article:' . $id : 'article:' . $id;
     }
 
     /**
