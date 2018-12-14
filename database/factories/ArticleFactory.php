@@ -38,5 +38,6 @@ $factory->define(App\Article::class, function () {
             return factory(App\Category::class)->create()->id;
         },
         'display' => true,
+        'top_at'  => null,
     ];
 });
