@@ -28,6 +28,10 @@ class TopArticleTest extends TestCase
         create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
         create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
         create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
+
+        $res = $this->json('GET', '/top_articles');
+        $data = json_decode($res->response->content());
+        $this->assertEquals(4, count(data_get($data, 'data')));
         $this->assertEquals(4, count($this->topArticle->getTopArticles()));
     }
 
@@ -39,15 +43,18 @@ class TopArticleTest extends TestCase
 
         $res = $this->json('GET', '/top_articles');
         $data = json_decode($res->response->content());
-        //dd($data);
         $this->assertEquals(1, count(data_get($data, 'data')));
+        $this->assertTrue(is_null($article1->top_at));
 
         $article1->setTop();
+
+        $this->assertFalse(is_null($article1->fresh()->top_at));
         $res = $this->json('GET', '/top_articles');
         $data = json_decode($res->response->content());
         $this->assertEquals(2, count(data_get($data, 'data')));
 
         $article1->cancelSetTop();
+        $this->assertTrue(is_null($article1->top_at));
         $res = $this->json('GET', '/top_articles');
         $data = json_decode($res->response->content());
         $this->assertEquals(1, count(data_get($data, 'data')));
