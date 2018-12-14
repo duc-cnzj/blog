@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\Contracts\TopArticleImp;
 use App\Trending;
 use App\ES\ArticleRule;
 use Illuminate\Http\Request;
+use App\Contracts\TopArticleImp;
 use App\Contracts\ArticleRepoImp;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

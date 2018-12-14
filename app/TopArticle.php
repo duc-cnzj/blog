@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Contracts\ArticleRepoImp;
 use App\Contracts\TopArticleImp;
 use Illuminate\Support\Facades\Redis;
 

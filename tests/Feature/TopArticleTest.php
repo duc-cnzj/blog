@@ -39,7 +39,7 @@ class TopArticleTest extends TestCase
 
         $res = $this->json('GET', '/top_articles');
         $data = json_decode($res->response->content());
-//dd($data);
+        //dd($data);
         $this->assertEquals(1, count(data_get($data, 'data')));
 
         $article1->setTop();
@@ -53,9 +53,8 @@ class TopArticleTest extends TestCase
         $this->assertEquals(1, count(data_get($data, 'data')));
     }
 
-
     /** @test */
-    function article_can_set_top()
+    public function article_can_set_top()
     {
         $user = $this->signIn();
         $article = create(Article::class, ['author_id' => $user->id]);
@@ -66,7 +65,7 @@ class TopArticleTest extends TestCase
     }
 
     /** @test */
-    function article_can_cancel_set_top()
+    public function article_can_cancel_set_top()
     {
         $user = $this->signIn();
         $article = create(Article::class, ['author_id' => $user->id]);
