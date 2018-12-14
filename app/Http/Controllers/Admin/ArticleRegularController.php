@@ -10,6 +10,11 @@ use App\Http\Resources\ArticleRegularResource;
 
 class ArticleRegularController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index()
     {
         $regulars = ArticleRegular::where('user_id', \Auth::id())
@@ -18,6 +23,13 @@ class ArticleRegularController extends Controller
         return ArticleRegularResource::collection($regulars);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return ArticleRegularResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function store(Request $request)
     {
         info('input', $request->input());
@@ -34,6 +46,13 @@ class ArticleRegularController extends Controller
         return new ArticleRegularResource($regular);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function destroy(int $id)
     {
         ArticleRegular::findOrFail($id)->delete();
@@ -41,6 +60,13 @@ class ArticleRegularController extends Controller
         return response([], 204);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function test(Request $request)
     {
         $body = $request->input('body');
@@ -52,6 +78,13 @@ class ArticleRegularController extends Controller
         ], 200);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function changeStatus(Request $request)
     {
         $rule = ArticleRegular::findOrFail($request->input('id'));

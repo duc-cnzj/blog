@@ -6,7 +6,15 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    public function fail($message, $code)
+    /**
+     * @param string $message
+     * @param int    $code
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function fail(string $message, int $code)
     {
         return response()->json([
             'error' => [
