@@ -7,7 +7,7 @@ class ExampleTest extends TestCase
     public function example()
     {
         $res = $this->get('/');
-        $this->assertStringContainsStringIgnoringCase(
+        $this->assertContains(
             'created by duc@2018.',
             $res->response->content()
         );
