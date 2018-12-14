@@ -1,14 +1,6 @@
 <?php
 
-use App\Article;
-use App\Comment;
-use App\Category;
 use App\Trending;
-use Illuminate\Http\Request;
-use App\Contracts\ArticleRepoImp;
-use App\Http\Resources\ArticleResource;
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\CategoryResource;
 
 /*
 |--------------------------------------------------------------------------

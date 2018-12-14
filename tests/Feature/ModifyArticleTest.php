@@ -67,7 +67,6 @@ class ModifyArticleTest extends TestCase
         $this->assertEquals(0, \App\Comment::where('article_id', $article->id)->count());
     }
 
-
     /** @test */
     public function user_create_article_always_has_md_and_html()
     {
@@ -150,7 +149,6 @@ class ModifyArticleTest extends TestCase
         $this->assertFalse(app(ArticleRepoImp::class)->hasArticleCacheById($article->id));
         $this->assertEquals('title2', app(ArticleRepoImp::class)->get($article->id)->title);
     }
-
 
     /** @test */
     public function article_should_apply_rule()

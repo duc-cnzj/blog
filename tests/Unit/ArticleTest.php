@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Events\ArticleCreated;
 use App\Tag;
 use App\User;
 use TestCase;
 use App\Article;
 use App\Comment;
 use App\Category;
+use App\Events\ArticleCreated;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
