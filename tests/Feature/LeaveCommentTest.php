@@ -57,5 +57,4 @@ class LeaveCommentTest extends TestCase
         $this->assertEquals($user->id, \App\Comment::first()->user->id);
         $this->assertEquals(1, $user->comments->count());
     }
-
 }
