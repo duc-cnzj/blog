@@ -21,44 +21,42 @@ class TopArticleTest extends TestCase
         $this->topArticle->reset();
     }
 
-    /** @test */
-    public function when_top_article_created_it_has_cache()
-    {
-        create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
-        create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
-        create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
-        create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
+    // /** @test */
+    // public function when_top_article_created_it_has_cache()
+    // {
+    //     $article = create(Article::class);
 
-        $res = $this->json('GET', '/top_articles');
-        $data = json_decode($res->response->content());
-        $this->assertEquals(4, count(data_get($data, 'data')));
-        $this->assertEquals(4, count($this->topArticle->getTopArticles()));
-    }
+    //     $this->assertNull($article->top_at);
 
-    /** @test */
-    public function guest_can_see_top_articles()
-    {
-        $article1 = create(\App\Article::class);
-        create(\App\Article::class, ['top_at' => \Carbon\Carbon::now()]);
+    //     $article->setTop();
 
-        $res = $this->json('GET', '/top_articles');
-        $data = json_decode($res->response->content());
-        $this->assertEquals(1, count(data_get($data, 'data')));
-        $this->assertTrue(is_null($article1->top_at));
+    //     $this->assertNotNull($article->fresh()->top_at);
+    // }
 
-        $article1->setTop();
+    // /** @test */
+    // public function guest_can_see_top_articles()
+    // {
+    //     $article1 = create(\App\Article::class);
+    //     create(\App\Article::class, ['top_at' => \Carbon\Carbon::now()]);
 
-        $this->assertFalse(is_null($article1->fresh()->top_at));
-        $res = $this->json('GET', '/top_articles');
-        $data = json_decode($res->response->content());
-        $this->assertEquals(2, count(data_get($data, 'data')));
+    //     $res = $this->json('GET', '/top_articles');
+    //     $data = json_decode($res->response->content());
+    //     $this->assertEquals(1, count(data_get($data, 'data')));
+    //     $this->assertTrue(is_null($article1->top_at));
 
-        $article1->cancelSetTop();
-        $this->assertTrue(is_null($article1->top_at));
-        $res = $this->json('GET', '/top_articles');
-        $data = json_decode($res->response->content());
-        $this->assertEquals(1, count(data_get($data, 'data')));
-    }
+    //     $article1->setTop();
+
+    //     $this->assertFalse(is_null($article1->fresh()->top_at));
+    //     $res = $this->json('GET', '/top_articles');
+    //     $data = json_decode($res->response->content());
+    //     $this->assertEquals(2, count(data_get($data, 'data')));
+
+    //     $article1->cancelSetTop();
+    //     $this->assertTrue(is_null($article1->top_at));
+    //     $res = $this->json('GET', '/top_articles');
+    //     $data = json_decode($res->response->content());
+    //     $this->assertEquals(1, count(data_get($data, 'data')));
+    // }
 
     /** @test */
     public function article_can_set_top()
