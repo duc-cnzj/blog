@@ -10,10 +10,10 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-//        $this->get('/');
-//
-//        $this->assertEquals(
-//            $this->app->version(), $this->response->getContent()
-//        );
+        $res = $this->get('/');
+        $this->assertStringContainsStringIgnoringCase(
+            'created by duc@2018.',
+            $res->response->content()
+        );
     }
 }

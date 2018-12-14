@@ -7,6 +7,7 @@ use Emojione\Ruleset;
 use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\Events\ArticleCreated;
+use App\Traits\TopArticleTrait;
 use App\Traits\ArticleCacheTrait;
 use App\ES\ArticleIndexConfigurator;
 use App\Traits\ArticleTrendingTrait;
@@ -16,7 +17,7 @@ use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Article extends Model
 {
-    use Searchable, PivotEventTrait, ArticleCacheTrait, ArticleTrendingTrait;
+    use Searchable, PivotEventTrait, ArticleCacheTrait, ArticleTrendingTrait, TopArticleTrait;
 
     /**
      * @var string
@@ -91,6 +92,16 @@ class Article extends Model
      */
     protected $guarded = [];
 
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'top_at',
+    ];
+
+    /**
+     * @var array
+     */
     protected $casts = [
         'display' => 'boolean',
     ];
