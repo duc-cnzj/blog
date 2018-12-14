@@ -20,6 +20,7 @@ class ArticleResource extends JsonResource
 
         return [
             'id'     => $this->id,
+            'is_top' => $this->is_top,
             'author' => $this->whenLoaded('author', function () {
                 return [
                    'id'     => $this->author->id,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Contracts\TopArticleImp;
 use App\Trending;
 use App\ES\ArticleRule;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ class ArticleController extends Controller
      */
     public function show(int $id, Trending $trending, ArticleRepoImp $repo)
     {
+        /** @var Article $article */
         $article = $repo->get($id);
 
         if (in_array($article->id, $trending->getInvisibleIds())) {
@@ -132,6 +134,23 @@ class ArticleController extends Controller
     public function trending(Trending $trending, ArticleRepoImp $repo)
     {
         $articleIds = $trending->get();
+        $articles = $repo->getMany($articleIds);
+
+        return ArticleResource::collection(collect($articles));
+    }
+
+    /**
+     * @param TopArticleImp  $imp
+     * @param ArticleRepoImp $repo
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function top(TopArticleImp $imp, ArticleRepoImp $repo)
+    {
+        $articleIds = $imp->getTopArticles();
+
         $articles = $repo->getMany($articleIds);
 
         return ArticleResource::collection(collect($articles));

@@ -17,19 +17,17 @@ use App\Trending;
  * @link http://patorjk.com/software/taag/#p=display&f=Standard&t=duc's%20blog Text to ASCII
  */
 $router->get('/', function () use ($router) {
+    $version = $router->app->version();
+
     return <<<TAG
-     # welcome!
+     # welcome! power by {$version} 
       _            _       _     _             
    __| |_   _  ___( )___  | |__ | | ___   __ _ 
   / _` | | | |/ __|// __| | '_ \| |/ _ \ / _` |
  | (_| | |_| | (__  \__ \ | |_) | | (_) | (_| |
   \__,_|\__,_|\___| |___/ |_.__/|_|\___/ \__, |
-                                         |___/  created by duc @2018.
+                                         |___/  created by duc@2018.
 TAG;
-
-//    $obj = app()->make(App\Contracts\ArticleRepoImp::class);
-//    dd($obj);
-    return $router->app->version();
 });
 
 $router->get('/articles/{id}', 'ArticleController@show');
@@ -45,6 +43,8 @@ $router->get('/newest_articles', 'ArticleController@newest');
 $router->get('/popular_articles', 'ArticleController@popular');
 
 $router->get('/trending_articles', 'ArticleController@trending');
+
+$router->get('/top_articles', 'ArticleController@top');
 
 $router->get('/categories', 'CategoryController@index');
 
