@@ -29,6 +29,7 @@ $app->withFacades();
 
 $app->withEloquent();
 
+$app->configure('duc');
 $app->configure('cors');
 $app->configure('scout');
 $app->configure('cache');
@@ -70,9 +71,15 @@ $app->alias(\App\Contracts\TransformImp::class, 'rule');
 $app->singleton(
     App\Contracts\ArticleRepoImp::class,
     function () {
-        return new \App\Services\ArticleRepoCache(
-            new \App\Services\ArticleRepo
-        );
+        $useCache = config('duc.article_use_cache');
+
+        if ($useCache) {
+            return new \App\Services\ArticleRepoCache(
+                new \App\Services\ArticleRepo
+            );
+        } else {
+            return new \App\Services\ArticleRepo;
+        }
     }
 );
 

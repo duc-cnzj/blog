@@ -98,6 +98,14 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @param Request        $request
+     * @param ArticleRepoImp $imp
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function updateInfo(Request $request, ArticleRepoImp $imp)
     {
         info('更新用户信息，user_id：' . \Auth::id());

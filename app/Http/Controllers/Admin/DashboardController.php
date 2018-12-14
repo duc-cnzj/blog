@@ -37,6 +37,11 @@ class DashboardController extends Controller
         );
     }
 
+    /**
+     * @return int
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getArticleCacheCount(): int
     {
         $cacheKey = config('cache.prefix') . ':article:[0-9]*';
@@ -47,7 +52,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * @return mixed
+     * @return int
      *
      * @author duc <1025434218@qq.com>
      */
@@ -59,7 +64,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * @return mixed
+     * @return int
      *
      * @author duc <1025434218@qq.com>
      */
@@ -68,6 +73,11 @@ class DashboardController extends Controller
         return Comment::count();
     }
 
+    /**
+     * @return int
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getAuthorCount(): int
     {
         return User::count();

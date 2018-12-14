@@ -21,86 +21,40 @@ use App\Http\Resources\CategoryResource;
 |
 */
 
+/**
+ * @link http://patorjk.com/software/taag/#p=display&f=Standard&t=duc's%20blog Text to ASCII
+ */
 $router->get('/', function () use ($router) {
+    return <<<TAG
+     # welcome!
+      _            _       _     _             
+   __| |_   _  ___( )___  | |__ | | ___   __ _ 
+  / _` | | | |/ __|// __| | '_ \| |/ _ \ / _` |
+ | (_| | |_| | (__  \__ \ | |_) | | (_) | (_| |
+  \__,_|\__,_|\___| |___/ |_.__/|_|\___/ \__, |
+                                         |___/  created by duc @2018.
+TAG;
+
+//    $obj = app()->make(App\Contracts\ArticleRepoImp::class);
+//    dd($obj);
     return $router->app->version();
 });
 
-$router->get('/articles/{id}', function ($id, Trending $trending, ArticleRepoImp $repo) {
-    $article = $repo->get($id);
+$router->get('/articles/{id}', 'ArticleController@show');
 
-    if (in_array($article->id, $trending->getInvisibleIds())) {
-        throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
-    }
+$router->get('/articles', 'ArticleController@index');
 
-    $trending->push($article);
+$router->get('/search_articles', 'ArticleController@search');
 
-    return new ArticleResource($article);
-});
+$router->get('/home_articles', 'ArticleController@home');
 
-$router->get('/articles', function () {
-    return ArticleResource::collection(
-        Article::with('author')
-            ->visible()
-            ->latest()
-            ->select(['id', 'category_id', 'head_image', 'title', 'desc', 'created_at', 'author_id'])
-            ->paginate()
-    );
-});
+$router->get('/newest_articles', 'ArticleController@newest');
 
-$router->get('/search_articles', function (Request $request) {
-    $query = $request->query('q');
+$router->get('/popular_articles', 'ArticleController@popular');
 
-    if (! is_null($query)) {
-        $q = Article::search($query)
-            ->rule(\App\ES\ArticleRule::class);
-        $q->limit = 10000;
-        $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display'])
-            ->get()
-            ->load('author', 'tags', 'category')
-            ->where('display', true);
+$router->get('/trending_articles', 'ArticleController@trending');
 
-        return ArticleResource::collection($articles);
-    } else {
-        return ArticleResource::collection([]);
-    }
-});
-
-$router->get('/home_articles', function () {
-    $articles = Article::with('category:id,name')
-        ->visible()
-        ->latest()
-        ->take(3)
-        ->get(['id', 'category_id', 'head_image', 'title', 'created_at']);
-
-    return ArticleResource::collection($articles);
-});
-
-$router->get('/newest_articles', function () {
-    return ArticleResource::collection(Article::with('author', 'category:id,name')
-        ->visible()
-        ->latest()
-        ->take(13)
-        ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
-});
-
-$router->get('/popular_articles', function () {
-    return ArticleResource::collection(Article::with('author', 'category:id,name')
-        ->visible()
-        ->inRandomOrder()
-        ->take(8)
-        ->get(['id', 'category_id', 'head_image', 'title', 'created_at', 'author_id']));
-});
-
-$router->get('/trending_articles', function (Trending $trending, ArticleRepoImp $repo) {
-    $articleIds = $trending->get();
-    $articles = $repo->getMany($articleIds);
-
-    return ArticleResource::collection(collect($articles));
-});
-
-$router->get('/categories', function () {
-    return CategoryResource::collection(Category::all(['name', 'id']));
-});
+$router->get('/categories', 'CategoryController@index');
 
 $router->get('/nav_links', function () {
     return [
@@ -112,35 +66,6 @@ $router->get('/nav_links', function () {
     ];
 });
 
-$router->get('/articles/{id}/comments', function ($id, Request $request) {
-    $comments = Comment::where('article_id', $id)
-        ->get(['visitor', 'content', 'comment_id', 'created_at', 'id', 'user_id']);
+$router->get('/articles/{id}/comments', 'CommentController@index');
 
-    return response([
-        'data' => array_reverse(
-            c(CommentResource::collection($comments)->toArray($request))
-        ),
-    ], 200);
-});
-
-$router->post('/articles/{id}/comments', function ($id, Request $request) {
-    $article = Article::visible()->findOrFail($id);
-    $content = $request->input('content');
-    $parsedown = new \Parsedown();
-    $htmlContent = $parsedown->text($content);
-
-    /** @var Article $article */
-    $comment = $article->comments()->create([
-        'visitor'    => $request->ip(),
-        'content'    => $htmlContent,
-        'comment_id' => $request->input('comment_id', 0),
-        'user_id'    => \Auth::hasUser() ? \Auth::id() : 0,
-    ]);
-
-    return (new CommentResource($comment->load('user')))
-        ->additional([
-            'data' => [
-                'replies' => [],
-            ],
-        ]);
-});
+$router->post('/articles/{id}/comments', 'CommentController@store');

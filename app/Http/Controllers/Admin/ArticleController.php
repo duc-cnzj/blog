@@ -187,6 +187,13 @@ class ArticleController extends Controller
         return [$category, $tagIds];
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function search(Request $request)
     {
         $query = $request->query('q');
@@ -214,6 +221,13 @@ class ArticleController extends Controller
         }
     }
 
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function changeDisplay(int $id)
     {
         $article = Article::findOrFail($id);

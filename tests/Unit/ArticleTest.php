@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Events\ArticleCreated;
 use App\Tag;
 use App\User;
 use TestCase;
@@ -92,5 +93,12 @@ class ArticleTest extends TestCase
         $this->assertEquals('# content', $article->content_md);
         $this->assertEquals('<h1>content</h1>', $article->content_html);
         $this->assertNotEquals('content html bla..', $article->content_md);
+    }
+
+    /** @test */
+    public function when_it_created_will_broadcast_everyone()
+    {
+        $this->expectsEvents(ArticleCreated::class);
+        create(Article::class);
     }
 }
