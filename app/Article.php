@@ -7,15 +7,16 @@ use Emojione\Ruleset;
 use App\ES\ArticleRule;
 use ScoutElastic\Searchable;
 use App\Events\ArticleCreated;
-use App\Contracts\ArticleRepoImp;
+use App\Traits\ArticleCacheTrait;
 use App\ES\ArticleIndexConfigurator;
+use App\Traits\ArticleTrendingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
 class Article extends Model
 {
-    use Searchable, PivotEventTrait;
+    use Searchable, PivotEventTrait, ArticleCacheTrait, ArticleTrendingTrait;
 
     /**
      * @var string
@@ -108,19 +109,7 @@ class Article extends Model
         });
 
         static::deleted(function ($model) {
-            app(ArticleRepoImp::class)->removeBy($model->id);
-            app(Trending::class)->remove($model->id);
             $model->comments->each->delete();
-        });
-
-        static::updated(function ($model) {
-            if ($model->isDirty('display')) {
-                $model->getDirty()['display']
-                    ? app(Trending::class)->removeInvisible($model->id)
-                    : app(Trending::class)->addInvisible($model->id);
-            }
-
-            app(ArticleRepoImp::class)->removeBy($model->id);
         });
 
         static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {

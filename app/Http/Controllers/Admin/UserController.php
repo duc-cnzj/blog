@@ -10,6 +10,13 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index(Request $request)
     {
         $users = User::latest()->paginate($request->input('page_size') ?? 10);
@@ -17,6 +24,13 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return UserResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -46,11 +60,26 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return UserResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function show(int $id)
     {
         return new UserResource(User::findOrFail($id, ['id', 'name', 'email', 'avatar', 'bio']));
     }
 
+    /**
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function update(int $id, Request $request)
     {
         $this->validate($request, [
@@ -68,6 +97,13 @@ class UserController extends Controller
         return response([], 204);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function destroy(int $id)
     {
         if ($id === 1) {

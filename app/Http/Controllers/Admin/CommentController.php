@@ -10,6 +10,13 @@ use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index(Request $request)
     {
         $comments = Comment::with(['article:id,title', 'user'])
@@ -24,7 +31,15 @@ class CommentController extends Controller
         return CommentResource::collection($comments);
     }
 
-    public function store($articleId, Request $request)
+    /**
+     * @param int     $articleId
+     * @param Request $request
+     *
+     * @return CommentResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function store(int $articleId, Request $request)
     {
         $content = $request->input('content');
         $parsedown = new \Parsedown();
@@ -43,7 +58,14 @@ class CommentController extends Controller
         return new CommentResource($comment->load('user'));
     }
 
-    public function show($id)
+    /**
+     * @param int $id
+     *
+     * @return CommentResource
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function show(int $id)
     {
         $comment = Comment::with('article.author')->findOrFail($id);
         $userComments = $comment->reply()

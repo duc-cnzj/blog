@@ -27,11 +27,11 @@ class ImageController extends Controller
 
         $image->move($folder, $filename);
 
-        return [
+        return response([
             'data' => [
                 'name' => $filename,
                 'url'  => (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename),
             ],
-        ];
+        ], 200);
     }
 }
