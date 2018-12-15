@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/DuC-cnZj/blog.svg?branch=master)](https://travis-ci.org/DuC-cnZj/blog)
 ![StyleCI build status](https://github.styleci.io/repos/152713623/shield)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DuC-cnZj/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DuC-cnZj/blog/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/DuC-cnZj/blog/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/DuC-cnZj/blog/?branch=master)
 
 ## Features
 
