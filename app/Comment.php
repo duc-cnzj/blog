@@ -33,8 +33,18 @@ class Comment extends Model
      *
      * @author duc <1025434218@qq.com>
      */
-    public function reply()
+    public function replies()
     {
         return $this->hasMany(Comment::class, 'comment_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function parentReply()
+    {
+        return $this->belongsTo(Comment::class, 'comment_id');
     }
 }

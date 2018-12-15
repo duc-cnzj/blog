@@ -136,7 +136,7 @@ class ArticleController extends Controller
 
         $article->delete();
 
-        return response([], 204);
+        return response('', 204);
     }
 
     /**
@@ -238,7 +238,7 @@ class ArticleController extends Controller
 
         $article->update(['display' => ! $article->display]);
 
-        return response([], 204);
+        return response('', 204);
     }
 
     public function setTop(int $id)
@@ -252,7 +252,7 @@ class ArticleController extends Controller
         /** @var Article $article */
         $article->setTop();
 
-        return response([], 204);
+        return response('', 204);
     }
 
     public function cancelSetTop(int $id)
@@ -266,6 +266,6 @@ class ArticleController extends Controller
         /** @var Article $article */
         $article->cancelSetTop();
 
-        return response([], 204);
+        return response('', 204);
     }
 }

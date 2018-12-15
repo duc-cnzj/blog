@@ -33,6 +33,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    /**
+     *
+     * @author duc <1025434218@qq.com>
+     */
     protected static function boot()
     {
         parent::boot();
@@ -42,49 +46,107 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $user->categories->each->update(['user_id' => 0]);
             $user->tags->each->update(['user_id' => 0]);
             $user->articleRules->each->delete();
+            $user->regulars->each->delete();
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function articleRules()
     {
         return $this->hasMany(ArticleRegular::class, 'user_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function regulars()
+    {
+        return $this->hasMany(ArticleRegular::class, 'user_id');
+    }
+
+    /**
+     * @return $this
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function activeArticleRules()
     {
         return $this->articleRules()->where('status', true);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function articles()
     {
         return $this->hasMany(Article::class, 'author_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function tags()
     {
         return $this->hasMany(Tag::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function categories()
     {
         return $this->hasMany(Category::class);
     }
 
+    /**
+     * @return bool
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function isAdmin()
     {
         return $this->id === 1;
     }
 
+    /**
+     * @param $value
+     *
+     * @return string
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getAvatarAttribute($value)
     {
         return is_null($value) ? URL::asset('blog/default-avatar.png') : $value;
     }
 
+    /**
+     * @param $value
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
