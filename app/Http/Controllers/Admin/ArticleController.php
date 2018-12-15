@@ -23,7 +23,7 @@ class ArticleController extends Controller
         $articles = Article::with('category', 'tags')
             ->whole(! ! $request->input('all'))
             ->latest()
-            ->select('id', 'title', 'created_at', 'updated_at', 'category_id', 'display')
+            ->select('id', 'title', 'created_at', 'updated_at', 'category_id', 'display', 'top_at')
             ->paginate($request->input('page_size') ?? 10);
 
         return ArticleResource::collection($articles);
@@ -202,7 +202,7 @@ class ArticleController extends Controller
             $q = Article::search($query)
                 ->rule(\App\ES\ArticleRule::class);
             $q->limit = 10000;
-            $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display'])
+            $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display', 'top_at'])
                 ->when(! ! $request->input('all'), function ($q) {
                     info('amdin search all');
 
@@ -245,6 +245,10 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
+        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
+            return $this->fail('这篇文章不是你的，不能修改！', 403);
+        }
+
         /** @var Article $article */
         $article->setTop();
 
@@ -254,6 +258,10 @@ class ArticleController extends Controller
     public function cancelSetTop(int $id)
     {
         $article = Article::findOrFail($id);
+
+        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
+            return $this->fail('这篇文章不是你的，不能修改！', 403);
+        }
 
         /** @var Article $article */
         $article->cancelSetTop();

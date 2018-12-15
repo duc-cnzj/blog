@@ -13,7 +13,7 @@ services:
   - redis-server
 
 before_install:
-  - composer install --ignore-platform-reqs --optimize-autoloader --quiet
+  - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
 
 script:
   - vendor/bin/phpunit
