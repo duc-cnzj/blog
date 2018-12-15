@@ -94,7 +94,7 @@ class UserController extends Controller
 
         User::findOrFail($id)->update($request->only('name', 'email', 'bio'));
 
-        return response([], 204);
+        return response('', 204);
     }
 
     /**
@@ -113,7 +113,7 @@ class UserController extends Controller
         if (\Auth::user()->isAdmin()) {
             User::findOrFail($id)->delete();
 
-            return response([], 204);
+            return response('', 204);
         } else {
             return $this->fail('你没有删除用户的权限', 403);
         }

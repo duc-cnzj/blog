@@ -10,7 +10,7 @@ class ImageController extends Controller
     /**
      * @param Request $request
      *
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      *
      * @author duc <1025434218@qq.com>
      */
@@ -27,7 +27,7 @@ class ImageController extends Controller
 
         $image->move($folder, $filename);
 
-        return response([
+        return response()->json([
             'data' => [
                 'name' => $filename,
                 'url'  => (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename),

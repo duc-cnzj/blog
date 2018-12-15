@@ -68,7 +68,7 @@ class CommentController extends Controller
     public function show(int $id)
     {
         $comment = Comment::with('article.author')->findOrFail($id);
-        $userComments = $comment->reply()
+        $userComments = $comment->replies()
             ->where('user_id', \Auth::id())
             ->latest()
             ->get(['id', 'content']);

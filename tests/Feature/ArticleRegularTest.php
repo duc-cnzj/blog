@@ -18,7 +18,30 @@ class ArticleRegularTest extends TestCase
 
         $res->seeStatusCode(201);
 
-        $this->assertEquals((new \App\Services\HandleRule($rule))->apply(),
-            data_get(json_decode($res->response->content()), 'data.rule.express'));
+        $this->assertEquals(
+            (new \App\Services\HandleRule($rule))->apply(),
+            data_get(json_decode($res->response->content()), 'data.rule.express')
+        );
+    }
+
+    /** @test */
+    public function user_can_delete_it()
+    {
+        $user = $this->signIn();
+        $regular = create(\App\ArticleRegular::class, ['user_id' => $user->id]);
+
+        $this->json('DELETE', '/admin/article_regulars/' . $regular->id)->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function user_can_change_status()
+    {
+        $user = $this->signIn();
+        $regular = create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status' => true]);
+
+        $this->assertEquals(true, $regular->status);
+        $this->json('POST', '/admin/article_regulars/change_status', [
+            'id' => $regular->id,
+        ])->seeStatusCode(204);
     }
 }

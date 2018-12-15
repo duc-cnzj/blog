@@ -57,13 +57,13 @@ class ArticleRegularController extends Controller
     {
         ArticleRegular::findOrFail($id)->delete();
 
-        return response([], 204);
+        return response('', 204);
     }
 
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\JsonResponse
      *
      * @author duc <1025434218@qq.com>
      */
@@ -71,7 +71,7 @@ class ArticleRegularController extends Controller
     {
         $body = $request->input('body');
 
-        return response([
+        return response()->json([
             'data' => [
                 'body' => app()->makeWith('rule', [$body])->apply(),
             ],
@@ -93,6 +93,6 @@ class ArticleRegularController extends Controller
             'status' => ! $rule->status,
         ]);
 
-        return response([], 204);
+        return response('', 204);
     }
 }
