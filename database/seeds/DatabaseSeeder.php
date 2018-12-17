@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             factory(User::class)->create([
                 'name'     => 'admin',
                 'mobile'   => $adminMobile,
-                'password' => Hash::make($adminPwd ?: 'secret'),
+                'password' => $adminPwd ?: 'secret',
             ]);
         }
         // $this->call('UsersTableSeeder');
