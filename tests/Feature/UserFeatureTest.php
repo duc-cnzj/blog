@@ -10,7 +10,7 @@ class UserFeatureTest extends TestCase
     public function user_can_see_all_users()
     {
         $this->signIn();
-        create(\App\User::class, ['name' => 'duc', 'email' => '1025434218@qq.com']);
+        $this->newTestUser(['name' => 'duc', 'email' => '1025434218@qq.com']);
 
         $content = $this->get('/admin/users')->seeStatusCode(200)->response->content();
         $this->assertEquals(2, count(data_get(json_decode($content), 'data')));
@@ -29,11 +29,9 @@ class UserFeatureTest extends TestCase
         ])->seeStatusCode(422)
             ->seeJson([
                 'field'   => 'mobile',
-                'message' => '手机号格式不正确！',
         ])
         ->seeJson([
                 'field'   => 'email',
-                'message' => '邮箱 不是一个合法的邮箱。',
         ]);
 
         $this->json('post', '/admin/users', [
@@ -48,7 +46,7 @@ class UserFeatureTest extends TestCase
     public function user_can_see_user_detail()
     {
         $this->signIn();
-        $user = create(\App\User::class, ['name' => 'duc', 'email' => '1025434218@qq.com']);
+        $user = $this->newTestUser(['name' => 'duc', 'email' => '1025434218@qq.com']);
 
         $this->get('/admin/users/' . $user->id)->seeStatusCode(200)
             ->seeJson(['name' => 'duc', 'email' => '1025434218@qq.com']);
