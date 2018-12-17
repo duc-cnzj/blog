@@ -17,7 +17,7 @@ class DashboardTest extends TestCase
                 'cache_rate'    => 0,
                 'comment_count' => 0,
                 'author_count'  => 1,
-            ]
+            ],
         ]);
     }
 }

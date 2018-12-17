@@ -20,7 +20,7 @@ class GetTagTest extends TestCase
 
         $this->json('GET', '/admin/tags')->seeJson(['name' => 'duc']);
         $this->json('GET', '/admin/tags', [
-            'q' => 'abc'
+            'q' => 'abc',
         ])->dontSeeJson(['name' => 'duc']);
     }
 }

@@ -223,7 +223,7 @@ class ModifyArticleTest extends TestCase
         $data = data_get(json_decode($res->response->content()), 'data.content');
         $this->assertEquals('<h1>A123B456*789</h1>', $data);
     }
-    
+
     /** @test */
     public function user_who_has_it_can_change_display()
     {

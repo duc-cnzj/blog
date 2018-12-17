@@ -14,8 +14,7 @@ class CommentTest extends TestCase
         create(\App\Comment::class, ['article_id' => $article->id, 'content' => 'duc']);
 
         $this->get('/admin/comments')->seeStatusCode(200)->seeJson([
-            'body' => 'duc'
+            'body' => 'duc',
         ]);
-
     }
 }
