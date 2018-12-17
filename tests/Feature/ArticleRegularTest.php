@@ -25,6 +25,19 @@ class ArticleRegularTest extends TestCase
     }
 
     /** @test */
+    public function rule_has_it_own_format()
+    {
+        $this->signIn();
+        $rule = '^\d+';
+        $this->json('post', '/admin/article_regulars', [
+            'rule'   => ['express' => $rule],
+            'status' => 1,
+        ])->seeStatusCode(422)->seeJson([
+            'message' => 'rule 格式不正确！',
+        ]);
+    }
+
+    /** @test */
     public function user_can_delete_it()
     {
         $user = $this->signIn();
