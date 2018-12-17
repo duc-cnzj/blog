@@ -28,6 +28,7 @@ class LoginTest extends TestCase
 
         $this->post('/auth/me')->seeJson(['name' => 'duc', 'email' => '1025434128@qq.com']);
     }
+
 //
 //    /** @test */
 //    public function user_can_refresh_token()
