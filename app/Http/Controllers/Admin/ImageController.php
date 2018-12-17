@@ -17,10 +17,10 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'image' => 'required',
+            'image' => 'required|file',
         ]);
 
-        $image = $request->file('image');
+        $image = $request->image;
 
         $folder = base_path('public/images');
         $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
