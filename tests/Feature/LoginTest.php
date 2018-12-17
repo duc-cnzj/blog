@@ -10,14 +10,14 @@ class LoginTest extends TestCase
     public function login_test()
     {
         $this->newTestUser([
-            'name' => 'duc',
+            'name'     => 'duc',
             'password' => '111222',
-            'mobile' => '123456'
+            'mobile'   => '123456',
         ]);
 
         $this->post('/auth/login', [
-            'mobile' => '123456',
-            'password' => '111222'
+            'mobile'   => '123456',
+            'password' => '111222',
         ])->seeStatusCode(200);
     }
 
@@ -33,14 +33,14 @@ class LoginTest extends TestCase
     public function user_can_refresh_token()
     {
         $this->newTestUser([
-            'name' => 'duc',
+            'name'     => 'duc',
             'password' => '111222',
-            'mobile' => '123456'
+            'mobile'   => '123456',
         ]);
 
         $data = $this->post('/auth/login', [
-            'mobile' => '123456',
-            'password' => '111222'
+            'mobile'   => '123456',
+            'password' => '111222',
         ])->response->content();
 
         $this->post('/auth/refresh', [], ['Authorization' => 'bearer' . data_get($data, 'data.access_token')])
@@ -51,14 +51,14 @@ class LoginTest extends TestCase
     public function user_can_logout()
     {
         $this->newTestUser([
-            'name' => 'duc',
+            'name'     => 'duc',
             'password' => '111222',
-            'mobile' => '123456'
+            'mobile'   => '123456',
         ]);
 
         $data = $this->post('/auth/login', [
-            'mobile' => '123456',
-            'password' => '111222'
+            'mobile'   => '123456',
+            'password' => '111222',
         ])->response->content();
 
         $this->post('/auth/logout', [], ['Authorization' => 'bearer' . data_get($data, 'data.access_token')])
