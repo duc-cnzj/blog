@@ -20,7 +20,7 @@ class ImageController extends Controller
             'image' => 'required',
         ]);
 
-        $image = $request->image;
+        $image = $request->file('image');
 
         $folder = base_path('public/images');
         $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
