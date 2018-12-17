@@ -151,6 +151,43 @@ class ModifyArticleTest extends TestCase
     }
 
     /** @test */
+    public function user_can_not_update_article_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user2);
+        $article = create(Article::class, ['title' => 'title1', 'author_id' => $user1->id]);
+
+        $this->json('PUT', '/admin/articles/' . $article->id, [
+            'content'    => 'content',
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ])->seeStatusCode(403);
+    }
+
+    /** @test */
+    public function super_admin_can_update_article_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user1);
+        $article = create(Article::class, ['title' => 'title1', 'author_id' => $user2->id]);
+
+        $this->json('PUT', '/admin/articles/' . $article->id, [
+            'content'    => 'content',
+            'head_image' => 'http://avatar.com/image.jpg',
+            'title'      => 'article title',
+            'desc'       => str_random(32),
+            'category'   => 'php',
+            'tags'       => ['php', 'js'],
+        ])->seeStatusCode(200);
+        $this->assertTrue(\Auth::user()->isAdmin());
+    }
+
+    /** @test */
     public function article_should_apply_rule()
     {
         // <h1>dadsaa↵</h1>
@@ -185,5 +222,100 @@ class ModifyArticleTest extends TestCase
 
         $data = data_get(json_decode($res->response->content()), 'data.content');
         $this->assertEquals('<h1>A123B456*789</h1>', $data);
+    }
+    
+    /** @test */
+    public function user_who_has_it_can_change_display()
+    {
+        $user = $this->signIn();
+        $article = create(Article::class, ['author_id' => $user->id]);
+        $this->json('PUT', '/admin/article_change_display/' . $article->id)
+            ->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function user_who_do_not_has_it_can_not_change_display()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $article = create(Article::class, ['author_id' => $user1->id]);
+        $this->signIn([], $user2);
+        $this->json('PUT', '/admin/article_change_display/' . $article->id)
+            ->seeStatusCode(403);
+        $this->assertFalse(\Auth::user()->isAdmin());
+    }
+
+    /** @test */
+    public function super_admin_who_do_not_has_it_can_change_display()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $article = create(Article::class, ['author_id' => $user2->id]);
+        $this->signIn([], $user1);
+        $this->json('PUT', '/admin/article_change_display/' . $article->id)
+            ->seeStatusCode(204);
+        $this->assertTrue(\Auth::user()->isAdmin());
+    }
+
+    /** @test */
+    public function user_can_set_top()
+    {
+        $user = $this->signIn();
+        $article = create(Article::class, ['author_id' => $user->id]);
+        $this->json('PUT', '/admin/article_set_top/' . $article->id)
+            ->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function user_can_not_set_top_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user2);
+        $article = create(Article::class, ['author_id' => $user1->id]);
+        $this->json('PUT', '/admin/article_set_top/' . $article->id)
+            ->seeStatusCode(403);
+    }
+
+    /** @test */
+    public function super_admin_can_set_top_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user1);
+        $article = create(Article::class, ['author_id' => $user2->id]);
+        $this->json('PUT', '/admin/article_set_top/' . $article->id)
+            ->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function user_can_cancel_top()
+    {
+        $user = $this->signIn();
+        $article = create(Article::class, ['author_id' => $user->id]);
+        $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
+            ->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function user_can_not_cancel_top_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user2);
+        $article = create(Article::class, ['author_id' => $user1->id]);
+        $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
+            ->seeStatusCode(403);
+    }
+
+    /** @test */
+    public function super_admin_can_cancel_top_if_not_own()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user1);
+        $article = create(Article::class, ['author_id' => $user2->id]);
+        $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
+            ->seeStatusCode(204);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Article;
 use App\Trending;
+use App\Contracts\TopArticleImp;
 use App\Contracts\ArticleRepoImp;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
@@ -14,12 +15,50 @@ class ReadArticleTest extends TestCase
      */
     protected $trending;
 
+    /**
+     * @var TopArticleImp
+     */
+    protected $topArticle;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->trending = new Trending();
         $this->trending->reset();
+
+        $this->topArticle = app(TopArticleImp::class);
+        $this->topArticle->reset();
+    }
+
+    /** @test */
+    public function anyone_can_see_home_articles()
+    {
+        $this->get('/home_articles')->seeStatusCode(200);
+    }
+
+    /** @test */
+    public function anyone_can_see_newest_articles()
+    {
+        $this->get('/newest_articles')->seeStatusCode(200);
+    }
+
+    /** @test */
+    public function anyone_can_see_popular_articles()
+    {
+        $this->get('/popular_articles')->seeStatusCode(200);
+    }
+
+    /** @test */
+    public function anyone_can_see_trending_articles()
+    {
+        $this->get('/trending_articles')->seeStatusCode(200);
+    }
+
+    /** @test */
+    public function anyone_can_see_top_articles()
+    {
+        $this->get('/top_articles')->seeStatusCode(200);
     }
 
     /** @test */
@@ -231,5 +270,18 @@ class ReadArticleTest extends TestCase
         $r = $this->json('GET', '/admin/articles');
 
         $this->assertEquals(1, count(data_get(json_decode($r->response->content()), 'data')));
+    }
+
+    /** @test */
+    public function admin_can_see_all_articles()
+    {
+        $user = $this->signIn();
+        create(Article::class, ['title' => 'duc', 'author_id' => $user->id]);
+        create(Article::class, ['title' => 'duc']);
+        $this->assertEquals(2, Article::count());
+
+        $r = $this->json('GET', '/admin/articles', ['all' => 1]);
+
+        $this->assertEquals(2, count(data_get(json_decode($r->response->content()), 'data')));
     }
 }

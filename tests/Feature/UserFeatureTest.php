@@ -54,6 +54,21 @@ class UserFeatureTest extends TestCase
     }
 
     /** @test */
+    public function only_admin_can_delete_user()
+    {
+        $this->newTestUser(); // super_admin
+        $user2 = $this->newTestUser();
+        $user3 = $this->newTestUser();
+        $this->signIn([], $user2);
+
+        $this->assertFalse(\Auth::user()->isAdmin());
+        $this->assertEquals(3, \App\User::count());
+        $this->json('DELETE', "/admin/users/{$user3->id}")
+            ->seeStatusCode(403)
+            ->seeJsonContains(['message' => '你没有删除用户的权限']);
+    }
+
+    /** @test */
     public function when_user_deleted_all_articles_also_deleted()
     {
         $user = $this->newTestUser();

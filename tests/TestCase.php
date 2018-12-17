@@ -32,9 +32,12 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         ], $custom));
     }
 
-    public function signIn($custom = [])
+    public function signIn($custom = [], $user = null)
     {
-        $user = $this->newTestUser($custom);
+        if (is_null($user)) {
+            $user = $this->newTestUser($custom);
+        }
+
         $this->actingAs($user, 'api');
 
         return $user;

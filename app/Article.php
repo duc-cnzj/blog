@@ -116,7 +116,9 @@ class Article extends Model
 
         static::created(function ($model) {
             info('static::created', $model->toArray());
-            event(new ArticleCreated($model->makeHidden('content')->load('author')));
+            if ($model->display) {
+                event(new ArticleCreated($model->makeHidden('content')->load('author')));
+            }
         });
 
         static::deleted(function ($model) {

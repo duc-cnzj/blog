@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $articleCount = $this->getArticleCount();
 
         // 文章缓存率
-        $cacheRate = round($this->getArticleCacheCount() / $articleCount, 4) * 100;
+        $cacheRate = $articleCount === 0 ? 0 : round($this->getArticleCacheCount() / $articleCount, 4) * 100;
 
         // 总评论条数
         $commentCount = $this->getCommentCount();
