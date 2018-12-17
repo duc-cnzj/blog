@@ -7,6 +7,54 @@ class UserFeatureTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    public function user_can_see_all_users()
+    {
+        $this->signIn();
+        create(\App\User::class, ['name' => 'duc', 'email' => '1025434218@qq.com']);
+
+        $content = $this->get('/admin/users')->seeStatusCode(200)->response->content();
+        $this->assertEquals(2, count(data_get(json_decode($content), 'data')));
+    }
+
+    /** @test */
+    public function user_can_create_user()
+    {
+        $this->signIn();
+
+        $this->json('post', '/admin/users', [
+            'name'     => 'duc',
+            'email'    => '1025434218',
+            'mobile'   => '1888878008',
+            'password' => '123456',
+        ])->seeStatusCode(422)
+            ->seeJson([
+                'field'   => 'mobile',
+                'message' => '手机号格式不正确！',
+        ])
+            ->seeJson([
+                'field'   => 'email',
+                'message' => '邮箱 不是一个合法的邮箱。',
+        ]);
+
+        $this->json('post', '/admin/users', [
+            'name'     => 'duc',
+            'email'    => '1025434218@qq.com',
+            'mobile'   => '18888780080',
+            'password' => '123456',
+        ])->seeStatusCode(201);
+    }
+
+    /** @test */
+    public function user_can_see_user_detail()
+    {
+        $this->signIn();
+        $user = create(\App\User::class, ['name' => 'duc', 'email' => '1025434218@qq.com']);
+
+        $this->get('/admin/users/' . $user->id)->seeStatusCode(200)
+            ->seeJson(['name' => 'duc', 'email' => '1025434218@qq.com']);
+    }
+
+    /** @test */
     public function only_admin_can_update_other_user_profile()
     {
         $user = $this->signIn(['name'=>'admin']);

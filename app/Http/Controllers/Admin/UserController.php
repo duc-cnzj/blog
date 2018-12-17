@@ -35,9 +35,11 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name'     => 'required',
-            'email'    => ['required', Rule::unique('users')],
-            'mobile'   => ['required', Rule::unique('users')],
+            'email'    => ['required', Rule::unique('users'), 'email'],
+            'mobile'   => ['required', Rule::unique('users'), 'regex:"^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$"'],
             'password' => 'required',
+        ], [
+            'mobile.regex' => '手机号格式不正确！'
         ]);
 
         info('req', $request->all());

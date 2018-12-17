@@ -318,4 +318,15 @@ class ModifyArticleTest extends TestCase
         $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
             ->seeStatusCode(204);
     }
+
+    /** @test */
+    public function user_can_not_delete_other_article()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $this->signIn([], $user2);
+        $article = create(Article::class, ['author_id' => $user1->id]);
+        $this->json('delete', '/admin/articles/' . $article->id)
+            ->seeStatusCode(403);
+    }
 }
