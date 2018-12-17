@@ -31,7 +31,7 @@ class UserFeatureTest extends TestCase
                 'field'   => 'mobile',
                 'message' => '手机号格式不正确！',
         ])
-            ->seeJson([
+        ->seeJson([
                 'field'   => 'email',
                 'message' => '邮箱 不是一个合法的邮箱。',
         ]);
