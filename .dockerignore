@@ -3,7 +3,5 @@ docker-compose.yml
 .DS_Store
 .git
 .gitignore
-run
-shell
 .env
 /vendor
