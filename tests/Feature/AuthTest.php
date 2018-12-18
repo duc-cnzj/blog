@@ -9,14 +9,6 @@ class AuthTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        $trending = new Trending();
-        $trending->reset();
-    }
-
     /** @test */
     public function an_authenticated_user_can_update_info()
     {

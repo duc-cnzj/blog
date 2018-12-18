@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class UserFeatureTest extends TestCase
@@ -21,16 +23,19 @@ class UserFeatureTest extends TestCase
     {
         $this->signIn();
 
+        Storage::fake('tmp');
+
         $this->json('post', '/admin/users', [
             'name'     => 'duc',
             'email'    => '1025434218',
             'mobile'   => '1888878008',
             'password' => '123456',
+            'avatar'   => UploadedFile::fake()->image('avatar.jpg'),
         ])->seeStatusCode(422)
             ->seeJson([
                 'field'   => 'mobile',
         ])
-        ->seeJson([
+            ->seeJson([
                 'field'   => 'email',
         ]);
 
@@ -78,6 +83,25 @@ class UserFeatureTest extends TestCase
             'name' => 'admin1',
         ])->seeStatusCode(403);
         $this->assertEquals('admin', $user->fresh()->name);
+    }
+
+    /** @test */
+    public function when_user_update_profile_article_cache_will_reset()
+    {
+        $user2 = $this->newTestUser([
+            'name'  => 'user2',
+            'email' => '2@q.com',
+        ]);
+
+        create(\App\Article::class, ['author_id' => $user2->id], 2);
+        $this->get('/articles/1')->seeStatusCode(200);
+        $this->get('/articles/2')->seeStatusCode(200);
+        $this->assertTrue(app(\App\Contracts\ArticleRepoImp::class)->hasArticleCacheById(1));
+        $this->assertTrue(app(\App\Contracts\ArticleRepoImp::class)->hasArticleCacheById(2));
+
+        $user2->update(['name' => 'admin2']);
+        $this->assertFalse(app(\App\Contracts\ArticleRepoImp::class)->hasArticleCacheById(1));
+        $this->assertFalse(app(\App\Contracts\ArticleRepoImp::class)->hasArticleCacheById(2));
     }
 
     /** @test */
