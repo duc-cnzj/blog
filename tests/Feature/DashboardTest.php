@@ -52,6 +52,5 @@ class DashboardTest extends TestCase
                 'author_count'  => 1,
             ],
         ]);
-
     }
 }
