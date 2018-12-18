@@ -1,6 +1,5 @@
 <?php
 
-use App\Trending;
 use App\Contracts\ArticleRepoImp;
 use Illuminate\Http\UploadedFile;
 use Laravel\Lumen\Testing\DatabaseMigrations;

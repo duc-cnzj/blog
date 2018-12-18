@@ -35,7 +35,7 @@ class UserFeatureTest extends TestCase
             ->seeJson([
                 'field'   => 'mobile',
         ])
-            ->seeJson([
+        ->seeJson([
                 'field'   => 'email',
         ]);
 

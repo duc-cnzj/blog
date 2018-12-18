@@ -2,7 +2,7 @@
 
 
 use Faker\Factory;
-use \Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
