@@ -15,10 +15,6 @@ class ArticleTableSeeder extends Seeder
      */
     public function run()
     {
-        if (App\Article::count() > 0) {
-            return;
-        }
-
         factory(App\Category::class, $this->tagNums)->create();
         factory(App\Tag::class, $this->categoryNums)->create();
         factory(App\Article::class, $this->articleNums)->create([
