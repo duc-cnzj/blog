@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Contracts\ArticleRepoImp;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
@@ -100,13 +99,12 @@ class AuthController extends Controller
 
     /**
      * @param Request        $request
-     * @param ArticleRepoImp $imp
      *
      * @return \Illuminate\Http\JsonResponse
      *
      * @author duc <1025434218@qq.com>
      */
-    public function updateInfo(Request $request, ArticleRepoImp $imp)
+    public function updateInfo(Request $request)
     {
         info('更新用户信息，user_id：' . \Auth::id());
         $this->validate($request, [
@@ -132,9 +130,6 @@ class AuthController extends Controller
 
         $user = \Auth::user();
         $user->update($attributes);
-
-        // reset articles cache
-        $imp->resetArticleCacheByUser($user);
 
         return response()->json([
             'data' => new UserResource(\Auth::user()),

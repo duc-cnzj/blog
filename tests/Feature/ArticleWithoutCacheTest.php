@@ -18,7 +18,6 @@ class ArticleWithoutCacheTest extends TestCase
         parent::setUp();
 
         $this->trending = new Trending();
-        $this->trending->reset();
 
         config(['duc.article_use_cache' => false]);
     }
@@ -62,5 +61,26 @@ class ArticleWithoutCacheTest extends TestCase
         $data = json_decode($res->response->content());
         $this->assertEquals(10, count(data_get($data, 'data')));
         $this->assertEquals(4, count(DB::getQueryLog()));
+    }
+
+    /** @test */
+    public function user_can_delete_article()
+    {
+        $user = $this->newTestUser();
+        $this->signIn([], $user);
+        $article = create(Article::class, ['author_id' => $user->id]);
+        $this->json('delete', '/admin/articles/' . $article->id)
+            ->seeStatusCode(204);
+    }
+
+    /** @test */
+    public function article_doesnt_has_cache()
+    {
+        $user = $this->newTestUser();
+        $this->signIn([], $user);
+        $article = create(Article::class, ['author_id' => $user->id]);
+        $this->json('GET', '/articles/' . $article->id)
+            ->seeStatusCode(200);
+        $this->assertFalse(app(\App\Contracts\ArticleRepoImp::class)->hasArticleCacheById($article->id));
     }
 }

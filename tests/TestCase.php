@@ -2,6 +2,7 @@
 
 
 use Faker\Factory;
+use \Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
@@ -18,6 +19,17 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     public function setUp()
     {
         parent::setUp();
+
+        $cacheTestingKeys = Redis::connection('cache')->keys('*testing*');
+        if (count($cacheTestingKeys) > 0) {
+            Redis::connection('cache')->del($cacheTestingKeys);
+        }
+
+        $testingKeys = Redis::connection('default')->keys('*testing*');
+
+        if (count($testingKeys) > 0) {
+            Redis::connection('default')->del($testingKeys);
+        }
         $this->withoutEvents();
     }
 

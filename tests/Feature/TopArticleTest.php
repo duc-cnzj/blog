@@ -24,10 +24,8 @@ class TopArticleTest extends TestCase
         parent::setUp();
 
         $this->trending = new Trending();
-        $this->trending->reset();
 
         $this->topArticle = app(TopArticleImp::class);
-        $this->topArticle->reset();
     }
 
     /** @test */

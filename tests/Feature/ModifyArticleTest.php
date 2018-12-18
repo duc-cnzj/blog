@@ -19,7 +19,6 @@ class ModifyArticleTest extends TestCase
         parent::setUp();
 
         $this->trending = new Trending();
-        $this->trending->reset();
     }
 
     /** @test */

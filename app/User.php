@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +41,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected static function boot()
     {
         parent::boot();
+
+        static::updated(function ($user) {
+            app(ArticleRepoImp::class)->resetArticleCacheByUser($user);
+        });
 
         static::deleted(function ($user) {
             $user->articles->each->delete();

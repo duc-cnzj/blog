@@ -6,6 +6,7 @@ use App\User;
 use App\Article;
 use App\Comment;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class DashboardController extends Controller
@@ -44,9 +45,11 @@ class DashboardController extends Controller
      */
     public function getArticleCacheCount(): int
     {
-        $cacheKey = config('cache.prefix') . ':article:[0-9]*';
+        $key = app()->environment('testing') ? ':testing_article:[0-9]*' : ':article:[0-9]*';
 
-        $articleCacheCount = Redis::keys($cacheKey);
+        $cacheKey = config('cache.prefix') . $key;
+
+        $articleCacheCount = Redis::connection()->keys($cacheKey);
 
         return count($articleCacheCount);
     }
