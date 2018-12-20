@@ -34,3 +34,17 @@ if (! function_exists('config_path')) {
         return app()->getConfigurationPath();
     }
 }
+
+if (! function_exists('getAuthUser')) {
+    function getAuthUser() {
+        $guards = array_keys(config('auth.guards'));
+        foreach ($guards as $guard) {
+            \Auth::shouldUse($guard);
+            if (\Auth::hasUser()) {
+                return \Auth::user();
+            }
+        }
+
+        return null;
+    }
+}

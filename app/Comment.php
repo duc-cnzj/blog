@@ -11,7 +11,7 @@ class Comment extends Model
      */
     protected $guarded = [];
 
-    protected $with = ['user'];
+    protected $with = ['userable'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -23,9 +23,9 @@ class Comment extends Model
         return $this->belongsTo(Article::class);
     }
 
-    public function user()
+    public function userable()
     {
-        return $this->belongsTo(User::class)->withDefault();
+        return $this->morphTo();
     }
 
     /**

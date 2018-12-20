@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use App\Article;
 use App\Comment;
 use Illuminate\Http\Request;
@@ -19,11 +20,11 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
-        $comments = Comment::with(['article:id,title', 'user'])
+        $comments = Comment::with(['article:id,title', 'userable'])
             ->whereHas('article', function ($q) {
                 $q->where('author_id', \Auth::id());
             })
-            ->where('user_id', '<>', \Auth::id())
+            ->where('userable_id', '<>', \Auth::id())
             ->latest()
             ->select('id', 'content', 'created_at', 'article_id', 'visitor')
             ->paginate($request->input('page_size') ?? 10);
@@ -49,13 +50,14 @@ class CommentController extends Controller
         $article = Article::findOrFail($articleId);
 
         $comment = $article->comments()->create([
-            'visitor'    => $request->ip(),
-            'content'    => $htmlContent,
-            'comment_id' => $request->input('comment_id', 0),
-            'user_id'    => \Auth::id(),
+            'visitor'          => $request->ip(),
+            'content'          => $htmlContent,
+            'comment_id'       => $request->input('comment_id', 0),
+            'userable_id'      => \Auth::id(),
+            'userable_type'    => User::class,
         ]);
 
-        return new CommentResource($comment->load('user'));
+        return new CommentResource($comment->load('userable'));
     }
 
     /**
@@ -69,7 +71,8 @@ class CommentController extends Controller
     {
         $comment = Comment::with('article.author')->findOrFail($id);
         $userComments = $comment->replies()
-            ->where('user_id', \Auth::id())
+            ->where('userable_id', \Auth::id())
+            ->where('userable_type', '=', 'App\User')
             ->latest()
             ->get(['id', 'content']);
 

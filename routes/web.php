@@ -30,6 +30,13 @@ $router->get('/', function () use ($router) {
 TAG;
 });
 
+
+$router->get('/login/github', 'AuthController@redirectToProvider');
+
+$router->get('/login/github/callback', 'AuthController@handleProviderCallback');
+
+$router->post('/me', 'AuthController@me');
+
 $router->get('/articles/{id}', 'ArticleController@show');
 
 $router->get('/articles', 'ArticleController@index');

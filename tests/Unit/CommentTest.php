@@ -25,7 +25,7 @@ class CommentTest extends TestCase
     {
         $comment = create(Comment::class);
 
-        $this->assertInstanceOf(User::class, $comment->user);
+        $this->assertEquals(null, $comment->user);
     }
 
     /** @test */

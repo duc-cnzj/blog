@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Socialite\SocialiteManager;
+use Laravel\Socialite\Contracts\Factory;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -33,6 +35,7 @@ $app->configure('duc');
 $app->configure('cors');
 $app->configure('scout');
 $app->configure('cache');
+$app->configure('services');
 $app->configure('filesystems');
 $app->configure('broadcasting');
 $app->configure('scout_elastic');
@@ -82,6 +85,10 @@ $app->singleton(
         }
     }
 );
+
+$app->singleton(Factory::class, function ($app) {
+    return new SocialiteManager($app);
+});
 
 $app->singleton(
     App\Contracts\TopArticleImp::class,
