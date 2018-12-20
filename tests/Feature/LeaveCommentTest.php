@@ -35,7 +35,7 @@ class LeaveCommentTest extends TestCase
         $res = $this->post("/articles/{$article->id}/comments", [
             'content' => 'this is a comment.',
         ], [
-            'Authorization' => $token
+            'Authorization' => $token,
         ]);
         $res->seeStatusCode(201);
         $res->seeJsonContains([
@@ -56,7 +56,7 @@ class LeaveCommentTest extends TestCase
         $res = $this->post("/articles/{$article->id}/comments", [
             'content' => 'this is a comment.',
         ], [
-            'Authorization' => $token
+            'Authorization' => $token,
         ]);
 
         $res->seeStatusCode(201);
