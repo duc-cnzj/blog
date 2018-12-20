@@ -24,7 +24,10 @@ class CommentController extends Controller
             ->whereHas('article', function ($q) {
                 $q->where('author_id', \Auth::id());
             })
-            ->where('userable_id', '<>', \Auth::id())
+            ->where(function ($q) {
+                $q->where('userable_id', '<>', \Auth::id())
+                    ->where('userable_type', '<>', User::class);
+            })
             ->latest()
             ->select('id', 'content', 'created_at', 'article_id', 'visitor')
             ->paginate($request->input('page_size') ?? 10);
@@ -72,7 +75,7 @@ class CommentController extends Controller
         $comment = Comment::with('article.author')->findOrFail($id);
         $userComments = $comment->replies()
             ->where('userable_id', \Auth::id())
-            ->where('userable_type', '=', 'App\User')
+            ->where('userable_type', '=', User::class)
             ->latest()
             ->get(['id', 'content']);
 
