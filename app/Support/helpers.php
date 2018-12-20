@@ -36,7 +36,8 @@ if (! function_exists('config_path')) {
 }
 
 if (! function_exists('getAuthUser')) {
-    function getAuthUser() {
+    function getAuthUser()
+    {
         $guards = array_keys(config('auth.guards'));
         foreach ($guards as $guard) {
             \Auth::shouldUse($guard);
