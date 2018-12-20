@@ -40,8 +40,8 @@ if (! function_exists('getAuthUser')) {
         $guards = array_keys(config('auth.guards'));
         foreach ($guards as $guard) {
             \Auth::shouldUse($guard);
-            if (\Auth::hasUser()) {
-                return \Auth::user();
+            if ($user = \Auth::user()) {
+                return $user;
             }
         }
 
