@@ -75,7 +75,7 @@ class AuthController extends Controller
 
         $token = \Auth::fromSubject($socialiteUser);
 
-        return view('home', ['token' => $token]);
+        return view('home', ['token' => $token, 'domain' => env('FRONTEND_DOMAIN')]);
 //        return $this->respondWithToken($token);
     }
 
