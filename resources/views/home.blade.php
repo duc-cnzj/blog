@@ -12,6 +12,7 @@
 <script>
     window.onload = function () {
         window.localStorage.setItem('socialite_token', "bearer {{ $token }}");
+        window.opener.postMessage("bearer {{ $token }}", 'http://localhost:8080/');
         window.close();
     }
 </script>
