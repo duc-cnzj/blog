@@ -27,10 +27,15 @@ class LeaveCommentTest extends TestCase
     /** @test */
     public function admin_can_leave_test_in_frontend()
     {
-        $this->signIn(['name' => 'duc', 'avatar' => 'http://localhost/avatar.jpg']);
+        $user = $this->newTestUser(['name' => 'duc', 'avatar' => 'http://localhost/avatar.jpg']);
+        \Auth::shouldUse('socialite');
+        $token = 'bearer ' . \Auth::fromSubject($user);
+
         $article = create(Article::class);
         $res = $this->post("/articles/{$article->id}/comments", [
             'content' => 'this is a comment.',
+        ], [
+            'Authorization' => $token
         ]);
         $res->seeStatusCode(201);
         $res->seeJsonContains([
@@ -44,11 +49,14 @@ class LeaveCommentTest extends TestCase
     public function socialite_user_also_can_leave_test_in_frontend()
     {
         $user = create(\App\SocialiteUser::class, ['name' => 'duc', 'avatar' => 'http://localhost/avatar.jpg']);
-        $this->actingAs($user, 'socialite');
+        \Auth::shouldUse('socialite');
+        $token = 'bearer ' . \Auth::fromSubject($user);
 
         $article = create(Article::class);
         $res = $this->post("/articles/{$article->id}/comments", [
             'content' => 'this is a comment.',
+        ], [
+            'Authorization' => $token
         ]);
 
         $res->seeStatusCode(201);
