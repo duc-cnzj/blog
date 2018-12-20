@@ -30,7 +30,6 @@ $router->get('/', function () use ($router) {
 TAG;
 });
 
-
 $router->get('/login/github', 'AuthController@redirectToProvider');
 
 $router->get('/login/github/callback', 'AuthController@handleProviderCallback');
