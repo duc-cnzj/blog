@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -40,6 +39,11 @@ return [
             'driver'   => 'jwt',
             'provider' => 'users',
         ],
+
+        'socialite' => [
+            'driver'   => 'jwt',
+            'provider' => 'socialite_users',
+        ],
     ],
 
     /*
@@ -65,6 +69,11 @@ return [
             'driver' => 'eloquent',
             'model'  => App\User::class,
         ],
+
+        'socialite_users' => [
+            'driver' => 'eloquent',
+            'model'  => App\SocialiteUser::class,
+        ],
     ],
 
     /*
@@ -89,5 +98,4 @@ return [
     'passwords' => [
         //
     ],
-
 ];

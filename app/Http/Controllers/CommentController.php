@@ -20,7 +20,15 @@ class CommentController extends Controller
     public function index($id, Request $request)
     {
         $comments = Comment::where('article_id', $id)
-            ->get(['visitor', 'content', 'comment_id', 'created_at', 'id', 'user_id']);
+            ->get([
+                'visitor',
+                'content',
+                'comment_id',
+                'created_at',
+                'id',
+                'userable_id',
+                'userable_type',
+            ]);
 
         return response()->json([
             'data' => array_reverse(
@@ -43,16 +51,18 @@ class CommentController extends Controller
         $content = $request->input('content');
         $parsedown = new \Parsedown();
         $htmlContent = $parsedown->text($content);
+        $user = getAuthUser();
 
         /** @var Article $article */
         $comment = $article->comments()->create([
-            'visitor'    => $request->ip(),
-            'content'    => $htmlContent,
-            'comment_id' => $request->input('comment_id', 0),
-            'user_id'    => \Auth::hasUser() ? \Auth::id() : 0,
+            'visitor'          => $request->ip(),
+            'content'          => $htmlContent,
+            'comment_id'       => $request->input('comment_id', 0),
+            'userable_id'      => is_null($user) ? 0 : $user->id,
+            'userable_type'    => is_null($user) ? '' : get_class($user),
         ]);
 
-        return (new CommentResource($comment->load('user')))
+        return (new CommentResource($comment->load('userable')))
             ->additional([
                 'data' => [
                     'replies' => [],

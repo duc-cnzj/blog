@@ -55,14 +55,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *
-     * @author duc <1025434218@qq.com>
-     */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->morphMany(Comment::class, 'userable');
     }
 
     /**
@@ -86,7 +81,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      *
      * @author duc <1025434218@qq.com>
      */
