@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use TestCase;
 use App\Article;
 use App\Comment;
