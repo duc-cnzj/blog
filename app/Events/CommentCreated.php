@@ -37,7 +37,7 @@ class CommentCreated extends Event implements ShouldBroadcastNow
             'comment_id' => $this->comment->comment_id,
             'created_at' => optional($this->comment->created_at)->diffForHumans(),
             'author'     => $this->getAuthor(),
-            'replies' => [],
+            'replies'    => [],
         ];
     }
 
