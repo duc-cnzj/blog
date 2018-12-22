@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use TestCase;
 use App\Comment;
 use App\SocialiteUser;
-use TestCase;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class SocialiteUserTest extends TestCase
