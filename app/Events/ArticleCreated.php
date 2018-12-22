@@ -5,9 +5,9 @@ namespace App\Events;
 use App\Article;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ArticleCreated extends Event implements ShouldBroadcastNow
+class ArticleCreated extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -37,10 +37,10 @@ class ArticleCreated extends Event implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
-            'id'     => $this->article->id,
-            'title'  => $this->article->title,
-            'desc'   => $this->article->desc,
-            'author' => $this->article->author->name,
+            'id'      => $this->article->id,
+            'title'   => $this->article->title,
+            'desc'    => $this->article->desc,
+            'author'  => $this->article->author->name,
         ];
     }
 }
