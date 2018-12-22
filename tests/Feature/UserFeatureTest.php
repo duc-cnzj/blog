@@ -39,11 +39,12 @@ class UserFeatureTest extends TestCase
                 'field'   => 'email',
         ]);
 
-        $this->json('post', '/admin/users', [
+        $this->post('/admin/users', [
             'name'     => 'duc',
             'email'    => '1025434218@qq.com',
             'mobile'   => '18888780080',
             'password' => '123456',
+            'avatar'   => UploadedFile::fake()->image('avatar.jpg'),
         ])->seeStatusCode(201);
     }
 

@@ -12,7 +12,7 @@ if (! function_exists('c')) {
     {
         $arr = [];
         foreach ($comments as $item) {
-            if ($item['comment_id'] === $pid) {
+            if ((int) $item['comment_id'] === $pid) {
                 $data = c($comments, $item['id']);
                 $item['replies'] = $data;
                 $arr[] = $item;

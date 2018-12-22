@@ -4,9 +4,72 @@ use App\Contracts\ArticleRepoImp;
 use Illuminate\Http\UploadedFile;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class AuthTest extends TestCase
+class AdminAuthTest extends TestCase
 {
     use DatabaseMigrations;
+
+    /** @test */
+    public function user_can_not_login_with_incorrect_credentials()
+    {
+        $this->newTestUser([
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ]);
+
+        $this->json('POST', '/auth/login', [
+            'mobile'   => '18888780080',
+            'password' => 'error',
+        ])->seeStatusCode(401)
+            ->seeJson([
+            'error' => [
+                'code'    => 401,
+                'message' => 'Unauthorized.',
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function user_can_login_with_credentials()
+    {
+        $this->newTestUser([
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ]);
+
+        $this->json('POST', '/auth/login', [
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ])->seeStatusCode(200)
+            ->seeJsonStructure([
+            'data' => [
+                'access_token',
+                'token_type',
+                'expires_in',
+                'refresh_ttl',
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function authenticated_user_can_get_info()
+    {
+        $this->signIn();
+
+        $this->post('/auth/me')->seeJsonStructure([
+            'data' => [
+                'access',
+                'token',
+                'id',
+                'name',
+                'email',
+                'mobile',
+                'avatar',
+                'bio',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+    }
 
     /** @test */
     public function an_authenticated_user_can_update_info()
