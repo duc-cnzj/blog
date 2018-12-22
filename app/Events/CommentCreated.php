@@ -5,9 +5,9 @@ namespace App\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class CommentCreated extends Event implements ShouldBroadcastNow
+class CommentCreated extends Event implements ShouldBroadcast
 {
     use SerializesModels, InteractsWithSockets;
 
@@ -37,7 +37,7 @@ class CommentCreated extends Event implements ShouldBroadcastNow
             'comment_id' => $this->comment->comment_id,
             'created_at' => optional($this->comment->created_at)->diffForHumans(),
             'author'     => $this->getAuthor(),
-            'replies' => [],
+            'replies'    => [],
         ];
     }
 
