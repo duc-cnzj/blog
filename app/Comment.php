@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Events\CommentCreated;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Broadcasting\Factory;
 
 class Comment extends Model
 {
@@ -12,6 +14,19 @@ class Comment extends Model
     protected $guarded = [];
 
     protected $with = ['userable'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            app(Factory::class)->event(
+                new CommentCreated(
+                    $model->load(['article:id', 'userable'])
+                )
+            )->toOthers();
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
