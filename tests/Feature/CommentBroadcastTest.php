@@ -1,6 +1,5 @@
 <?php
 
-use App\Article;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class CommentBroadcastTest extends TestCase
