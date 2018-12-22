@@ -74,15 +74,15 @@ class ArticleRegularTest extends TestCase
         $user = $this->signIn();
         create(ArticleRegular::class, [
             'user_id' => $user->id,
-            'status' => true,
-            'rule' => ['express' => '/^\d+/', 'replace' => 'a']
+            'status'  => true,
+            'rule'    => ['express' => '/^\d+/', 'replace' => 'a'],
         ]);
         $this->post('/admin/article_regulars/test', [
-           'body' => '123456a'
+           'body' => '123456a',
         ])->seeJson([
             'data' => [
-                'body' => 'aa'
-            ]
+                'body' => 'aa',
+            ],
         ]);
     }
 
