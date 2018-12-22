@@ -21,5 +21,7 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
         'article_id' => function () {
             return factory(Article::class)->create()->id;
         },
+        'userable_id'   => 0,
+        'userable_type' => '',
     ];
 });

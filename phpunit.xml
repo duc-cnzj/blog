@@ -25,7 +25,7 @@
         <env name="SCOUT_DRIVER" value="null"/>
         <env name="CACHE_DRIVER" value="redis"/>
         <env name="QUEUE_DRIVER" value="sync"/>
-        <env name="REDIS_HOST" value="localhost"/>
+        <env name="REDIS_HOST" value="redis"/>
         <env name="REDIS_PASSWORD" value="null"/>
         <env name="REDIS_PORT" value="6379"/>
     </php>

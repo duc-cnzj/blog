@@ -43,8 +43,8 @@ class AuthController extends Controller
     {
         try {
             $user = Socialite::driver('github')->stateless()->user();
-        } catch (RequestException $e) {
-            if ($e->getCode() === 401) {
+        } catch (\Exception $e) {
+            if ($e instanceof RequestException && $e->getResponse()->getStatusCode() === 401) {
                 return response('请不要重复刷新，每个 token 只能用一次', 401);
             }
 
@@ -76,26 +76,6 @@ class AuthController extends Controller
         $token = \Auth::fromSubject($socialiteUser);
 
         return view('home', ['token' => $token, 'domain' => env('FRONTEND_DOMAIN')]);
-//        return $this->respondWithToken($token);
-    }
-
-    /**
-     * @param $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @author duc <1025434218@qq.com>
-     */
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'data' => [
-                'access_token' => $token,
-                'token_type'   => 'bearer',
-                'expires_in'   => \Auth::factory()->getTTL() * 60,
-                'refresh_ttl'  => \Auth::blacklist()->getRefreshTTL() * 60,
-            ],
-        ]);
     }
 
     /**
