@@ -11,7 +11,6 @@
 登陆中...
 <script>
     window.onload = function () {
-        window.localStorage.setItem('socialite_token', "bearer {{ $token }}");
         window.opener.postMessage("bearer {{ $token }}", "{{ $domain }}");
         window.close();
     }
