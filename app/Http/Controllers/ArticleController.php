@@ -11,6 +11,10 @@ use App\Contracts\ArticleRepoImp;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * Class ArticleController
+ * @package App\Http\Controllers
+ */
 class ArticleController extends Controller
 {
     /**
@@ -30,14 +34,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param int            $id
-     * @param Trending       $trending
+     * @param int $id
+     * @param Trending $trending
      * @param ArticleRepoImp $repo
-     *
      * @return ArticleResource
      *
      * @author duc <1025434218@qq.com>
-     * @throws ModelNotFoundException
      */
     public function show(int $id, Trending $trending, ArticleRepoImp $repo)
     {

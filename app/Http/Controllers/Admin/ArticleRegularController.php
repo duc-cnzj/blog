@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleRegularResource;
 
+/**
+ * Class ArticleRegularController
+ * @package App\Http\Controllers\Admin
+ */
 class ArticleRegularController extends Controller
 {
     /**
@@ -25,8 +29,8 @@ class ArticleRegularController extends Controller
 
     /**
      * @param Request $request
-     *
      * @return ArticleRegularResource
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */

@@ -6,6 +6,10 @@ use App\Events\CommentCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Broadcasting\Factory;
 
+/**
+ * Class Comment
+ * @package App
+ */
 class Comment extends Model
 {
     /**
@@ -13,8 +17,15 @@ class Comment extends Model
      */
     protected $guarded = [];
 
+    /**
+     * @var array
+     */
     protected $with = ['userable'];
 
+    /**
+     *
+     * @author duc <1025434218@qq.com>
+     */
     protected static function boot()
     {
         parent::boot();
@@ -38,6 +49,11 @@ class Comment extends Model
         return $this->belongsTo(Article::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function userable()
     {
         return $this->morphTo();

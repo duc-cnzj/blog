@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 
+/**
+ * Class CommentController
+ * @package App\Http\Controllers\Admin
+ */
 class CommentController extends Controller
 {
     /**
@@ -33,9 +37,8 @@ class CommentController extends Controller
     }
 
     /**
-     * @param int     $articleId
+     * @param int $articleId
      * @param Request $request
-     *
      * @return CommentResource
      *
      * @author duc <1025434218@qq.com>

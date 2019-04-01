@@ -4,6 +4,10 @@ namespace App\Contracts;
 
 use App\Article;
 
+/**
+ * Interface TopArticleImp
+ * @package App\Contracts
+ */
 interface TopArticleImp
 {
     /**

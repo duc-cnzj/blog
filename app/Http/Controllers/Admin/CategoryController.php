@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 
+/**
+ * Class CategoryController
+ * @package App\Http\Controllers\Admin
+ */
 class CategoryController extends Controller
 {
     /**

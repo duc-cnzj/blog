@@ -10,8 +10,7 @@ class ArticleRepo implements ArticleRepoImp
 {
     /**
      * @param int $id
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|static|static[]
+     * @return Article|Article[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      *
      * @author duc <1025434218@qq.com>
      */

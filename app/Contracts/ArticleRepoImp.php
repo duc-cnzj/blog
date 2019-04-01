@@ -5,6 +5,10 @@ namespace App\Contracts;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Interface ArticleRepoImp
+ * @package App\Contracts
+ */
 interface ArticleRepoImp
 {
     /**
@@ -20,7 +24,6 @@ interface ArticleRepoImp
 
     /**
      * @param int $id
-     *
      * @return bool
      *
      * @author duc <1025434218@qq.com>

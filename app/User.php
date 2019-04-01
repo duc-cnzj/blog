@@ -12,6 +12,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable;
@@ -55,6 +59,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function comments()
     {
         return $this->morphMany(Comment::class, 'userable');
