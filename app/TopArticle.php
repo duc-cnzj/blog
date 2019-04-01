@@ -5,6 +5,10 @@ namespace App;
 use App\Contracts\TopArticleImp;
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * Class TopArticle
+ * @package App
+ */
 class TopArticle implements TopArticleImp
 {
     /**

@@ -5,10 +5,17 @@ namespace App\ES;
 use ScoutElastic\Migratable;
 use ScoutElastic\IndexConfigurator;
 
+/**
+ * Class ArticleIndexConfigurator
+ * @package App\ES
+ */
 class ArticleIndexConfigurator extends IndexConfigurator
 {
     use Migratable;
 
+    /**
+     * @var string
+     */
     protected $name = 'article_index';
 
     /**

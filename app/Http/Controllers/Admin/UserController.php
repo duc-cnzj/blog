@@ -8,6 +8,10 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
+/**
+ * Class UserController
+ * @package App\Http\Controllers\Admin
+ */
 class UserController extends Controller
 {
     /**
@@ -26,8 +30,8 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     *
      * @return UserResource
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -76,10 +80,10 @@ class UserController extends Controller
     }
 
     /**
-     * @param int     $id
+     * @param int $id
      * @param Request $request
-     *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */

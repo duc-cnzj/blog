@@ -7,6 +7,10 @@ use App\Comment;
 use Illuminate\Http\Request;
 use App\Http\Resources\CommentResource;
 
+/**
+ * Class CommentController
+ * @package App\Http\Controllers
+ */
 class CommentController extends Controller
 {
     /**
@@ -39,8 +43,7 @@ class CommentController extends Controller
 
     /**
      * @param Request $request
-     * @param int     $id
-     *
+     * @param int $id
      * @return CommentResource
      *
      * @author duc <1025434218@qq.com>

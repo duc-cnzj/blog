@@ -9,8 +9,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * Class DashboardController
+ * @package App\Http\Controllers\Admin
+ */
 class DashboardController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function index()
     {
         // 文章总数

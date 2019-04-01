@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TagResource;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class TagController
+ * @package App\Http\Controllers\Admin
+ */
 class TagController extends Controller
 {
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 if (! function_exists('c')) {
     /**
      * @param array $comments
@@ -36,6 +38,11 @@ if (! function_exists('config_path')) {
 }
 
 if (! function_exists('getAuthUser')) {
+    /**
+     * @return User|null
+     *
+     * @author duc <1025434218@qq.com>
+     */
     function getAuthUser()
     {
         $guards = array_keys(config('auth.guards'));

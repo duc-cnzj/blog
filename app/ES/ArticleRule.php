@@ -4,6 +4,10 @@ namespace App\ES;
 
 use ScoutElastic\SearchRule;
 
+/**
+ * Class ArticleRule
+ * @package App\ES
+ */
 class ArticleRule extends SearchRule
 {
     /**

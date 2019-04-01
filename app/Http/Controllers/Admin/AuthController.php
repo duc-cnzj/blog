@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers\Admin
+ */
 class AuthController extends Controller
 {
     /**
@@ -19,11 +23,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
-     *
      * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     *
+     * @author duc <1025434218@qq.com>
      */
     public function login(Request $request)
     {
@@ -98,9 +102,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @param Request        $request
-     *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */

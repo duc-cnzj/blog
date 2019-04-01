@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class ImageController
+ * @package App\Http\Controllers\Admin
+ */
 class ImageController extends Controller
 {
     /**
      * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */

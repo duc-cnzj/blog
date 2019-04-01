@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * Class Trending
+ * @package App
+ */
 class Trending
 {
     /**

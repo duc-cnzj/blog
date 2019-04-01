@@ -6,6 +6,10 @@ use App\User;
 use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class ArticleRepoCache
+ * @package App\Services
+ */
 class ArticleRepoCache implements ArticleRepoImp
 {
     /**
@@ -25,7 +29,6 @@ class ArticleRepoCache implements ArticleRepoImp
 
     /**
      * @param int $id
-     *
      * @return string
      *
      * @author duc <1025434218@qq.com>
@@ -85,6 +88,11 @@ class ArticleRepoCache implements ArticleRepoImp
         return $arr;
     }
 
+    /**
+     * @param User $user
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function resetArticleCacheByUser(User $user)
     {
         $articleIds = $user->articles()->pluck('id');
@@ -94,6 +102,12 @@ class ArticleRepoCache implements ArticleRepoImp
         }
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function hasArticleCacheById(int $id): bool
     {
         return Cache::has($this->cacheKey($id));

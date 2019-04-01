@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 
+/**
+ * Class ArticleController
+ * @package App\Http\Controllers\Admin
+ */
 class ArticleController extends Controller
 {
     /**
@@ -31,8 +35,8 @@ class ArticleController extends Controller
 
     /**
      * @param Request $request
-     *
      * @return ArticleResource
+     * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -80,10 +84,11 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param int            $id
-     * @param Request        $request
-     *
+     * @param int $id
+     * @param Request $request
      * @return ArticleResource
+     * @throws \Illuminate\Validation\ValidationException
+     *
      * @author duc <1025434218@qq.com>
      */
     public function update(int $id, Request $request)
@@ -241,6 +246,12 @@ class ArticleController extends Controller
         return response('', 204);
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function setTop(int $id)
     {
         $article = Article::findOrFail($id);
@@ -255,6 +266,12 @@ class ArticleController extends Controller
         return response('', 204);
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function cancelSetTop(int $id)
     {
         $article = Article::findOrFail($id);

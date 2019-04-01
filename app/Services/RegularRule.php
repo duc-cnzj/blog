@@ -4,6 +4,10 @@ namespace App\Services;
 
 use App\Contracts\TransformImp;
 
+/**
+ * Class RegularRule
+ * @package App\Services
+ */
 class RegularRule implements TransformImp
 {
     /**
@@ -11,11 +15,20 @@ class RegularRule implements TransformImp
      */
     protected $transformer;
 
+    /**
+     * RegularRule constructor.
+     * @param TransformImp $transformer
+     */
     public function __construct(TransformImp $transformer)
     {
         $this->transformer = $transformer;
     }
 
+    /**
+     * @return mixed|string|string[]|null
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function apply()
     {
         $str = $this->getBody();
@@ -32,6 +45,11 @@ class RegularRule implements TransformImp
         return $str;
     }
 
+    /**
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getRules()
     {
         if (\Auth::guest()) {
@@ -43,6 +61,11 @@ class RegularRule implements TransformImp
         return $rules;
     }
 
+    /**
+     * @return mixed
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function getBody()
     {
         return $this->transformer->getBody();

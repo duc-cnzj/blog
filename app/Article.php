@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 
+/**
+ * Class Article
+ * @package App
+ */
 class Article extends Model
 {
     use Searchable, PivotEventTrait, ArticleCacheTrait, ArticleTrendingTrait, TopArticleTrait;
@@ -136,6 +140,12 @@ class Article extends Model
         });
     }
 
+    /**
+     * @param Builder $query
+     * @return Builder
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function scopeVisible(Builder $query)
     {
         return $query->where('display', true);
@@ -150,7 +160,6 @@ class Article extends Model
     {
         $model = $this->load(['category', 'author', 'tags']);
 
-//        dd($model->display);
         $result = [
             'author'           => [
                 'id'   => $model->author->id,
@@ -172,6 +181,13 @@ class Article extends Model
         return $result;
     }
 
+    /**
+     * @param $q
+     * @param $all
+     * @return mixed
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function scopeWhole($q, $all)
     {
         if ($all) {
@@ -287,6 +303,11 @@ class Article extends Model
             ];
     }
 
+    /**
+     * @param $value
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function setContentAttribute($value)
     {
         // 应用自定义转化规则

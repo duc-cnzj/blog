@@ -9,6 +9,10 @@ use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\RequestException;
 use App\Http\Resources\SocialiteUserResource;
 
+/**
+ * Class AuthController
+ * @package App\Http\Controllers
+ */
 class AuthController extends Controller
 {
     /**

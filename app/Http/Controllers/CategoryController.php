@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Resources\CategoryResource;
 
+/**
+ * Class CategoryController
+ * @package App\Http\Controllers
+ */
 class CategoryController extends Controller
 {
     /**
