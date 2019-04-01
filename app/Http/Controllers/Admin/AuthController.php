@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -123,7 +124,7 @@ class AuthController extends Controller
         if ($request->has('avatar')) {
             $image = $request->avatar;
             $folder = base_path('public/images');
-            $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
+            $filename = date('Y_m_d', time()) . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
             if (! app()->environment('testing')) {
                 $image->move($folder, $filename);

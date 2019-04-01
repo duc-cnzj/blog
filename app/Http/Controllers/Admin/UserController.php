@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -52,7 +53,7 @@ class UserController extends Controller
         if ($request->has('avatar')) {
             $image = $request->avatar;
             $folder = base_path('public/images');
-            $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
+            $filename = date('Y_m_d', time()) . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
             if (! app()->environment('testing')) {
                 $image->move($folder, $filename);

@@ -20,7 +20,7 @@ class ReadArticleTest extends TestCase
      */
     protected $topArticle;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -6,6 +6,7 @@ use App\Tag;
 use App\Article;
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 
@@ -103,22 +104,23 @@ class ArticleController extends Controller
             'tags'        => 'required|array',
         ]);
 
-        list($category, $tagIds) = $this->dealRequest($request);
-
         /** @var Article $article */
         $article = Article::findOrFail($id);
 
         $this->authorize('own', $article);
 
-        $article->update([
-            'head_image'  => $request->input('head_image'),
-            'title'       => $request->input('title'),
-            'desc'        => $request->input('desc'),
-            'content'     => $request->input('content'),
-            'category_id' => $category->id,
-        ]);
+        DB::transaction(function () use ($article, $request) {
+            list($category, $tagIds) = $this->dealRequest($request);
+            $article->update([
+                'head_image'  => $request->input('head_image'),
+                'title'       => $request->input('title'),
+                'desc'        => $request->input('desc'),
+                'content'     => $request->input('content'),
+                'category_id' => $category->id,
+            ]);
 
-        $article->tags()->sync($tagIds);
+            $article->tags()->sync($tagIds);
+        });
 
         return new ArticleResource($article);
     }
