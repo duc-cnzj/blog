@@ -36,7 +36,7 @@ class CommentController extends Controller
 
         return response()->json([
             'data' => array_reverse(
-                c(CommentResource::collection($comments)->toArray($request))
+                recursiveReplies(CommentResource::collection($comments)->toArray($request))
             ),
         ], 200);
     }

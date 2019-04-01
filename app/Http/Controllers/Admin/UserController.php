@@ -47,7 +47,6 @@ class UserController extends Controller
             'mobile.regex' => '手机号格式不正确！',
         ]);
 
-        info('req', $request->all());
         $attributes = $request->only('name', 'email', 'mobile', 'bio', 'password');
 
         if ($request->has('avatar')) {
@@ -83,6 +82,7 @@ class UserController extends Controller
      * @param int $id
      * @param Request $request
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
@@ -95,19 +95,19 @@ class UserController extends Controller
             'bio'      => 'string',
         ]);
 
-        if (! \Auth::user()->isAdmin() && $id !== \Auth::id()) {
-            abort(403, '你没有权限修改其他用户资料！');
-        }
+        $user = User::findOrFail($id);
 
-        User::findOrFail($id)->update($request->only('name', 'email', 'bio'));
+        $this->authorize('own', $user);
+
+        $user->update($request->only('name', 'email', 'bio'));
 
         return response('', 204);
     }
 
     /**
      * @param int $id
-     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -117,12 +117,12 @@ class UserController extends Controller
             return $this->fail('超级管理员不能删除', 403);
         }
 
-        if (\Auth::user()->isAdmin()) {
-            User::findOrFail($id)->delete();
+        $user = User::findOrFail($id);
 
-            return response('', 204);
-        } else {
-            return $this->fail('你没有删除用户的权限', 403);
-        }
+        $this->authorize('own', $user);
+
+        $user->delete();
+
+        return response('', 204);
     }
 }

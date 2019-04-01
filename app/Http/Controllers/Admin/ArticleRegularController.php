@@ -36,7 +36,6 @@ class ArticleRegularController extends Controller
      */
     public function store(Request $request)
     {
-        info('input', $request->input());
         $this->validate($request, [
             'rule' => new RuleFormat,
         ]);
@@ -52,14 +51,18 @@ class ArticleRegularController extends Controller
 
     /**
      * @param int $id
-     *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @author duc <1025434218@qq.com>
+     * @author 神符 <1025434218@qq.com>
      */
     public function destroy(int $id)
     {
-        ArticleRegular::findOrFail($id)->delete();
+        $regular = ArticleRegular::findOrFail($id);
+
+        $this->authorize('own', $regular);
+
+        $regular->delete();
 
         return response('', 204);
     }
@@ -84,18 +87,18 @@ class ArticleRegularController extends Controller
 
     /**
      * @param Request $request
-     *
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @author duc <1025434218@qq.com>
+     * @author 神符 <1025434218@qq.com>
      */
     public function changeStatus(Request $request)
     {
         $rule = ArticleRegular::findOrFail($request->input('id'));
 
-        $rule->update([
-            'status' => ! $rule->status,
-        ]);
+        $this->authorize('own', $rule);
+
+        $rule->update(['status' => ! $rule->status]);
 
         return response('', 204);
     }

@@ -87,6 +87,7 @@ class ArticleController extends Controller
      * @param int $id
      * @param Request $request
      * @return ArticleResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
@@ -107,9 +108,7 @@ class ArticleController extends Controller
         /** @var Article $article */
         $article = Article::findOrFail($id);
 
-        if (! \Auth::user()->isAdmin() && $article->author_id !== \Auth::id()) {
-            abort(403, '你没有权限修改此文章！');
-        }
+        $this->authorize('own', $article);
 
         $article->update([
             'head_image'  => $request->input('head_image'),
@@ -126,8 +125,8 @@ class ArticleController extends Controller
 
     /**
      * @param int $id
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -135,9 +134,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
-            return $this->fail('这篇文章不是你的，不能删除！', 403);
-        }
+        $this->authorize('own', $article);
 
         $article->delete();
 
@@ -182,7 +179,7 @@ class ArticleController extends Controller
                 'name' => $request->input('category'), // string 'php'
             ],
             [
-            'user_id' => \Auth::id(),
+                'user_id' => \Auth::id(),
             ]
         );
 
@@ -228,8 +225,8 @@ class ArticleController extends Controller
 
     /**
      * @param int $id
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -237,9 +234,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
-            return $this->fail('这篇文章不是你的，不能修改！', 403);
-        }
+        $this->authorize('own', $article);
 
         $article->update(['display' => ! $article->display]);
 
@@ -248,7 +243,8 @@ class ArticleController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -256,9 +252,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
-            return $this->fail('这篇文章不是你的，不能修改！', 403);
-        }
+        $this->authorize('own', $article);
 
         /** @var Article $article */
         $article->setTop();
@@ -268,7 +262,8 @@ class ArticleController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @author duc <1025434218@qq.com>
      */
@@ -276,9 +271,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        if ($article->author_id !== \Auth::id() && ! \Auth::user()->isAdmin()) {
-            return $this->fail('这篇文章不是你的，不能修改！', 403);
-        }
+        $this->authorize('own', $article);
 
         /** @var Article $article */
         $article->cancelSetTop();

@@ -2,7 +2,7 @@
 
 use App\User;
 
-if (! function_exists('c')) {
+if (! function_exists('recursiveReplies')) {
     /**
      * @param array $comments
      * @param int   $pid
@@ -10,12 +10,12 @@ if (! function_exists('c')) {
      * @return array
      * @author duc <1025434218@qq.com>
      */
-    function c(array $comments, $pid = 0)
+    function recursiveReplies(array $comments, $pid = 0)
     {
         $arr = [];
         foreach ($comments as $item) {
             if ((int) $item['comment_id'] === $pid) {
-                $data = c($comments, $item['id']);
+                $data = recursiveReplies($comments, $item['id']);
                 $item['replies'] = $data;
                 $arr[] = $item;
             }

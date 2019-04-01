@@ -69,6 +69,34 @@ class ArticleRegularTest extends TestCase
     }
 
     /** @test */
+    public function user_cannot_delete_others_regulars()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $authUser = $this->signIn([], $user2);
+
+        $this->assertFalse($authUser->isAdmin());
+        $regular = create(ArticleRegular::class, ['user_id' => $user1->id]);
+        $this->assertNotEquals($regular->user_id, $authUser->id);
+
+        $this->json('DELETE', '/admin/article_regulars/' . $regular->id)->seeStatusCode(403);
+    }
+
+    /** @test */
+    public function admin_can_delete_others_regulars()
+    {
+        $user1 = $this->newTestUser();
+        $user2 = $this->newTestUser();
+        $authUser = $this->signIn([], $user1);
+
+        $this->assertTrue($authUser->isAdmin());
+        $regular = create(ArticleRegular::class, ['user_id' => $user2->id]);
+        $this->assertNotEquals($regular->user_id, $authUser->id);
+
+        $this->json('DELETE', '/admin/article_regulars/' . $regular->id)->seeStatusCode(204);
+    }
+
+    /** @test */
     public function user_can_test_own_regular()
     {
         $user = $this->signIn();
