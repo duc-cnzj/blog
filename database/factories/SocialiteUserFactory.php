@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Str;
+
 $factory->define(App\SocialiteUser::class, function (Faker\Generator $faker) {
     return [
         'user_id'       => 0,
@@ -18,8 +20,8 @@ $factory->define(App\SocialiteUser::class, function (Faker\Generator $faker) {
         'avatar'        => $faker->imageUrl,
         'url'           => $faker->url,
         'identity_type' => 'github',
-        'identifier'    => str_random(32),
-        'credential'    => str_random(32),
+        'identifier'    => Str::random(32),
+        'credential'    => Str::random(32),
         'last_login_at' => \Carbon\Carbon::now(),
     ];
 });

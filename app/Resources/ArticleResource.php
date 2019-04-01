@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -46,7 +47,7 @@ class ArticleResource extends JsonResource
                 return $this->getRecommendArticles();
             }),
             'created_at'        => optional($this->created_at)->diffForHumans(),
-            'highlight'         => $this->when(str_contains($request->path(), 'search_articles'), $this->highlight_content),
+            'highlight'         => $this->when(Str::contains($request->path(), 'search_articles'), $this->highlight_content),
         ];
     }
 }

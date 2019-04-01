@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -27,7 +28,7 @@ class ImageController extends Controller
         $image = $request->image;
 
         $folder = base_path('public/images');
-        $filename = date('Y_m_d', time()) . '_' . str_random(10) . '.' . $image->getClientOriginalExtension();
+        $filename = date('Y_m_d', time()) . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
 
         $image->move($folder, $filename);
 

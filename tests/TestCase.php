@@ -1,7 +1,7 @@
 <?php
 
-
 use Faker\Factory;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
@@ -13,10 +13,10 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function createApplication()
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        return require __DIR__ . '/../bootstrap/app.php';
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         $faker = Factory::create();
 
         return factory(App\User::class)->create(array_merge([
-            'mobile'   => str_random(32),
+            'mobile'   => Str::random(32),
             'avatar'   => $faker->imageUrl,
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
         ], $custom));

@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Factory;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ $factory->define(App\ArticleRegular::class, function () use ($rules) {
         'user_id' => function () {
             return app()->environment('testing')
                 ? factory(App\User::class)->create([
-                    'mobile'   => str_random(32),
+                    'mobile'   => Str::random(32),
                     'avatar'   => 'test1234567',
                     'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
                 ])->id

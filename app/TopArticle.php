@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\Contracts\TopArticleImp;
 use Illuminate\Support\Facades\Redis;
 

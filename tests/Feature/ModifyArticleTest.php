@@ -2,6 +2,7 @@
 
 use App\Article;
 use App\Trending;
+use Illuminate\Support\Str;
 use App\Contracts\ArticleRepoImp;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
@@ -14,7 +15,7 @@ class ModifyArticleTest extends TestCase
      */
     protected $trending;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -74,7 +75,7 @@ class ModifyArticleTest extends TestCase
         $res = $this->post('/admin/articles', [
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'content'    => $content,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
@@ -100,7 +101,7 @@ class ModifyArticleTest extends TestCase
         $res = $this->post('/admin/articles', [
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'content'    => $content,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
@@ -115,7 +116,7 @@ class ModifyArticleTest extends TestCase
             'content'    => $newContent,
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
         ]);
@@ -161,7 +162,7 @@ class ModifyArticleTest extends TestCase
             'content'    => 'content',
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
         ])->seeStatusCode(403);
@@ -179,7 +180,7 @@ class ModifyArticleTest extends TestCase
             'content'    => 'content',
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
         ])->seeStatusCode(200);
@@ -212,7 +213,7 @@ class ModifyArticleTest extends TestCase
         $res = $this->post('/admin/articles', [
             'head_image' => 'http://avatar.com/image.jpg',
             'title'      => 'article title',
-            'desc'       => str_random(32),
+            'desc'       => Str::random(32),
             'content'    => $doc,
             'category'   => 'php',
             'tags'       => ['php', 'js'],
