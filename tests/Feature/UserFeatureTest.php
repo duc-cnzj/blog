@@ -113,8 +113,7 @@ class UserFeatureTest extends TestCase
         $user3 = $this->newTestUser();
         $this->assertEquals(3, \App\User::count());
         $this->json('DELETE', "/admin/users/{$user->id}")
-            ->seeStatusCode(403)
-            ->seeJsonContains(['message' => '超级管理员不能删除']);
+            ->seeStatusCode(403);
 
         $this->json('DELETE', "/admin/users/{$user2->id}")->seeStatusCode(204);
         $this->assertEquals(2, \App\User::count());
@@ -135,8 +134,7 @@ class UserFeatureTest extends TestCase
         $this->assertFalse(\Auth::user()->isAdmin());
         $this->assertEquals(3, \App\User::count());
         $this->json('DELETE', "/admin/users/{$user3->id}")
-            ->seeStatusCode(403)
-            ->seeJsonContains(['message' => '你没有删除用户的权限']);
+            ->seeStatusCode(403);
     }
 
     /** @test */
