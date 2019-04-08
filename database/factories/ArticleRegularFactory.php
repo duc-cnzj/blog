@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Factory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /*
@@ -27,7 +28,7 @@ $factory->define(App\ArticleRegular::class, function () use ($rules) {
     $faker = Factory::create('zh_CN');
 
     return [
-        'rule'    => array_random($rules),
+        'rule'    => Arr::random($rules),
         'user_id' => function () {
             return app()->environment('testing')
                 ? factory(App\User::class)->create([

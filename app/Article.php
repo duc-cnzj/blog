@@ -18,6 +18,8 @@ use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 /**
  * Class Article
  * @package App
+ *
+ * @method static Builder visible()
  */
 class Article extends Model
 {
