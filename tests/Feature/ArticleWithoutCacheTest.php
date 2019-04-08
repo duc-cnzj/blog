@@ -2,6 +2,7 @@
 
 use App\Article;
 use App\Trending;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class ArticleWithoutCacheTest extends TestCase
@@ -44,22 +45,22 @@ class ArticleWithoutCacheTest extends TestCase
     /** @test */
     public function user_can_get_trending_articles_from_db()
     {
-        create(\App\Article::class, [], 10);
+        create(\App\Article::class, [], 5);
 
-        $i = 10;
+        $i = 5;
         while ($i > 0) {
             $this->json('GET', "/articles/{$i}");
             $i--;
         }
 
-        $this->assertEquals(10, count($this->trending->get()));
+        $this->assertEquals(5, count($this->trending->get()));
 
         DB::enableQueryLog();
         $res = $this->json('GET', '/trending_articles');
         DB::disableQueryLog();
         $res->seeStatusCode(200);
         $data = json_decode($res->response->content());
-        $this->assertEquals(10, count(data_get($data, 'data')));
+        $this->assertEquals(5, count(data_get($data, 'data')));
         $this->assertEquals(4, count(DB::getQueryLog()));
     }
 

@@ -8,6 +8,7 @@ use TestCase;
 use App\Article;
 use App\Comment;
 use App\Category;
+use Illuminate\Support\Arr;
 use App\Events\ArticleCreated;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseMigrations;
@@ -56,7 +57,7 @@ class ArticleTest extends TestCase
     public function it_has_comments()
     {
         $article = create(Article::class);
-        $comments = create(Comment::class, ['article_id' => $article->id], 30);
+        create(Comment::class, ['article_id' => $article->id], 30);
         $this->assertInstanceOf(Comment::class, $article->comments()->first());
         $this->assertEquals(30, $article->comments()->count());
     }
@@ -65,13 +66,13 @@ class ArticleTest extends TestCase
     public function it_has_recommend_articles()
     {
         $category = create(Category::class);
-        $articles = create(Article::class, ['category_id' => $category->id], 30);
+        create(Article::class, ['category_id' => $category->id], 6);
         DB::enableQueryLog();
-        $recomdendArticles = Article::first()->getRecommendArticles();
+        $recommendArticles = Article::query()->first()->getRecommendArticles();
         DB::disableQueryLog();
-        $this->assertCount(3, $recomdendArticles);
+        $this->assertCount(3, $recommendArticles);
         $this->assertLessThanOrEqual(3, count(DB::getQueryLog()));
-        $this->assertContains(array_random(array_pluck($recomdendArticles, 'id')), $category->articles()->pluck('id')->toArray());
+        $this->assertContains(Arr::random(Arr::pluck($recommendArticles, 'id')), $category->articles()->pluck('id')->toArray());
     }
 
     /** @test */

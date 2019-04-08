@@ -74,7 +74,6 @@ class AdminAuthTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_update_info()
     {
-        //        'name', 'email', 'avatar', 'mobile', 'bio'
         $user = $this->signIn(
             [
                 'name'   => 'duc',
@@ -127,16 +126,16 @@ class AdminAuthTest extends TestCase
             ]
         );
 
-        create(\App\Article::class, ['author_id' => $user->id], 10);
+        create(\App\Article::class, ['author_id' => $user->id], 5);
 
-        $i = 10;
+        $i = 5;
         while ($i > 0) {
             $this->json('GET', "/articles/{$i}");
             $i--;
         }
 
         DB::enableQueryLog();
-        app(ArticleRepoImp::class)->getMany(range(1, 10));
+        app(ArticleRepoImp::class)->getMany(range(1, 5));
         DB::disableQueryLog();
         $this->assertEquals(0, count(DB::getQueryLog()));
 
@@ -146,7 +145,7 @@ class AdminAuthTest extends TestCase
         ])->seeStatusCode(201);
 
         DB::enableQueryLog();
-        app(ArticleRepoImp::class)->getMany(range(1, 10));
+        app(ArticleRepoImp::class)->getMany(range(1, 5));
         DB::disableQueryLog();
         $this->assertNotEquals(0, count(DB::getQueryLog()));
         $this->assertEquals($user->fresh()->email, '1025434218@qq.com');

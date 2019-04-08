@@ -20,11 +20,11 @@ class TagTest extends TestCase
     /** @test */
     public function it_has_articles()
     {
-        $articles = create(Article::class, [], 20);
+        $articles = create(Article::class, [], 2);
         $tag = create(Tag::class);
-        $articles->each(function ($item) use ($tag) {
+        $articles->each(function (Article $item) use ($tag) {
             $item->tags()->sync([$tag->id]);
         });
-        $this->assertCount(20, $tag->articles->toArray());
+        $this->assertCount(2, $tag->articles);
     }
 }

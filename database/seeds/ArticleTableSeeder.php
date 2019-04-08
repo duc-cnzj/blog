@@ -1,5 +1,9 @@
 <?php
 
+use App\Tag;
+use App\Article;
+use App\Category;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
 
 class ArticleTableSeeder extends Seeder
@@ -12,16 +16,17 @@ class ArticleTableSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
-        factory(App\Category::class, $this->tagNums)->create();
-        factory(App\Tag::class, $this->categoryNums)->create();
-        factory(App\Article::class, $this->articleNums)->create([
+        factory(Category::class, $this->tagNums)->create();
+        factory(Tag::class, $this->categoryNums)->create();
+        factory(Article::class, $this->articleNums)->create([
             'category_id' => random_int(1, $this->categoryNums),
-        ])->each(function ($item) {
+        ])->each(function (Article $item) {
             $item->tags()->sync(
-                array_random(
+                Arr::random(
                     range(1, $this->tagNums),
                     random_int(1, $this->tagNums)
                 )

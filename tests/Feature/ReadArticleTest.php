@@ -93,22 +93,22 @@ class ReadArticleTest extends TestCase
     /** @test */
     public function user_can_get_trending_articles_from_cache()
     {
-        create(\App\Article::class, [], 10);
+        create(\App\Article::class, [], 5);
 
-        $i = 10;
+        $i = 5;
         while ($i > 0) {
             $this->json('GET', "/articles/{$i}");
             $i--;
         }
 
-        $this->assertEquals(10, count($this->trending->get()));
+        $this->assertEquals(5, count($this->trending->get()));
 
         DB::enableQueryLog();
         $res = $this->json('GET', '/trending_articles');
         DB::disableQueryLog();
         $res->seeStatusCode(200);
         $data = json_decode($res->response->content());
-        $this->assertEquals(10, count(data_get($data, 'data')));
+        $this->assertEquals(5, count(data_get($data, 'data')));
         $this->assertEquals(0, count(DB::getQueryLog()));
     }
 
@@ -160,7 +160,7 @@ class ReadArticleTest extends TestCase
     {
         $article = create(Article::class, ['display' => true]);
         Article::visible()->findOrFail($article->id);
-        $this->assertEquals($article->id, Article::findOrFail($article->id)->id);
+        $this->assertEquals($article->id, Article::query()->findOrFail($article->id)->id);
     }
 
     /** @test */
@@ -276,7 +276,7 @@ class ReadArticleTest extends TestCase
         $user = $this->signIn();
         create(Article::class, ['title' => 'duc', 'author_id' => $user->id]);
         create(Article::class, ['title' => 'duc']);
-        $this->assertEquals(2, Article::count());
+        $this->assertEquals(2, Article::query()->count());
 
         $r = $this->json('GET', '/admin/articles', ['all' => 1]);
 

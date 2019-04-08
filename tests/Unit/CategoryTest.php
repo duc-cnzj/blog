@@ -18,10 +18,10 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function it_has_articles()
+    public function category_has_articles()
     {
         $category = create(Category::class);
-        $articles = create(Article::class, ['category_id' => $category->id], 20);
-        $this->assertCount(20, $category->articles->toArray());
+        create(Article::class, ['category_id' => $category->id], 2);
+        $this->assertCount(2, $category->articles->toArray());
     }
 }

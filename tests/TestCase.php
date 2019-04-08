@@ -38,7 +38,7 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         $faker = Factory::create();
 
         return factory(App\User::class)->create(array_merge([
-            'mobile'   => Str::random(32),
+            'mobile'   => Str::random(11),
             'avatar'   => $faker->imageUrl,
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
         ], $custom));
