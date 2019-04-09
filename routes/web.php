@@ -14,6 +14,7 @@
 /**
  * @link http://patorjk.com/software/taag/#p=display&f=Standard&t=duc's%20blog Text to ASCII
  */
+/** @var \Laravel\Lumen\Routing\Router $router */
 $router->get('/', function () use ($router) {
     $version = $router->app->version();
 

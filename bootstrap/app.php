@@ -30,6 +30,7 @@ $app->withFacades();
 $app->withEloquent();
 
 $app->configure('duc');
+$app->configure('queue');
 $app->configure('cors');
 $app->configure('scout');
 $app->configure('cache');
@@ -108,6 +109,7 @@ $app->singleton(
 
 $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
+    \App\Http\Middleware\HistoryLog::class,
 ]);
 
 $app->routeMiddleware([

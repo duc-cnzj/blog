@@ -1,9 +1,13 @@
 <?php
 
+
+use Laravel\Lumen\Routing\Router;
+
+/** @var Router $router */
 $router->group([
     'prefix'    => 'auth',
     'namespace' => 'Admin',
-], function ($router) {
+], function (Router $router) {
     $router->post('/login', 'AuthController@login');
     $router->post('/logout', 'AuthController@logout');
     $router->post('/refresh', 'AuthController@refresh');
@@ -14,7 +18,7 @@ $router->group([
     'prefix'     => 'admin',
     'middleware' => 'auth',
     'namespace'  => 'Admin',
-], function ($router) {
+], function (Router $router) {
     $router->post('/article_regulars/change_status', 'ArticleRegularController@changeStatus');
 
     $router->post('/article_regulars/test', 'ArticleRegularController@test');
