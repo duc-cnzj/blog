@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasHistory;
 use App\Contracts\ArticleRepoImp;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Authenticatable;
@@ -18,7 +19,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable;
+    use Authenticatable, Authorizable, HasHistory;
 
     /**
      * The attributes that are mass assignable.
