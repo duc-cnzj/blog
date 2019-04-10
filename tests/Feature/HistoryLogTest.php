@@ -290,6 +290,5 @@ class HistoryLogTest extends TestCase
         $this->get('/admin/histories' . $params3)
             ->dontSeeJson(['name' => 'duc'])
             ->seeJson(['name' => 'abc']);
-
     }
 }
