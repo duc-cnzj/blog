@@ -247,6 +247,7 @@ class HistoryLogTest extends TestCase
         $params3 = "?{$this->prefix}_visit_time_after=2015-1-1&{$this->prefix}_visit_time_before=2016-1-1";
         $params4 = "?{$this->prefix}_visit_time_after=2016-1-1&{$this->prefix}_visit_time_before=2016-3-1";
         $params5 = "?{$this->prefix}_visit_time_after=2017-1-1&{$this->prefix}_visit_time_before=2019-3-1";
+        $params6 = "?{$this->prefix}_visit_time_after=123123qwe4";
 
         $this->signIn();
         $res1 = $this->get('/admin/histories' . $params1)->response->content();
@@ -254,12 +255,14 @@ class HistoryLogTest extends TestCase
         $res3 = $this->get('/admin/histories' . $params3)->response->content();
         $res4 = $this->get('/admin/histories' . $params4)->response->content();
         $res5 = $this->get('/admin/histories' . $params5)->response->content();
+        $res6 = $this->get('/admin/histories' . $params6)->response->content();
 
         $this->assertEquals(2, count(json_decode($res1, JSON_OBJECT_AS_ARRAY)['data']));
         $this->assertEquals(0, count(json_decode($res2, JSON_OBJECT_AS_ARRAY)['data']));
         $this->assertEquals(1, count(json_decode($res3, JSON_OBJECT_AS_ARRAY)['data']));
         $this->assertEquals(0, count(json_decode($res4, JSON_OBJECT_AS_ARRAY)['data']));
         $this->assertEquals(1, count(json_decode($res5, JSON_OBJECT_AS_ARRAY)['data']));
+        $this->assertEquals(2, count(json_decode($res6, JSON_OBJECT_AS_ARRAY)['data']));
     }
 
     /** @test */
@@ -289,6 +292,11 @@ class HistoryLogTest extends TestCase
         $params3 = "?{$this->prefix}_user_type=frontend";
         $this->get('/admin/histories' . $params3)
             ->dontSeeJson(['name' => 'duc'])
+            ->seeJson(['name' => 'abc']);
+
+        $params3 = "?{$this->prefix}_user_type=qwer";
+        $this->get('/admin/histories' . $params3)
+            ->seeJson(['name' => 'duc'])
             ->seeJson(['name' => 'abc']);
     }
 }
