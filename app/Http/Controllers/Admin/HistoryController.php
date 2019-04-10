@@ -40,12 +40,12 @@ class HistoryController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return HistoryResource
      *
      * @author duc <1025434218@qq.com>
      */
-    public function show($id)
+    public function show(int $id)
     {
         return new HistoryResource(History::with('userable')->findOrFail($id));
     }
