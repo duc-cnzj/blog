@@ -18,4 +18,3 @@ interface Filter
      */
     public function apply(Builder $builder);
 }
-
