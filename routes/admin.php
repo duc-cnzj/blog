@@ -1,6 +1,5 @@
 <?php
 
-
 use Laravel\Lumen\Routing\Router;
 
 /** @var Router $router */
@@ -72,4 +71,8 @@ $router->group([
     $router->get('/categories', 'CategoryController@index');
 
     $router->get('/tags', 'TagController@index');
+
+    $router->get('/histories', 'Admin\HistoryController@index');
+
+    $router->get('/histories/{id}', 'Admin\HistoryController@show');
 });

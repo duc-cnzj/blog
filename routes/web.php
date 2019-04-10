@@ -17,6 +17,7 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 $router->get('/', function () use ($router) {
     $version = $router->app->version();
+    $year = date('Y');
 
     return <<<TAG
      # welcome! power by {$version} 
@@ -25,7 +26,7 @@ $router->get('/', function () use ($router) {
   / _` | | | |/ __|// __| | '_ \| |/ _ \ / _` |
  | (_| | |_| | (__  \__ \ | |_) | | (_) | (_| |
   \__,_|\__,_|\___| |___/ |_.__/|_|\___/ \__, |
-                                         |___/  created by duc@2018.
+                                         |___/  created by duc@2018-{$year}.
 TAG;
 });
 
@@ -65,3 +66,6 @@ $router->get('/nav_links', function () {
 $router->get('/articles/{id}/comments', 'CommentController@index');
 
 $router->post('/articles/{id}/comments', 'CommentController@store');
+
+$router->get('/histories', 'Admin\HistoryController@index');
+$router->get('/histories/{id}', 'Admin\HistoryController@show');
