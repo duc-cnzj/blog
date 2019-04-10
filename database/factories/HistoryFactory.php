@@ -23,6 +23,7 @@ $factory->define(App\History::class, function (Faker\Generator $faker) {
         'status_code'   => $faker->randomElement([200, 201, 204, 301, 400, 401, 404, 500]),
         'response'      => $faker->sentence,
         'user_agent'    => $faker->userAgent,
+        'address'       => $faker->address,
         'visited_at'    => $faker->date(),
         'userable_id'   => 0,
         'userable_type' => '',
