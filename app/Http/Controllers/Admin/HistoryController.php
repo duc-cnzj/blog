@@ -29,6 +29,7 @@ class HistoryController extends Controller
                 'url',
                 'method',
                 'content',
+                'address',
                 'user_agent',
                 'visited_at',
                 'status_code',

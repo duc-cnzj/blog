@@ -52,7 +52,7 @@ class HistoryLog
         $userableId = $user ? $user->id : 0;
         $userableType = $user ? get_class($user) : '';
 
-        dispatch(new RecordUser([
+        $data = [
             'ip'            => $request->ip(),
             'url'           => $request->fullUrl(),
             'method'        => $request->getMethod(),
@@ -63,7 +63,9 @@ class HistoryLog
             'userable_type' => $userableType,
             'response'      => $response->getContent(),
             'status_code'   => $response->getStatusCode(),
-        ]));
+        ];
+
+        dispatch(new RecordUser($data));
     }
 
     /**

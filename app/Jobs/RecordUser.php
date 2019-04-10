@@ -12,15 +12,15 @@ use App\History;
 class RecordUser extends Job
 {
     /**
-     * @var
+     * @var array
      */
     protected $data;
 
     /**
      * RecordUser constructor.
-     * @param $data
+     * @param  array  $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
@@ -31,6 +31,13 @@ class RecordUser extends Job
      */
     public function handle()
     {
-        History::query()->create($this->data);
+        $history = History::query()->create($this->data);
+
+        $address = app('ip')->setIp($history->ip)
+            ->getAddress();
+
+        if ($address) {
+            $history->update(['address' => $address]);
+        }
     }
 }

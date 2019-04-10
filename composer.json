@@ -10,6 +10,7 @@
         "backup-manager/laravel": "^1.3",
         "barryvdh/laravel-cors": "^0.11.2",
         "doctrine/dbal": "^2.8",
+        "duc_cnzj/ip": "^1.1",
         "emojione/emojione": "^4.0",
         "erusev/parsedown": "^1.7",
         "fico7489/laravel-pivot": "*",

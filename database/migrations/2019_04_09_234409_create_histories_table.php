@@ -20,6 +20,7 @@ class CreateHistoriesTable extends Migration
             $table->string('method');
             $table->string('status_code');
             $table->string('user_agent');
+            $table->string('address')->nullable();
             $table->json('content')->nullable();
             $table->longText('response')->nullable();
             $table->timestamp('visited_at')->nullable();
