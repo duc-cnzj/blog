@@ -31,6 +31,7 @@ class HistoryController extends Controller
                 'content',
                 'user_agent',
                 'visited_at',
+                'status_code',
                 'userable_id',
                 'userable_type',
             ]);

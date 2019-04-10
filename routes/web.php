@@ -66,6 +66,3 @@ $router->get('/nav_links', function () {
 $router->get('/articles/{id}/comments', 'CommentController@index');
 
 $router->post('/articles/{id}/comments', 'CommentController@store');
-
-$router->get('/histories', 'Admin\HistoryController@index');
-$router->get('/histories/{id}', 'Admin\HistoryController@show');
