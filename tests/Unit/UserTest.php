@@ -15,4 +15,13 @@ class UserTest extends TestCase
         $this->assertEquals(3, $user->articles()->count());
         $this->assertInstanceOf(\App\User::class, $articles->random()->author);
     }
+
+    /** @test */
+    public function it_has_histories()
+    {
+        $user = $this->newTestUser();
+        create(\App\History::class, ['userable_id' => $user->id, 'userable_type' => get_class($user)], 3);
+
+        $this->assertEquals(3, $user->histories->count());
+    }
 }
