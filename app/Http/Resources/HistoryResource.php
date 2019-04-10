@@ -20,11 +20,11 @@ class HistoryResource extends JsonResource
             'visited_at'  => $this->visited_at,
             'user'        => $this->when($this->resource->relationLoaded('userable'), function () {
                 return [
-                    'id' => optional($this->userable)->id ?? 0,
+                    'id'   => optional($this->userable)->id ?? 0,
                     'name' => optional($this->userable)->name ?? '',
                 ];
             }, [
-                'id' => 0,
+                'id'   => 0,
                 'name' => '',
             ]),
         ];
