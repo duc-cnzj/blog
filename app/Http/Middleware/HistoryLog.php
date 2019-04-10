@@ -18,7 +18,7 @@ class HistoryLog
     /**
      * @var array
      */
-    protected $whiteList = ['admin/histories*', '/histories*'];
+    protected $whiteList = ['admin/histories*'];
 
     /**
      * @param Request $request
@@ -62,6 +62,7 @@ class HistoryLog
             'userable_id'   => $userableId,
             'userable_type' => $userableType,
             'response'      => $response->getContent(),
+            'status_code'   => $response->getStatusCode(),
         ]));
     }
 

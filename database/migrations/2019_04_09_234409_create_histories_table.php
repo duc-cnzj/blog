@@ -15,12 +15,13 @@ class CreateHistoriesTable extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->json('content')->nullable();
             $table->ipAddress('ip');
             $table->string('url');
             $table->string('method');
+            $table->string('status_code');
+            $table->string('user_agent');
+            $table->json('content')->nullable();
             $table->longText('response')->nullable();
-            $table->string('user_agent')->nullable();
             $table->timestamp('visited_at')->nullable();
             $table->nullableMorphs('userable');
             $table->timestamps();

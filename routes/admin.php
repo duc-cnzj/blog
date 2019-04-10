@@ -72,7 +72,7 @@ $router->group([
 
     $router->get('/tags', 'TagController@index');
 
-    $router->get('/histories', 'Admin\HistoryController@index');
+    $router->get('/histories', 'HistoryController@index');
 
-    $router->get('/histories/{id}', 'Admin\HistoryController@show');
+    $router->get('/histories/{id}', 'HistoryController@show');
 });
