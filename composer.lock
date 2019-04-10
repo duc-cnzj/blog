@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2194e9ce631694d5c8c842cfc74f010e",
+    "content-hash": "44f680ce373894ac662f1bdf15664d3d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -833,6 +833,62 @@
                 "schedule"
             ],
             "time": "2019-03-31T00:38:28+00:00"
+        },
+        {
+            "name": "duc_cnzj/ip",
+            "version": "v1.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DuC-cnZj/ip.git",
+                "reference": "fa0f8d3afb5ee21b692457c61c5c7f421b6274f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DuC-cnZj/ip/zipball/fa0f8d3afb5ee21b692457c61c5c7f421b6274f5",
+                "reference": "fa0f8d3afb5ee21b692457c61c5c7f421b6274f5",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DucCnzj\\Ip\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DucCnzj\\Ip\\": "./src"
+                },
+                "files": [
+                    "src/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "duc_cnzj",
+                    "email": "1025434218@qq.com"
+                }
+            ],
+            "description": "A SDK for ip.",
+            "time": "2019-01-22T04:53:41+00:00"
         },
         {
             "name": "egulias/email-validator",

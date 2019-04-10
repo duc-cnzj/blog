@@ -1,5 +1,7 @@
 <?php
 
+use DucCnzj\Ip\IpClient;
+use App\Adapters\RedisStore;
 use Laravel\Socialite\SocialiteManager;
 use Laravel\Socialite\Contracts\Factory;
 use Illuminate\Filesystem\FilesystemServiceProvider;
@@ -87,6 +89,12 @@ $app->singleton(
 
 $app->singleton(Factory::class, function ($app) {
     return new SocialiteManager($app);
+});
+
+$app->singleton('ip', function () {
+    return (new IpClient())
+        ->setCacheStore(new RedisStore)
+        ->use('taobao');
 });
 
 $app->singleton(

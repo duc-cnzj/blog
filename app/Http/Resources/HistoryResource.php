@@ -14,12 +14,13 @@ class HistoryResource extends JsonResource
             'content'     => $this->content,
             'method'      => $this->method,
             'status_code' => $this->status_code,
+            'address'     => $this->address,
             'response'    => $this->response,
             'user_agent'  => $this->user_agent,
             'visited_at'  => $this->visited_at,
             'user'        => $this->when($this->resource->relationLoaded('userable'), function () {
                 return ['name' => optional($this->userable)->name ?? ''];
-            }, ['name' => ''])
+            }, ['name' => '']),
         ];
     }
 }
