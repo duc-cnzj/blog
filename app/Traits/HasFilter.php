@@ -19,4 +19,3 @@ trait HasFilter
         return $filters->apply($query);
     }
 }
-
