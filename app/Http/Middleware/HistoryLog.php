@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 class HistoryLog
 {
     /**
+     * @var array
+     */
+    protected $whiteList = ['admin/histories*', '/histories*'];
+
+    /**
      * @param Request $request
      * @param \Closure $next
      * @return mixed
@@ -35,6 +40,14 @@ class HistoryLog
      */
     public function terminate(Request $request, Response $response)
     {
+        $whiteList = $this->getWhiteList();
+
+        if ($request->is(...$whiteList)) {
+            info("白名单: {$request->fullUrl()} 不记录访问信息。");
+
+            return;
+        }
+
         $user = Auth::user();
         $userableId = $user ? $user->id : 0;
         $userableType = $user ? get_class($user) : '';
@@ -50,5 +63,23 @@ class HistoryLog
             'userable_type' => $userableType,
             'response'      => $response->getContent(),
         ]));
+    }
+
+    /**
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function getWhiteList(): array
+    {
+        $whiteList = array_map(function ($except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            return $except;
+        }, $this->whiteList);
+
+        return $whiteList;
     }
 }
