@@ -30,6 +30,15 @@ $router->get('/', function () use ($router) {
 TAG;
 });
 
+$router->get('/nav_links', function () {
+    return [
+        'data' => [
+            ['title' => '首页', 'link' => '/'],
+            ['title' => '文章', 'link' => '/articles'],
+        ],
+    ];
+});
+
 $router->get('/login/github', 'AuthController@redirectToProvider');
 
 $router->get('/login/github/callback', 'AuthController@handleProviderCallback');
@@ -53,15 +62,6 @@ $router->get('/trending_articles', 'ArticleController@trending');
 $router->get('/top_articles', 'ArticleController@top');
 
 $router->get('/categories', 'CategoryController@index');
-
-$router->get('/nav_links', function () {
-    return [
-        'data' => [
-            ['title' => '首页', 'link' => '/'],
-            ['title' => '文章', 'link' => '/articles'],
-        ],
-    ];
-});
 
 $router->get('/articles/{id}/comments', 'CommentController@index');
 
