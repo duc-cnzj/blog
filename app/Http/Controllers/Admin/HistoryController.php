@@ -29,6 +29,7 @@ class HistoryController extends Controller
             ->paginate(
                 $request->input('page_size') ?? 10,
                 [
+                    'id',
                     'ip',
                     'url',
                     'method',
