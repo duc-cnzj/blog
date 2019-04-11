@@ -18,6 +18,11 @@ class HistoryFilter extends Filters
     /**
      * @var array
      */
+    private $onlySeePathsOfAdmin = ['/auth', '/admin'];
+
+    /**
+     * @var array
+     */
     protected $filters = [
         'ip',
         'method',
@@ -29,6 +34,7 @@ class HistoryFilter extends Filters
         'visit_time_before',
         'user_id',
         'user_type',
+        'only_see',
     ];
 
     /**
@@ -143,9 +149,41 @@ class HistoryFilter extends Filters
         $type = $this->getValueBy(__FUNCTION__);
 
         if (in_array($type, ['admin', 'frontend'])) {
-            $realType = $type == 'admin' ? 'App\User' : 'App\SocialiteUser';
+            $realType = ($type == 'admin')
+                ? 'App\User'
+                : 'App\SocialiteUser';
 
             return $this->builder->where('userable_type', $realType);
+        } else {
+            return $this->builder;
+        }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function onlySee()
+    {
+        $type = $this->getValueBy(__FUNCTION__);
+
+        if (in_array($type, ['admin', 'frontend'])) {
+            $operator = ($type == 'admin')
+                ? 'LIKE'
+                : 'NOT LIKE';
+
+            foreach ($this->onlySeePathsOfAdmin as $index => $path) {
+                $path = '/' . ltrim($path, '/');
+
+                $method = ($operator != 'LIKE' || $index == 0)
+                    ? 'where'
+                    : 'orWhere';
+
+                $this->builder->{$method}('url', $operator, "{$path}%");
+            }
+
+            return $this->builder;
         } else {
             return $this->builder;
         }

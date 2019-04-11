@@ -54,7 +54,7 @@ class HistoryLog
 
         $data = [
             'ip'            => $request->ip(),
-            'url'           => $request->fullUrl(),
+            'url'           => $request->getPathInfo(),
             'method'        => $request->getMethod(),
             'content'       => $request->input(),
             'user_agent'    => $request->userAgent(),

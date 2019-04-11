@@ -84,6 +84,7 @@ class HistoryLogTest extends TestCase
             [
                 'data' => [
                     '*' => [
+                        'id',
                         'ip',
                         'url',
                         'content',
@@ -117,6 +118,7 @@ class HistoryLogTest extends TestCase
         $this->seeJsonStructure(
             [
                 'data' => [
+                    'id',
                     'ip',
                     'url',
                     'content',
@@ -298,5 +300,40 @@ class HistoryLogTest extends TestCase
         $this->get('/admin/histories' . $params3)
             ->seeJson(['name' => 'duc'])
             ->seeJson(['name' => 'abc']);
+    }
+
+    /** @test */
+    public function admin_can_filter_result_by_only_see()
+    {
+        $cond1 = ['url' => '/'];
+        $cond2 = ['url' => '/home_articles'];
+        $cond3 = ['url' => '/auth/login'];
+        $cond4 = ['url' => '/admin/article_regulars'];
+
+        create(\App\History::class, $cond1);
+        create(\App\History::class, $cond2);
+        create(\App\History::class, $cond3);
+        create(\App\History::class, $cond4);
+
+        $params1 = "?{$this->prefix}_only_see=admin";
+        $params2 = "?{$this->prefix}_only_see=frontend";
+        $params3 = "?{$this->prefix}_only_see=qwert";
+
+        $this->signIn();
+        $this->get('/admin/histories' . $params1)
+            ->seeJson($cond3)
+            ->seeJson($cond4)
+            ->dontSeeJson($cond1)
+            ->dontSeeJson($cond2);
+        $this->get('/admin/histories' . $params2)
+            ->seeJson($cond1)
+            ->seeJson($cond2)
+            ->dontSeeJson($cond3)
+            ->dontSeeJson($cond4);
+        $this->get('/admin/histories' . $params3)
+            ->seeJson($cond1)
+            ->seeJson($cond2)
+            ->seeJson($cond3)
+            ->seeJson($cond4);
     }
 }

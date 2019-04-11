@@ -9,6 +9,7 @@ class HistoryResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'          => $this->id,
             'ip'          => $this->ip,
             'url'         => $this->url,
             'content'     => $this->content,
