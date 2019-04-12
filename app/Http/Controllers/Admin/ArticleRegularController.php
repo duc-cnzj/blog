@@ -54,7 +54,7 @@ class ArticleRegularController extends Controller
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     public function destroy(int $id)
     {
@@ -90,7 +90,7 @@ class ArticleRegularController extends Controller
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     public function changeStatus(Request $request)
     {

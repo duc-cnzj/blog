@@ -1,5 +1,7 @@
 <?php
 
+use DucCnzj\Ip\IpClient;
+use App\Services\IpRedisCacheStore;
 use Laravel\Socialite\SocialiteManager;
 use Laravel\Socialite\Contracts\Factory;
 use Illuminate\Filesystem\FilesystemServiceProvider;
@@ -30,6 +32,7 @@ $app->withFacades();
 $app->withEloquent();
 
 $app->configure('duc');
+$app->configure('queue');
 $app->configure('cors');
 $app->configure('scout');
 $app->configure('cache');
@@ -88,6 +91,12 @@ $app->singleton(Factory::class, function ($app) {
     return new SocialiteManager($app);
 });
 
+$app->singleton('ip', function () {
+    return (new IpClient())
+        ->setCacheStore(new IpRedisCacheStore)
+        ->use('taobao');
+});
+
 $app->singleton(
     App\Contracts\TopArticleImp::class,
     function () {
@@ -108,6 +117,7 @@ $app->singleton(
 
 $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
+    \App\Http\Middleware\HistoryLog::class,
 ]);
 
 $app->routeMiddleware([
