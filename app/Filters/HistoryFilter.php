@@ -183,7 +183,8 @@ class HistoryFilter extends Filters
             $operator = ($type == 'admin')
                 ? 'LIKE'
                 : 'NOT LIKE';
-            $this->builder->where(function ($query) use ($operator) {
+
+            return $this->builder->where(function ($query) use ($operator) {
                 foreach ($this->onlySeePathsOfAdmin as $index => $path) {
                     $path = '/' . ltrim($path, '/');
 
@@ -193,8 +194,6 @@ class HistoryFilter extends Filters
                     $query->{$method}('url', $operator, "{$path}%");
                 }
             });
-
-            return $this->builder;
         } else {
             return $this->builder;
         }
