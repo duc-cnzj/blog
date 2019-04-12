@@ -1,6 +1,8 @@
 <?php
 
 use DucCnzj\Ip\IpClient;
+use App\Contracts\WhiteListImp;
+use App\Services\WhiteListService;
 use App\Services\IpRedisCacheStore;
 use Laravel\Socialite\SocialiteManager;
 use Laravel\Socialite\Contracts\Factory;
@@ -89,6 +91,10 @@ $app->singleton(
 
 $app->singleton(Factory::class, function ($app) {
     return new SocialiteManager($app);
+});
+
+$app->singleton(WhiteListImp::class, function () {
+    return new WhiteListService();
 });
 
 $app->singleton('ip', function () {

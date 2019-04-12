@@ -75,4 +75,10 @@ $router->group([
     $router->get('/histories', 'HistoryController@index');
 
     $router->get('/histories/{id}', 'HistoryController@show');
+
+    $router->get('/white_lists', 'WhiteListController@index');
+
+    $router->post('/white_lists', 'WhiteListController@store');
+
+    $router->delete('/white_lists', 'WhiteListController@destroy');
 });
