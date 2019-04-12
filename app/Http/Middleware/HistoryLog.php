@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use App\Jobs\RecordUser;
 use Illuminate\Http\Request;
+use App\Contracts\WhiteListImp;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -78,14 +79,17 @@ class HistoryLog
      */
     public function getWhiteList(): array
     {
-        $whiteList = array_map(function ($except) {
+        /** @var WhiteListImp $service */
+        $service = app(WhiteListImp::class);
+
+        $whiteList = array_merge($this->whiteList, $service->getItemLists());
+
+        return array_map(function ($except) {
             if ($except !== '/') {
                 $except = trim($except, '/');
             }
 
             return $except;
-        }, $this->whiteList);
-
-        return $whiteList;
+        }, $whiteList);
     }
 }
