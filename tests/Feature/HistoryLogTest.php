@@ -219,6 +219,7 @@ class HistoryLogTest extends TestCase
             ->dontSeeJson($cond1)
             ->SeeJson($cond2);
     }
+
     /** @test */
     public function admin_can_filter_result_by_address()
     {
