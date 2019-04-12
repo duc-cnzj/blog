@@ -219,6 +219,7 @@ class HistoryLogTest extends TestCase
             ->dontSeeJson($cond1)
             ->SeeJson($cond2);
     }
+
     /** @test */
     public function admin_can_filter_result_by_address()
     {
@@ -294,7 +295,7 @@ class HistoryLogTest extends TestCase
     /** @test */
     public function admin_can_filter_result_by_user_id()
     {
-        $user1 = $this->newTestUser(['name' => 'duc']);
+        $user1 = $this->newTestUser(['name' => 'admin']);
         $user2 = create(\App\SocialiteUser::class, ['name' => 'abc']);
         $cond1 = ['userable_id' => $user1->id, 'userable_type' => 'App\User'];
         $cond2 = ['userable_id' => $user2->id, 'userable_type' => 'App\SocialiteUser'];
@@ -307,22 +308,22 @@ class HistoryLogTest extends TestCase
 
         $this->signIn();
         $this->get('/admin/histories' . $params1)
-            ->seeJson(['name' => 'duc'])
+            ->seeJson(['name' => 'admin'])
             ->seeJson(['name' => 'abc']);
 
         $params2 = "?{$this->prefix}_user_type=admin";
         $this->get('/admin/histories' . $params2)
-            ->seeJson(['name' => 'duc'])
+            ->seeJson(['name' => 'admin'])
             ->dontSeeJson(['name' => 'abc']);
 
         $params3 = "?{$this->prefix}_user_type=frontend";
         $this->get('/admin/histories' . $params3)
-            ->dontSeeJson(['name' => 'duc'])
+            ->dontSeeJson(['name' => 'admin'])
             ->seeJson(['name' => 'abc']);
 
         $params3 = "?{$this->prefix}_user_type=qwer";
         $this->get('/admin/histories' . $params3)
-            ->seeJson(['name' => 'duc'])
+            ->seeJson(['name' => 'admin'])
             ->seeJson(['name' => 'abc']);
     }
 
