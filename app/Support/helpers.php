@@ -39,13 +39,15 @@ if (! function_exists('config_path')) {
 
 if (! function_exists('getAuthUser')) {
     /**
+     * @param string[] $guards
      * @return User|null
      *
      * @author duc <1025434218@qq.com>
      */
-    function getAuthUser()
+    function getAuthUser(string ...$guards)
     {
-        $guards = array_keys(config('auth.guards'));
+        $guards = empty($guard) ? array_keys(config('auth.guards')) : $guards;
+
         foreach ($guards as $guard) {
             \Auth::shouldUse($guard);
             if ($user = \Auth::user()) {
