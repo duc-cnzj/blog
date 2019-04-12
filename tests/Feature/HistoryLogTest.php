@@ -177,6 +177,31 @@ class HistoryLogTest extends TestCase
     }
 
     /** @test */
+    public function admin_can_filter_result_by_url()
+    {
+        $cond1 = ['url' => '/auth/user'];
+        $cond2 = ['url' => '/name/duc'];
+        $cond3 = ['url' => '/name/abc'];
+
+        create(\App\History::class, $cond1);
+        create(\App\History::class, $cond2);
+        create(\App\History::class, $cond3);
+
+        $params1 = "?{$this->prefix}_url=name";
+        $params2 = "?{$this->prefix}_url=auth";
+
+        $this->signIn();
+        $this->get('/admin/histories' . $params1)
+            ->seeJson($cond2)
+            ->seeJson($cond3)
+            ->dontSeeJson($cond1);
+        $this->get('/admin/histories' . $params2)
+            ->seeJson($cond1)
+            ->dontSeeJson($cond2)
+            ->dontSeeJson($cond3);
+    }
+
+    /** @test */
     public function admin_can_filter_result_by_status_code()
     {
         $cond1 = ['status_code' => 200];
@@ -194,7 +219,6 @@ class HistoryLogTest extends TestCase
             ->dontSeeJson($cond1)
             ->SeeJson($cond2);
     }
-
     /** @test */
     public function admin_can_filter_result_by_address()
     {
@@ -335,5 +359,46 @@ class HistoryLogTest extends TestCase
             ->seeJson($cond2)
             ->seeJson($cond3)
             ->seeJson($cond4);
+    }
+
+    /** @test */
+    public function admin_can_filter_result_by_only_see_and_other_filter()
+    {
+        $cond1 = ['method' => 'GET', 'url' => '/'];
+        $cond2 = ['method' => 'POST', 'url' => '/home_articles'];
+        $cond3 = ['method' => 'PUT', 'url' => '/auth/login'];
+        $cond4 = ['method' => 'DELETE', 'url' => '/admin/article_regulars'];
+
+        create(\App\History::class, $cond1);
+        create(\App\History::class, $cond2);
+        create(\App\History::class, $cond3);
+        create(\App\History::class, $cond4);
+
+        $params1 = "?{$this->prefix}_only_see=admin";
+        $params2 = "?{$this->prefix}_method=GET";
+        $params3 = "?{$this->prefix}_only_see=admin&{$this->prefix}_method=GET";
+        $params4 = "?{$this->prefix}_only_see=frontend&{$this->prefix}_method=GET";
+
+        $this->signIn();
+        $this->get('/admin/histories' . $params1)
+            ->seeJson($cond3)
+            ->seeJson($cond4)
+            ->dontSeeJson($cond1)
+            ->dontSeeJson($cond2);
+        $this->get('/admin/histories' . $params2)
+            ->seeJson($cond1)
+            ->dontSeeJson($cond2)
+            ->dontSeeJson($cond3)
+            ->dontSeeJson($cond4);
+        $this->get('/admin/histories' . $params3)
+            ->dontSeeJson($cond1)
+            ->dontSeeJson($cond2)
+            ->dontSeeJson($cond3)
+            ->dontSeeJson($cond4);
+        $this->get('/admin/histories' . $params4)
+            ->seeJson($cond1)
+            ->dontSeeJson($cond2)
+            ->dontSeeJson($cond3)
+            ->dontSeeJson($cond4);
     }
 }
