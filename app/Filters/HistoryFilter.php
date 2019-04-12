@@ -28,7 +28,8 @@ class HistoryFilter extends Filters
         'method',
         'status_code',
         'address',
-//        'content',
+        'url',
+        //        'content',
         'response',
         'visit_time_after',
         'visit_time_before',
@@ -62,9 +63,19 @@ class HistoryFilter extends Filters
      *
      * @author duc <1025434218@qq.com>
      */
+    public function url()
+    {
+        return $this->builder->where('url', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function statusCode()
     {
-        return $this->builder->where('status_code', (int) $this->getValueBy(__FUNCTION__));
+        return $this->builder->where('status_code', (int)$this->getValueBy(__FUNCTION__));
     }
 
     /**
@@ -77,15 +88,15 @@ class HistoryFilter extends Filters
         return $this->builder->where('address', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
     }
 
-//    /**
-//     * @return \Illuminate\Database\Eloquent\Builder
-//     *
-//     * @author duc <1025434218@qq.com>
-//     */
-//    public function content()
-//    {
-//        return $this->builder->whereJsonContains('content', "%{$this->getValueBy(__FUNCTION__)}%");
-//    }
+    //    /**
+    //     * @return \Illuminate\Database\Eloquent\Builder
+    //     *
+    //     * @author duc <1025434218@qq.com>
+    //     */
+    //    public function content()
+    //    {
+    //        return $this->builder->whereJsonContains('content', "%{$this->getValueBy(__FUNCTION__)}%");
+    //    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Builder
@@ -136,7 +147,7 @@ class HistoryFilter extends Filters
      */
     public function userId()
     {
-        return $this->builder->where('userable_id', (int) $this->getValueBy(__FUNCTION__));
+        return $this->builder->where('userable_id', (int)$this->getValueBy(__FUNCTION__));
     }
 
     /**
@@ -172,16 +183,16 @@ class HistoryFilter extends Filters
             $operator = ($type == 'admin')
                 ? 'LIKE'
                 : 'NOT LIKE';
+            $this->builder->where(function ($query) use ($operator) {
+                foreach ($this->onlySeePathsOfAdmin as $index => $path) {
+                    $path = '/' . ltrim($path, '/');
 
-            foreach ($this->onlySeePathsOfAdmin as $index => $path) {
-                $path = '/' . ltrim($path, '/');
-
-                $method = ($operator != 'LIKE' || $index == 0)
-                    ? 'where'
-                    : 'orWhere';
-
-                $this->builder->{$method}('url', $operator, "{$path}%");
-            }
+                    $method = ($operator != 'LIKE' || $index == 0)
+                        ? 'where'
+                        : 'orWhere';
+                    $query->{$method}('url', $operator, "{$path}%");
+                }
+            });
 
             return $this->builder;
         } else {
