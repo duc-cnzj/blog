@@ -64,7 +64,7 @@ class HistoryFilter extends Filters
      */
     public function statusCode()
     {
-        return $this->builder->where('status_code', $this->getValueBy(__FUNCTION__));
+        return $this->builder->where('status_code', (int) $this->getValueBy(__FUNCTION__));
     }
 
     /**
@@ -136,7 +136,7 @@ class HistoryFilter extends Filters
      */
     public function userId()
     {
-        return $this->builder->where('userable_id', $this->getValueBy(__FUNCTION__));
+        return $this->builder->where('userable_id', (int) $this->getValueBy(__FUNCTION__));
     }
 
     /**
