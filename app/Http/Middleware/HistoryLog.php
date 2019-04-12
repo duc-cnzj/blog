@@ -52,7 +52,7 @@ class HistoryLog
             return;
         }
 
-        $user = Auth::user();
+        $user = getAuthUser();
         $userableId = $user ? $user->id : 0;
         $userableType = $user ? get_class($user) : '';
 
