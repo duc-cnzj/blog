@@ -48,6 +48,10 @@ class HistoryLog
             return;
         }
 
+        if (in_array($request->getMethod(), ['OPTIONS', 'HEAD'])) {
+            return;
+        }
+
         $user = Auth::user();
         $userableId = $user ? $user->id : 0;
         $userableType = $user ? get_class($user) : '';
