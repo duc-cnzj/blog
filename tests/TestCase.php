@@ -30,7 +30,9 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         if (count($testingKeys) > 0) {
             Redis::connection('default')->del($testingKeys);
         }
+
         $this->withoutEvents();
+        $this->withoutJobs();
     }
 
     public function newTestUser($custom = [])

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export XDEBUG_HOST=$(ifconfig | grep -o "192\.\d\+\.\d\+\.\d\+[^255]")
-
 if [ $# -gt 0 ]; then
 
     if [ "$1" == "start" ]; then

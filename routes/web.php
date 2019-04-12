@@ -14,8 +14,10 @@
 /**
  * @link http://patorjk.com/software/taag/#p=display&f=Standard&t=duc's%20blog Text to ASCII
  */
+/** @var \Laravel\Lumen\Routing\Router $router */
 $router->get('/', function () use ($router) {
     $version = $router->app->version();
+    $year = date('Y');
 
     return <<<TAG
      # welcome! power by {$version} 
@@ -24,8 +26,17 @@ $router->get('/', function () use ($router) {
   / _` | | | |/ __|// __| | '_ \| |/ _ \ / _` |
  | (_| | |_| | (__  \__ \ | |_) | | (_) | (_| |
   \__,_|\__,_|\___| |___/ |_.__/|_|\___/ \__, |
-                                         |___/  created by duc@2018.
+                                         |___/  created by duc@2018-{$year}.
 TAG;
+});
+
+$router->get('/nav_links', function () {
+    return [
+        'data' => [
+            ['title' => '首页', 'link' => '/'],
+            ['title' => '文章', 'link' => '/articles'],
+        ],
+    ];
 });
 
 $router->get('/login/github', 'AuthController@redirectToProvider');
@@ -51,15 +62,6 @@ $router->get('/trending_articles', 'ArticleController@trending');
 $router->get('/top_articles', 'ArticleController@top');
 
 $router->get('/categories', 'CategoryController@index');
-
-$router->get('/nav_links', function () {
-    return [
-        'data' => [
-            ['title' => '首页', 'link' => '/'],
-            ['title' => '文章', 'link' => '/articles'],
-        ],
-    ];
-});
 
 $router->get('/articles/{id}/comments', 'CommentController@index');
 

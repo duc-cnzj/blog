@@ -19,7 +19,7 @@ class ArticleRegularPolicy
      * @param ArticleRegular $regular
      * @return bool
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     public function own(User $user, ArticleRegular $regular)
     {
