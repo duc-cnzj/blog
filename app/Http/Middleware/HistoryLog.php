@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use App\Jobs\RecordUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
