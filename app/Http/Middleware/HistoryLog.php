@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Carbon\Carbon;
 use App\Jobs\RecordUser;
 use Illuminate\Http\Request;
-use App\Contracts\WhiteListImp;
+use App\Contracts\HistoryLogHandlerImp;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class HistoryLog
 {
-    /**
-     * @var array
-     */
-    protected $whiteList = ['admin/histories*'];
-
     /**
      * @param Request $request
      * @param \Closure $next
@@ -40,15 +35,10 @@ class HistoryLog
      */
     public function terminate(Request $request, Response $response)
     {
-        $whiteList = $this->getWhiteList();
+        /** @var HistoryLogHandlerImp $handler */
+        $handler = app(HistoryLogHandlerImp::class);
 
-        if ($request->is(...$whiteList)) {
-            info("白名单: {$request->fullUrl()} 不记录访问信息。");
-
-            return;
-        }
-
-        if (in_array($request->getMethod(), ['OPTIONS', 'HEAD'])) {
+        if (! $handler->shouldRecord($request)) {
             return;
         }
 
@@ -70,26 +60,5 @@ class HistoryLog
         ];
 
         dispatch(new RecordUser($data));
-    }
-
-    /**
-     * @return array
-     *
-     * @author duc <1025434218@qq.com>
-     */
-    public function getWhiteList(): array
-    {
-        /** @var WhiteListImp $service */
-        $service = app(WhiteListImp::class);
-
-        $whiteList = array_merge($this->whiteList, $service->getItemLists());
-
-        return array_map(function ($except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-
-            return $except;
-        }, $whiteList);
     }
 }

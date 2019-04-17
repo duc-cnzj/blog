@@ -1,14 +1,14 @@
 <?php
 
-use App\Contracts\WhiteListImp;
+use App\Contracts\WhiteListUrlImp;
 
 /**
  * Class WhiteListServiceTest
  */
-class WhiteListServiceTest extends TestCase
+class WhiteListUrlServiceTest extends TestCase
 {
     /**
-     * @var WhiteListImp
+     * @var WhiteListUrlImp
      */
     protected $handler;
 
@@ -19,13 +19,13 @@ class WhiteListServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->handler = app(WhiteListImp::class);
+        $this->handler = app(WhiteListUrlImp::class);
     }
 
     /** @test */
     public function test_get_cache_key()
     {
-        $this->assertEquals('testing_white_list', $this->handler->getCacheKey());
+        $this->assertEquals('testing_url_white_list', $this->handler->getCacheKey());
     }
 
     /** @test */
