@@ -31,11 +31,11 @@ class UrlHandler implements HistoryLogHandlerImp
         $list = $listHandler->getTreatedListItems();
 
         if ($request->is(...$list)) {
-            if ($this->nextHandler) {
-                return $this->nextHandler->shouldRecord($request);
-            }
-
             return false;
+        }
+
+        if ($this->nextHandler) {
+            return $this->nextHandler->shouldRecord($request);
         }
 
         return true;

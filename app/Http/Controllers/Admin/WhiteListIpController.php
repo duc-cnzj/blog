@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Rules\CheckEmptyArray;
 use App\Contracts\WhiteListIpImp;
 use App\Http\Controllers\Controller;
 
@@ -37,16 +36,16 @@ class WhiteListIpController extends Controller
     public function store(WhiteListIpImp $service, Request $request)
     {
         $this->validate($request, [
-            'items' => ['bail', 'array', new CheckEmptyArray()],
+            'item' => 'required|ip',
         ]);
 
-        if ($service->addItemToList(...$request->input('items', []))) {
-            return response('添加成功', 201);
+        if ($service->addItemToList($request->input('item', ''))) {
+            return response()->json(['success' => true], 201);
         } else {
             return response([
                 'error' => [
                     'code'    => 400,
-                    'message' => '添加失败',
+                    'message' => 'fail',
                 ],
             ], 400);
         }
@@ -64,7 +63,7 @@ class WhiteListIpController extends Controller
     public function destroy(WhiteListIpImp $service, Request $request)
     {
         $this->validate($request, [
-            'item' => 'string|required',
+            'item' => 'string|required|ip',
         ]);
 
         $service->deleteItems(($request->input('item', '')));

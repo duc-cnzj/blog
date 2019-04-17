@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Traits\hasCache;
-use App\Contracts\WhiteListUrlImp;
+use App\Contracts\WhiteListIpImp;
 
 /**
  * Class WhiteListService
  * @package App\Services
  */
-class WhiteListIpService implements WhiteListUrlImp
+class WhiteListIpService implements WhiteListIpImp
 {
     use hasCache;
 

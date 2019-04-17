@@ -22,12 +22,12 @@ class HistoryLogServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->singleton(WhiteListUrlImp::class, function () {
-            return new WhiteListUrlService();
-        });
-
         $this->app->singleton(WhiteListIpImp::class, function () {
             return new WhiteListIpService();
+        });
+
+        $this->app->singleton(WhiteListUrlImp::class, function () {
+            return new WhiteListUrlService();
         });
 
         $this->app->singleton(HistoryLogHandlerImp::class, function () {
