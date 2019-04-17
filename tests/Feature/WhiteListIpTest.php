@@ -120,6 +120,5 @@ class WhiteListIpTest extends TestCase
 
         $this->get('/user');
         $this->get('/admin');
-
     }
 }
