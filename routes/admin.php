@@ -76,9 +76,15 @@ $router->group([
 
     $router->get('/histories/{id}', 'HistoryController@show');
 
-    $router->get('/white_lists', 'WhiteListController@index');
+    $router->get('/url_white_lists', 'WhiteListUrlController@index');
 
-    $router->post('/white_lists', 'WhiteListController@store');
+    $router->post('/url_white_lists', 'WhiteListUrlController@store');
 
-    $router->delete('/white_lists', 'WhiteListController@destroy');
+    $router->delete('/url_white_lists', 'WhiteListUrlController@destroy');
+
+    $router->get('/ip_white_lists', 'WhiteListIpController@index');
+
+    $router->post('/ip_white_lists', 'WhiteListIpController@store');
+
+    $router->delete('/ip_white_lists', 'WhiteListIpController@destroy');
 });

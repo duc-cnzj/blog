@@ -2,10 +2,6 @@
 
 namespace App\Contracts;
 
-/**
- * Interface WhiteListImp
- * @package App\Contracts
- */
 interface WhiteListImp
 {
     /**
@@ -37,4 +33,11 @@ interface WhiteListImp
      * @author duc <1025434218@qq.com>
      */
     public function getItemLists(): array;
+
+    /**
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function getTreatedListItems(): array;
 }
