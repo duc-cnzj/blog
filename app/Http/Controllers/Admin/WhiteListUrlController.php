@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Rules\CheckEmptyArray;
-use App\Contracts\WhiteListImp;
+use App\Contracts\WhiteListUrlImp;
 use App\Http\Controllers\Controller;
 
 /**
  * Class WhiteListController
  * @package App\Http\Controllers\Admin
  */
-class WhiteListController extends Controller
+class WhiteListUrlController extends Controller
 {
     /**
-     * @param  WhiteListImp  $service
+     * @param  WhiteListUrlImp  $service
      * @return array
      *
      * @author duc <1025434218@qq.com>
      */
-    public function index(WhiteListImp $service)
+    public function index(WhiteListUrlImp $service)
     {
         return response()->json([
             'data' => $service->getItemLists(),
@@ -27,14 +27,14 @@ class WhiteListController extends Controller
     }
 
     /**
-     * @param  WhiteListImp  $service
+     * @param  WhiteListUrlImp  $service
      * @param  Request  $request
      * @return bool
      * @throws \Illuminate\Validation\ValidationException
      *
      * @author duc <1025434218@qq.com>
      */
-    public function store(WhiteListImp $service, Request $request)
+    public function store(WhiteListUrlImp $service, Request $request)
     {
         $this->validate($request, [
             'items' => ['bail', 'array', new CheckEmptyArray()],
@@ -53,7 +53,7 @@ class WhiteListController extends Controller
     }
 
     /**
-     * @param  WhiteListImp  $service
+     * @param  WhiteListUrlImp  $service
      * @param  Request  $request
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      *
@@ -61,7 +61,7 @@ class WhiteListController extends Controller
      *
      * @author duc <1025434218@qq.com>
      */
-    public function destroy(WhiteListImp $service, Request $request)
+    public function destroy(WhiteListUrlImp $service, Request $request)
     {
         $this->validate($request, [
             'item' => 'string|required',
