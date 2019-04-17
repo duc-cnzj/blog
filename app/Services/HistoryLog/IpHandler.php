@@ -27,14 +27,14 @@ class IpHandler implements HistoryLogHandlerImp
     {
         /** @var WhiteListIpImp $handler */
         $handler = app(WhiteListIpImp::class);
-        $IpWhiteList = $handler->getTreatedListItems();
+        $ipWhiteList = $handler->getTreatedListItems();
 
-        if (! in_array($request->ip(), $IpWhiteList)) {
-            if ($this->nextHandler) {
-                return $this->nextHandler->shouldRecord($request);
-            }
-
+        if (in_array($request->ip(), $ipWhiteList)) {
             return false;
+        }
+
+        if ($this->nextHandler) {
+            return $this->nextHandler->shouldRecord($request);
         }
 
         return true;

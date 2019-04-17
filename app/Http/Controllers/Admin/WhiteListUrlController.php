@@ -41,12 +41,12 @@ class WhiteListUrlController extends Controller
         ]);
 
         if ($service->addItemToList(...$request->input('items', []))) {
-            return response('添加成功', 201);
+            return response()->json(['success' => true], 201);
         } else {
             return response([
                 'error' => [
                     'code'    => 400,
-                    'message' => '添加失败',
+                    'message' => 'fail',
                 ],
             ], 400);
         }

@@ -29,12 +29,12 @@ class MethodHandler implements HistoryLogHandlerImp
      */
     public function shouldRecord(Request $request): bool
     {
-        if (! in_array($request->method(), $this->dontRecordMethodNames)) {
-            if ($this->nextHandler) {
-                return $this->nextHandler->shouldRecord($request);
-            }
-
+        if (in_array($request->method(), $this->dontRecordMethodNames)) {
             return false;
+        }
+
+        if ($this->nextHandler) {
+            return $this->nextHandler->shouldRecord($request);
         }
 
         return true;

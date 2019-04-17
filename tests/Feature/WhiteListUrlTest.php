@@ -89,7 +89,7 @@ class WhiteListUrlTest extends TestCase
     }
 
     /** @test */
-    public function request_those_which_not_in_white_lists_will_logged()
+    public function request_those_which_not_in_url_white_lists_will_logged()
     {
         $mock = Mockery::mock('Illuminate\Bus\Dispatcher[dispatch]', [$this->app]);
         $mock->shouldReceive('dispatch')->never()
