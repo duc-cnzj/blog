@@ -30,10 +30,6 @@ $router->get('/', function () use ($router) {
 TAG;
 });
 
-$router->get('/duc', function (\Illuminate\Http\Request $request) {
-//    dd((new \App\Services\HistoryLogHandler())->shouldRecord($request));
-});
-
 $router->get('/nav_links', function () {
     return [
         'data' => [
