@@ -1,11 +1,11 @@
 <?php
 
 use DucCnzj\Ip\IpClient;
-use App\Contracts\WhiteListImp;
-use App\Services\WhiteListService;
 use App\Services\IpRedisCacheStore;
 use Laravel\Socialite\SocialiteManager;
 use Laravel\Socialite\Contracts\Factory;
+use App\Providers\ArticleServiceProvider;
+use App\Providers\HistoryLogServiceProvider;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -66,35 +66,8 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
-$app->singleton(\App\Contracts\TransformImp::class, function ($app, $params) {
-    return new \App\Services\RegularRule(
-        new \App\Services\ArticleTransformRule($params[0])
-    );
-});
-
-$app->alias(\App\Contracts\TransformImp::class, 'rule');
-
-$app->singleton(
-    App\Contracts\ArticleRepoImp::class,
-    function () {
-        $useCache = config('duc.article_use_cache');
-
-        if ($useCache) {
-            return new \App\Services\ArticleRepoCache(
-                new \App\Services\ArticleRepo
-            );
-        } else {
-            return new \App\Services\ArticleRepo;
-        }
-    }
-);
-
 $app->singleton(Factory::class, function ($app) {
     return new SocialiteManager($app);
-});
-
-$app->singleton(WhiteListImp::class, function () {
-    return new WhiteListService();
 });
 
 $app->singleton('ip', function () {
@@ -102,13 +75,6 @@ $app->singleton('ip', function () {
         ->setCacheStore(new IpRedisCacheStore)
         ->use('taobao');
 });
-
-$app->singleton(
-    App\Contracts\TopArticleImp::class,
-    function () {
-        return new \App\TopArticle();
-    }
-);
 
 /*
 |--------------------------------------------------------------------------
@@ -157,6 +123,9 @@ $app->register(Laravel\Scout\ScoutServiceProvider::class);
 $app->register(ScoutElastic\ScoutElasticServiceProvider::class);
 $app->register(BackupManager\Laravel\Lumen55ServiceProvider::class);
 $app->register(FilesystemServiceProvider::class);
+// customer service providers
+$app->register(ArticleServiceProvider::class);
+$app->register(HistoryLogServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -27,6 +27,6 @@ class CheckEmptyArray implements Rule
      */
     public function message()
     {
-        return '路径不能为空';
+        return '提交数据不能为空';
     }
 }
