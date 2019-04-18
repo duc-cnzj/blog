@@ -27,6 +27,13 @@ class History extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $dates = [
+        'visited_at',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      *
      * @author duc <1025434218@qq.com>

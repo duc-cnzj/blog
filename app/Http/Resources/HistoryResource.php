@@ -18,7 +18,7 @@ class HistoryResource extends JsonResource
             'address'     => $this->address,
             'response'    => $this->response,
             'user_agent'  => $this->user_agent,
-            'visited_at'  => $this->visited_at,
+            'visited_at'  => $this->visited_at->diffForHumans(),
             'user'        => $this->when($this->resource->relationLoaded('userable'), function () {
                 return [
                     'id'   => optional($this->userable)->id ?? 0,
