@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->app['config']->set(['app.faker_locale' => 'zh_CN']);
+
         \DB::listen(function ($query) {
             \Log::info($query->sql, $query->bindings);
         });

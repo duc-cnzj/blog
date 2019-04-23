@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use Illuminate\Support\Facades\Auth;
 
 if (! function_exists('recursiveReplies')) {
     /**
@@ -39,8 +39,8 @@ if (! function_exists('config_path')) {
 
 if (! function_exists('getAuthUser')) {
     /**
-     * @param string[] $guards
-     * @return User|null
+     * @param string ...$guards
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      *
      * @author duc <1025434218@qq.com>
      */
@@ -49,8 +49,8 @@ if (! function_exists('getAuthUser')) {
         $guards = empty($guard) ? array_keys(config('auth.guards')) : $guards;
 
         foreach ($guards as $guard) {
-            \Auth::shouldUse($guard);
-            if ($user = \Auth::user()) {
+            Auth::shouldUse($guard);
+            if ($user = Auth::user()) {
                 return $user;
             }
         }
