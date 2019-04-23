@@ -20,6 +20,12 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     {
         parent::setUp();
 
+        $this->withoutEvents();
+        $this->withoutJobs();
+    }
+
+    protected function tearDown(): void
+    {
         $cacheTestingKeys = Redis::connection('cache')->keys('*testing*');
         if (count($cacheTestingKeys) > 0) {
             Redis::connection('cache')->del($cacheTestingKeys);
@@ -31,8 +37,7 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
             Redis::connection('default')->del($testingKeys);
         }
 
-        $this->withoutEvents();
-        $this->withoutJobs();
+        parent::tearDown();
     }
 
     public function newTestUser($custom = [])

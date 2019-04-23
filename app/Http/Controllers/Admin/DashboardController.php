@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use App\Article;
 use App\Comment;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
+use App\Services\HistoryDataService;
 use Illuminate\Support\Facades\Redis;
 
 /**
@@ -48,6 +49,33 @@ class DashboardController extends Controller
     }
 
     /**
+     * @param  Request  $request
+     * @param  HistoryDataService  $service
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     *
+     * @author 神符 <1025434218@qq.com>
+     */
+    public function historyData(Request $request, HistoryDataService $service)
+    {
+        $this->validate($request, [
+            'unit'     => 'nullable|in:day,week',
+            'section'  => 'nullable|int',
+            'sub_week' => 'nullable|int',
+            'from'     => 'in:frontend,admin',
+        ]);
+
+        $unit = $request->unit ?? 'day';
+        $section = $request->section ?? 6;
+        $subWeeks = $request->sub_week ?? 0;
+        $from = $request->from ?? 'frontend';
+
+        return response()->json([
+            'data' => $service->getData($unit, $section, $subWeeks, $from),
+        ], 200);
+    }
+
+    /**
      * @return int
      *
      * @author duc <1025434218@qq.com>
@@ -70,7 +98,7 @@ class DashboardController extends Controller
      */
     private function getArticleCount(): int
     {
-        $articleCount = Article::count();
+        $articleCount = Article::query()->count();
 
         return $articleCount;
     }
@@ -82,7 +110,7 @@ class DashboardController extends Controller
      */
     public function getCommentCount(): int
     {
-        return Comment::count();
+        return Comment::query()->count();
     }
 
     /**
@@ -92,6 +120,6 @@ class DashboardController extends Controller
      */
     public function getAuthorCount(): int
     {
-        return User::count();
+        return User::query()->count();
     }
 }

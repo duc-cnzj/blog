@@ -30,6 +30,8 @@ $router->group([
 
     $router->get('/dashboard', 'DashboardController@index');
 
+    $router->get('/history_data', 'DashboardController@historyData');
+
     $router->get('/comments/{id}', 'CommentController@show');
 
     $router->get('/comments', 'CommentController@index');
