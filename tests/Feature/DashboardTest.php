@@ -132,7 +132,7 @@ class DashboardTest extends TestCase
 
         $time = \Carbon\Carbon::now()->subWeeks(2)->startOfWeek();
 
-        $res2->seeJsonContains(['time' => "{$time->format('Y-m-d')} - {$time->addDay()->format('Y-m-d')}"]);
+        $res2->seeJsonContains(['time' => "{$time->format('Y-m-d')}"]);
     }
 
     /** @test */
