@@ -18,11 +18,6 @@ class HistoryFilter extends Filters
     /**
      * @var array
      */
-    private $onlySeePathsOfAdmin = ['/auth', '/admin'];
-
-    /**
-     * @var array
-     */
     protected $filters = [
         'ip',
         'method',
@@ -179,23 +174,6 @@ class HistoryFilter extends Filters
     {
         $type = $this->getValueBy(__FUNCTION__);
 
-        if (in_array($type, ['admin', 'frontend'])) {
-            $operator = ($type == 'admin')
-                ? 'LIKE'
-                : 'NOT LIKE';
-
-            return $this->builder->where(function ($query) use ($operator) {
-                foreach ($this->onlySeePathsOfAdmin as $index => $path) {
-                    $path = '/' . ltrim($path, '/');
-
-                    $method = ($operator != 'LIKE' || $index == 0)
-                        ? 'where'
-                        : 'orWhere';
-                    $query->{$method}('url', $operator, "{$path}%");
-                }
-            });
-        } else {
-            return $this->builder;
-        }
+        return $this->builder->onlySee($type);
     }
 }

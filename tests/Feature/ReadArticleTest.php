@@ -93,32 +93,30 @@ class ReadArticleTest extends TestCase
     /** @test */
     public function user_can_get_trending_articles_from_cache()
     {
-        create(\App\Article::class, [], 5);
+        $articles = create(\App\Article::class, [], 3);
 
-        $i = 5;
-        while ($i > 0) {
-            $this->json('GET', "/articles/{$i}");
-            $i--;
+        foreach ($articles as $article) {
+            $this->json('GET', "/articles/{$article->id}");
         }
 
-        $this->assertEquals(5, count($this->trending->get()));
+        $this->assertEquals(3, count($this->trending->get()));
 
         DB::enableQueryLog();
         $res = $this->json('GET', '/trending_articles');
         DB::disableQueryLog();
         $res->seeStatusCode(200);
         $data = json_decode($res->response->content());
-        $this->assertEquals(5, count(data_get($data, 'data')));
+        $this->assertEquals(3, count(data_get($data, 'data')));
         $this->assertEquals(0, count(DB::getQueryLog()));
     }
 
     /** @test */
     public function guest_can_see_article_from_cache()
     {
-        create(Article::class, ['title' => 'article 1']);
+        $article = create(Article::class, ['title' => 'article 1']);
 
         DB::enableQueryLog();
-        $this->get('/articles/1');
+        $this->get('/articles/' . $article->id);
         DB::disableQueryLog();
         $this->assertEquals(4, count(DB::getQueryLog()));
         $this->assertTrue($this->trending->hasKey(1));

@@ -223,13 +223,13 @@ class HistoryLogTest extends TestCase
     /** @test */
     public function admin_can_filter_result_by_address()
     {
-        $cond1 = ['address' => '绍兴'];
-        $cond2 = ['address' => '杭州'];
+        $cond1 = ['address' => '绍兴qwerty'];
+        $cond2 = ['address' => '杭州1234567'];
 
         create(\App\History::class, $cond1);
         create(\App\History::class, $cond2);
-        $params1 = "?{$this->prefix}_address=绍兴";
-        $params2 = "?{$this->prefix}_address=杭州";
+        $params1 = "?{$this->prefix}_address=rty";
+        $params2 = "?{$this->prefix}_address=567";
 
         $this->signIn();
         $this->get('/admin/histories' . $params1)
@@ -243,18 +243,18 @@ class HistoryLogTest extends TestCase
     /** @test */
     public function admin_can_filter_result_by_response()
     {
-        $cond1 = ['response' => '绍兴1234'];
-        $cond2 = ['response' => '杭州123'];
+        $cond1 = ['response' => '绍兴12345'];
+        $cond2 = ['response' => '杭州321456'];
 
         create(\App\History::class, $cond1);
         create(\App\History::class, $cond2);
-        $params1 = "?{$this->prefix}_response=绍兴";
-        $params2 = "?{$this->prefix}_response=杭州";
+        $params1 = "?{$this->prefix}_response=321";
+        $params2 = "?{$this->prefix}_response=123";
 
         $this->signIn();
-        $res3 = $this->get('/admin/histories')->response->content();
         $res1 = $this->get('/admin/histories' . $params1)->response->content();
         $res2 = $this->get('/admin/histories' . $params2)->response->content();
+        $res3 = $this->get('/admin/histories')->response->content();
 
         $this->assertEquals(1, count(json_decode($res1, JSON_OBJECT_AS_ARRAY)['data']));
         $this->assertEquals(1, count(json_decode($res2, JSON_OBJECT_AS_ARRAY)['data']));
