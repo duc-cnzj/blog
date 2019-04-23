@@ -48,7 +48,7 @@ class HistoryDataService
         $times = [];
         switch ($unit) {
             case 'day':
-                $perHour = floor(24 / ($periodTimes ?? 6));
+                $perHour = intval(floor(24 / ($periodTimes ?? 6)));
                 $startOfDay = Carbon::now()->startOfDay();
                 while ($periodTimes > 0) {
                     if ($periodTimes == 1) {
