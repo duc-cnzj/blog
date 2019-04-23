@@ -118,7 +118,7 @@ class HistoryDataService
 
             $result[] = [
                 'count' => $histories->count(),
-                'time'  => $formatTimes[] = $period[0]->format($this->getFormat($unit)) . ' - ' . $period[1]->format($this->getFormat($unit)),
+                'time'  => $formatTimes[] = $this->getDateFormat($unit, $period),
                 'data'  => $sortData,
             ];
         }
@@ -151,6 +151,29 @@ class HistoryDataService
         $carry[$item->ip]['url'][$item->url] += 1;
 
         return $carry[$item->ip]['url'];
+    }
+
+    /**
+     * @param  string  $unit
+     * @param  array  $period
+     * @return string
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    private function getDateFormat(string $unit, array $period): string
+    {
+        switch ($unit) {
+            case 'day':
+                $result = $period[0]->format($this->getFormat($unit)) . ' - ' . $period[1]->format($this->getFormat($unit));
+                break;
+            case 'week':
+                $result = $period[0]->format($this->getFormat($unit));
+                break;
+            default:
+                $result = $period[0]->format($this->getFormat($unit)) . ' - ' . $period[1]->format($this->getFormat($unit));
+        }
+
+        return $result;
     }
 
     /**

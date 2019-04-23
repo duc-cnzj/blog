@@ -54,7 +54,7 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     public function historyData(Request $request, HistoryDataService $service)
     {
