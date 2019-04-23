@@ -12,7 +12,6 @@
  */
 
 use App\User;
-use Illuminate\Support\Str;
 
 $factory->define(App\History::class, function (Faker\Generator $faker) {
     return [
@@ -31,23 +30,15 @@ $factory->define(App\History::class, function (Faker\Generator $faker) {
 });
 
 $factory->state(App\History::class, 'withAdminUser', function (Faker\Generator $faker) {
-    $user = factory(User::class)->create([
-        'mobile'   => Str::random(32),
-        'avatar'   => 'test1234567',
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
-    ]);
-
     return [
-        'userable_id'   => $user->id,
-        'userable_type' => get_class($user),
+        'userable_id'   => factory(User::class)->create()->id,
+        'userable_type' => get_class(factory(User::class)->create()),
     ];
 });
 
 $factory->state(App\History::class, 'withSocialiteUser', function (Faker\Generator $faker) {
-    $user = factory(\App\SocialiteUser::class)->create();
-
     return [
-        'userable_id'   => $user->id,
-        'userable_type' => get_class($user),
+        'userable_id'   => factory(\App\SocialiteUser::class)->create()->id,
+        'userable_type' => get_class(factory(\App\SocialiteUser::class)->create()),
     ];
 });

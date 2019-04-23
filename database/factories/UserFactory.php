@@ -1,6 +1,5 @@
 <?php
 
-use Faker\Factory;
 use Illuminate\Support\Str;
 
 /*
@@ -13,10 +12,7 @@ use Illuminate\Support\Str;
 | database. Just tell the factory how a default model should look.
 |
 */
-// Faker\Generator $faker
-$factory->define(App\User::class, function () {
-    $faker = Factory::create('zh_CN');
-
+$factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name'     => $faker->name,
         'email'    => Str::random(12) . $faker->unique()->safeEmail,
@@ -24,6 +20,5 @@ $factory->define(App\User::class, function () {
         'bio'      => $faker->text,
         'avatar'   => $faker->imageUrl,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        // 'remember_token' => Str::random(10),
     ];
 });
