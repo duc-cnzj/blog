@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\HasFilter;
+use App\Contracts\WhiteListIpImp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -11,7 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
  * Class History
  * @package App
  *
- * @method static Builder onlySee(string $from)
+ * @method static Builder|History onlySee(string $from)
+ * @method static Builder|History removeWhiteListIps()
  */
 class History extends Model
 {
@@ -78,5 +80,19 @@ class History extends Model
                 $q->{$method}('url', $operator, "{$path}%");
             }
         });
+    }
+
+    /**
+     * @param  Builder  $query
+     * @return Builder|\Illuminate\Database\Query\Builder
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function scopeRemoveWhiteListIps(Builder $query)
+    {
+        /** @var WhiteListIpImp $whiteList */
+        $whiteList = app(WhiteListIpImp::class);
+
+        return $query->whereNotIn('ip', $whiteList->getTreatedListItems());
     }
 }

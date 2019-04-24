@@ -24,6 +24,7 @@ class HistoryController extends Controller
     public function index(HistoryFilter $filter, Request $request)
     {
         $histories = History::with('userable:id,name')
+            ->removeWhiteListIps()
             ->filter($filter)
             ->orderByDesc('visited_at')
             ->paginate(

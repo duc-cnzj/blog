@@ -90,6 +90,7 @@ class HistoryDataService
 
         $allHistories = History::onlySee($from)
             ->whereBetween('visited_at', [Arr::first($times)[0], Arr::last($times)[1]])
+            ->removeWhiteListIps()
             ->get(['id', 'ip', 'address', 'url', 'visited_at']);
 
         /** @var Carbon[] $period */
