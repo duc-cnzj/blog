@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Trait HasFilter
  *
- * @method static Builder filter($filter)
+ * @method static static|Builder filter($filter)
  *
  * @package App\Traits
  */

@@ -1,5 +1,6 @@
 <?php
 
+use App\Contracts\WhiteListIpImp;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -401,5 +402,21 @@ class HistoryLogTest extends TestCase
             ->dontSeeJson($cond2)
             ->dontSeeJson($cond3)
             ->dontSeeJson($cond4);
+    }
+
+    /** @test */
+    public function if_some_ip_add_to_white_list_it_will_disappeared()
+    {
+        $this->signIn();
+        $ip = '192.168.99.100';
+        create(\App\History::class, ['ip' => $ip], 3);
+        $res = $this->get('/admin/histories')->response->content();
+        $this->assertEquals(3, count(json_decode($res, JSON_OBJECT_AS_ARRAY)['data']));
+
+        /** @var WhiteListIpImp $whiteList */
+        $whiteList = app(WhiteListIpImp::class);
+        $whiteList->addItemToList($ip);
+        $res1 = $this->get('/admin/histories')->response->content();
+        $this->assertEquals(0, count(json_decode($res1, JSON_OBJECT_AS_ARRAY)['data']));
     }
 }
