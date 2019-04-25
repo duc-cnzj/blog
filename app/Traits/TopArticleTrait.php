@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Article;
 use Carbon\Carbon;
 use App\Contracts\TopArticleImp;
 
@@ -15,7 +16,7 @@ trait TopArticleTrait
             }
         });
 
-        static::updated(function ($model) {
+        static::updated(function (Article $model) {
             if ($model->isDirty('top_at')) {
                 $model->getDirty()['top_at'] !== null
                     ? app(TopArticleImp::class)->addTopArticle($model)

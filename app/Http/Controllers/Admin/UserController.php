@@ -24,7 +24,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::latest()->paginate($request->input('page_size') ?? 10);
+        $users = User::query()
+            ->latest()
+            ->paginate($request->input('page_size') ?? 10);
 
         return UserResource::collection($users);
     }
@@ -62,7 +64,7 @@ class UserController extends Controller
             $attributes['avatar'] = (new \Laravel\Lumen\Routing\UrlGenerator(app()))->asset('images/' . $filename);
         }
 
-        $user = User::create($attributes);
+        $user = User::query()->create($attributes);
 
         return new UserResource($user);
     }
@@ -76,7 +78,9 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        return new UserResource(User::findOrFail($id, ['id', 'name', 'email', 'avatar', 'bio']));
+        return new UserResource(
+            User::query()->findOrFail($id, ['id', 'name', 'email', 'avatar', 'bio'])
+        );
     }
 
     /**
@@ -96,7 +100,7 @@ class UserController extends Controller
             'bio'      => 'string',
         ]);
 
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
 
         $this->authorize('own', $user);
 
@@ -106,9 +110,10 @@ class UserController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @author duc <1025434218@qq.com>
      */
@@ -118,7 +123,7 @@ class UserController extends Controller
             return $this->fail('超级管理员不能删除', 403);
         }
 
-        $user = User::findOrFail($id);
+        $user = User::query()->findOrFail($id);
 
         $this->authorize('own', $user);
 

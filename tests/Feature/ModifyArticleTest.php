@@ -64,7 +64,7 @@ class ModifyArticleTest extends TestCase
         ])->seeStatusCode(201);
         $this->assertEquals(1, $article->comments->count());
         $article->delete();
-        $this->assertEquals(0, \App\Comment::where('article_id', $article->id)->count());
+        $this->assertEquals(0, \App\Comment::query()->where('article_id', $article->id)->count());
     }
 
     /** @test */

@@ -19,7 +19,8 @@ use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
  * Class Article
  * @package App
  *
- * @method static Builder visible()
+ * @method static static|Builder visible()
+ * @method static static|Builder whole(bool $all)
  */
 class Article extends Model
 {
@@ -120,8 +121,7 @@ class Article extends Model
     {
         parent::boot();
 
-        static::created(function ($model) {
-            info('static::created', $model->toArray());
+        static::created(function (Article $model) {
             if ($model->display) {
                 event(new ArticleCreated($model->makeHidden('content')->load('author')));
             }
@@ -131,7 +131,7 @@ class Article extends Model
             $model->comments->each->delete();
         });
 
-        static::pivotAttached(function ($model, $relationName, $pivotIds, $pivotIdsAttributes) {
+        static::pivotAttached(function (Article $model, $relationName, $pivotIds, $pivotIdsAttributes) {
             if (! $model->shouldBeSearchable()) {
                 $model->unsearchable();
 
@@ -178,19 +178,17 @@ class Article extends Model
             'display'          => $model->display,
         ];
 
-        info('searchable', $result);
-
         return $result;
     }
 
     /**
-     * @param $q
-     * @param $all
+     * @param Builder $q
+     * @param  bool  $all
      * @return mixed
      *
      * @author duc <1025434218@qq.com>
      */
-    public function scopeWhole($q, $all)
+    public function scopeWhole($q, bool $all)
     {
         if ($all) {
             return $q;

@@ -25,7 +25,7 @@ class ArticleRegularTest extends TestCase
         $data = json_decode($res->response->content());
 
         $this->assertEquals(1, count(data_get($data, 'data')));
-        $this->assertEquals(4, ArticleRegular::count());
+        $this->assertEquals(4, ArticleRegular::query()->count());
     }
 
     /** @test */

@@ -30,7 +30,7 @@ class Comment extends Model
     {
         parent::boot();
 
-        static::created(function ($model) {
+        static::created(function (Comment $model) {
             app(Factory::class)->event(
                 new CommentCreated(
                     $model->load(['article:id', 'userable'])

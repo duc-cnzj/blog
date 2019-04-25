@@ -24,6 +24,6 @@ class ArticleBroadcastTest extends TestCase
         ]))->seeStatusCode(201);
 
         $this->seeInDatabase('articles', ['title' => 'test']);
-        $this->assertEquals(1, Article::count());
+        $this->assertEquals(1, Article::query()->count());
     }
 }
