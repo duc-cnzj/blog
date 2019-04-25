@@ -11,7 +11,7 @@ class AdminAuthTest extends TestCase
     /** @test */
     public function user_can_not_login_with_incorrect_credentials()
     {
-        $this->newTestUser([
+        create(\App\User::class, [
             'mobile'   => '18888780080',
             'password' => 'secret',
         ]);
@@ -28,27 +28,27 @@ class AdminAuthTest extends TestCase
         ]);
     }
 
-//    /** @test */
-//    public function user_can_login_with_credentials()
-//    {
-//        $this->newTestUser([
-//            'mobile'   => '18888780080',
-//            'password' => 'secret',
-//        ]);
-//
-//        $this->json('POST', '/auth/login', [
-//            'mobile'   => '18888780080',
-//            'password' => 'secret',
-//        ])->seeStatusCode(500)
-//            ->seeJsonStructure([
-//            'data' => [
-//                'access_token',
-//                'token_type',
-//                'expires_in',
-//                'refresh_ttl',
-//            ],
-//        ]);
-//    }
+    /** @test */
+    public function user_can_login_with_credentials()
+    {
+        create(\App\User::class, [
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ]);
+
+        $this->json('POST', '/auth/login', [
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ])->seeStatusCode(200)
+            ->seeJsonStructure([
+            'data' => [
+                'access_token',
+                'token_type',
+                'expires_in',
+                'refresh_ttl',
+            ],
+        ]);
+    }
 
     /** @test */
     public function authenticated_user_can_get_info()

@@ -59,10 +59,11 @@ class AuthController extends Controller
             return abort(500, 'github 登陆异常。');
         }
 
-        $socialiteUser = SocialiteUser::firstOrNew(
-            ['identifier' => $user->id],
-            ['identity_type' => 'github']
-        );
+        $socialiteUser = SocialiteUser::query()
+            ->firstOrNew(
+                ['identifier' => $user->id],
+                ['identity_type' => 'github']
+            );
 
         if ($socialiteUser->exists) {
             $socialiteUser->last_login_at = Carbon::now();

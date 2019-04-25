@@ -22,7 +22,9 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $tag = Tag::where('name', 'LIKE', "%{$request->input('q')}%")->get();
+        $tag = Tag::query()
+            ->where('name', 'LIKE', "%{$request->input('q')}%")
+            ->get();
 
         return TagResource::collection($tag);
     }

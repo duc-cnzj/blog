@@ -20,8 +20,8 @@ class LeaveCommentTest extends TestCase
         ]);
 
         $this->assertEquals(1, $article->comments->count());
-        $this->assertEquals(null, \App\Comment::first()->userable);
-        $this->assertEquals(0, \App\Comment::first()->user_id);
+        $this->assertEquals(null, \App\Comment::query()->first()->userable);
+        $this->assertEquals(0, \App\Comment::query()->first()->user_id);
     }
 
     /** @test */
@@ -38,7 +38,7 @@ class LeaveCommentTest extends TestCase
             'avatar' => 'http://localhost/avatar.jpg',
         ]);
 
-        $this->assertInstanceOf(\App\User::class, \App\Comment::first()->userable);
+        $this->assertInstanceOf(\App\User::class, \App\Comment::query()->first()->userable);
     }
 
     /** @test */
@@ -57,7 +57,7 @@ class LeaveCommentTest extends TestCase
             'avatar' => 'http://localhost/avatar.jpg',
         ]);
 
-        $this->assertInstanceOf(\App\SocialiteUser::class, \App\Comment::first()->userable);
+        $this->assertInstanceOf(\App\SocialiteUser::class, \App\Comment::query()->first()->userable);
     }
 
     /** @test */
@@ -73,7 +73,7 @@ class LeaveCommentTest extends TestCase
             'avatar' => '',
         ]);
 
-        $this->assertNull(\App\Comment::first()->userable);
+        $this->assertNull(\App\Comment::query()->first()->userable);
     }
 
     /** @test */
@@ -91,8 +91,8 @@ class LeaveCommentTest extends TestCase
         ]);
 
         $this->assertEquals(1, $article->comments->count());
-        $this->assertInstanceOf(\App\User::class, \App\Comment::first()->userable);
-        $this->assertEquals($user->id, \App\Comment::first()->userable->id);
+        $this->assertInstanceOf(\App\User::class, \App\Comment::query()->first()->userable);
+        $this->assertEquals($user->id, \App\Comment::query()->first()->userable->id);
         $this->assertEquals(1, $user->comments->count());
     }
 }

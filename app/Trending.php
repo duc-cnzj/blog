@@ -33,7 +33,7 @@ class Trending
      */
     public function push(Article $article): int
     {
-        return Redis::zincrby($this->cacheKey(), 1, (int) $article->id);
+        return Redis::connection()->zincrby($this->cacheKey(), 1, (int) $article->id);
     }
 
     /**
@@ -45,7 +45,7 @@ class Trending
      */
     public function remove(int $id): int
     {
-        return Redis::zrem($this->cacheKey(), $id);
+        return Redis::connection()->zrem($this->cacheKey(), $id);
     }
 
     /**
@@ -64,8 +64,7 @@ class Trending
      */
     public function reset()
     {
-        Redis::del($this->cacheKey());
-        Redis::del($this->invisibleKey());
+        Redis::connection()->del([$this->cacheKey(), $this->invisibleKey()]);
     }
 
     /**
@@ -77,7 +76,7 @@ class Trending
      */
     public function hasKey(int $id)
     {
-        return Redis::ZRANK($this->cacheKey(), $id) !== null;
+        return Redis::connection()->zrank($this->cacheKey(), $id) !== null;
     }
 
     /**
@@ -87,7 +86,7 @@ class Trending
      */
     public function getInvisibleIds(): array
     {
-        return Redis::SMEMBERS($this->invisibleKey());
+        return Redis::connection()->smembers($this->invisibleKey());
     }
 
     /**
@@ -99,9 +98,7 @@ class Trending
      */
     public function addInvisible(int $id): bool
     {
-        info('add invisible: ' . $id);
-
-        return Redis::SADD($this->invisibleKey(), $id);
+        return Redis::connection()->sadd($this->invisibleKey(), [$id]);
     }
 
     /**
@@ -113,9 +110,7 @@ class Trending
      */
     public function removeInvisible(int $id): bool
     {
-        info('remove invisible: ' . $id);
-
-        return Redis::SREM($this->invisibleKey(), $id);
+        return Redis::connection()->srem($this->invisibleKey(), $id);
     }
 
     /**
@@ -135,6 +130,6 @@ class Trending
      */
     private function allKeys(): array
     {
-        return Redis::zrevrange($this->cacheKey(), 0, -1);
+        return Redis::connection()->zrevrange($this->cacheKey(), 0, -1);
     }
 }

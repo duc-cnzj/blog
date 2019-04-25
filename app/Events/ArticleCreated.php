@@ -20,7 +20,6 @@ class ArticleCreated extends Event implements ShouldBroadcast
      */
     public function __construct(Article $article)
     {
-        info('触发广播 ArticleCreated');
         $this->article = $article;
     }
 
