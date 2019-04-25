@@ -9,7 +9,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_has_articles()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         $articles = create(\App\Article::class, ['author_id' => $user->id], 3);
 
         $this->assertEquals(3, $user->articles()->count());
@@ -19,7 +19,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_has_histories()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         create(\App\History::class, ['userable_id' => $user->id, 'userable_type' => get_class($user)], 3);
 
         $this->assertEquals(3, $user->histories->count());

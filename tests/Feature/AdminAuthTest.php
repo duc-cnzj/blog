@@ -11,7 +11,7 @@ class AdminAuthTest extends TestCase
     /** @test */
     public function user_can_not_login_with_incorrect_credentials()
     {
-        $this->newTestUser([
+        create(\App\User::class, [
             'mobile'   => '18888780080',
             'password' => 'secret',
         ]);
@@ -31,11 +31,15 @@ class AdminAuthTest extends TestCase
     /** @test */
     public function user_can_login_with_credentials()
     {
-        $this->newTestUser([
+        create(\App\User::class, [
             'mobile'   => '18888780080',
             'password' => 'secret',
         ]);
 
+        dump($this->json('POST', '/auth/login', [
+            'mobile'   => '18888780080',
+            'password' => 'secret',
+        ])->response->content());
         $this->json('POST', '/auth/login', [
             'mobile'   => '18888780080',
             'password' => 'secret',

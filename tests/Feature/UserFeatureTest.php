@@ -12,10 +12,10 @@ class UserFeatureTest extends TestCase
     public function user_can_see_all_users()
     {
         $this->signIn();
-        $this->newTestUser(['name' => 'duc', 'email' => '1025434218@qq.com']);
+        create(\App\User::class, [], 2);
 
         $content = $this->get('/admin/users')->seeStatusCode(200)->response->content();
-        $this->assertEquals(2, count(data_get(json_decode($content), 'data')));
+        $this->assertEquals(3, count(data_get(json_decode($content), 'data')));
     }
 
     /** @test */
@@ -52,7 +52,7 @@ class UserFeatureTest extends TestCase
     public function user_can_see_user_detail()
     {
         $this->signIn();
-        $user = $this->newTestUser(['name' => 'duc', 'email' => '1025434218@qq.com']);
+        $user = create(\App\User::class, ['name' => 'duc', 'email' => '1025434218@qq.com']);
 
         $this->get('/admin/users/' . $user->id)->seeStatusCode(200)
             ->seeJson(['name' => 'duc', 'email' => '1025434218@qq.com']);
@@ -62,7 +62,7 @@ class UserFeatureTest extends TestCase
     public function only_admin_can_update_other_user_profile()
     {
         $user = $this->signIn(['name'=>'admin']);
-        $user2 = $this->newTestUser([
+        $user2 = create(\App\User::class, [
             'name'  => 'user2',
             'email' => '2@q.com',
         ]);
@@ -89,7 +89,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_update_profile_article_cache_will_reset()
     {
-        $user2 = $this->newTestUser([
+        $user2 = create(\App\User::class, [
             'name'  => 'user2',
             'email' => '2@q.com',
         ]);
@@ -109,8 +109,8 @@ class UserFeatureTest extends TestCase
     public function only_admin_can_delete_any_user_except_admin()
     {
         $user = $this->signIn();
-        $user2 = $this->newTestUser();
-        $user3 = $this->newTestUser();
+        $user2 = create(\App\User::class);
+        $user3 = create(\App\User::class);
         $this->assertEquals(3, \App\User::count());
         $this->json('DELETE', "/admin/users/{$user->id}")
             ->seeStatusCode(403);
@@ -126,9 +126,9 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function only_admin_can_delete_user()
     {
-        $this->newTestUser(); // super_admin
-        $user2 = $this->newTestUser();
-        $user3 = $this->newTestUser();
+        create(\App\User::class); // super_admin
+        $user2 = create(\App\User::class);
+        $user3 = create(\App\User::class);
         $this->signIn([], $user2);
 
         $this->assertFalse(\Auth::user()->isAdmin());
@@ -140,7 +140,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_articles_also_deleted()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         create(\App\Article::class, ['author_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->articles()->count());
@@ -151,7 +151,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_categories_set_zero()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         create(\App\Category::class, ['user_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->categories()->count());
@@ -162,7 +162,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_tags_set_zero()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         create(\App\Tag::class, ['user_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->tags()->count());
@@ -173,7 +173,7 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function when_user_deleted_all_rules_also_deleted()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         create(\App\ArticleRegular::class, ['user_id' => $user->id], 5);
 
         $this->assertEquals(5, $user->articleRules()->count());

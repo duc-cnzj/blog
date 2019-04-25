@@ -67,7 +67,7 @@ class ArticleWithoutCacheTest extends TestCase
     /** @test */
     public function user_can_delete_article()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         $this->signIn([], $user);
         $article = create(Article::class, ['author_id' => $user->id]);
         $this->json('delete', '/admin/articles/' . $article->id)
@@ -77,7 +77,7 @@ class ArticleWithoutCacheTest extends TestCase
     /** @test */
     public function article_doesnt_has_cache()
     {
-        $user = $this->newTestUser();
+        $user = create(\App\User::class);
         $this->signIn([], $user);
         $article = create(Article::class, ['author_id' => $user->id]);
         $this->json('GET', '/articles/' . $article->id)
