@@ -73,7 +73,7 @@ class HistoryLogTest extends TestCase
     public function admin_can_see_histories()
     {
         $socialiteUser = create(\App\SocialiteUser::class, ['name' => 'SocialiteUser']);
-        $adminUser = $this->newTestUser(['name' => 'adminUser']);
+        $adminUser = create(\App\User::class, ['name' => 'adminUser']);
 
         create(\App\History::class, ['response' => 'response']);
         create(\App\History::class, ['userable_id' => $socialiteUser->id, 'userable_type' => get_class($socialiteUser)]);
@@ -296,7 +296,7 @@ class HistoryLogTest extends TestCase
     /** @test */
     public function admin_can_filter_result_by_user_id()
     {
-        $user1 = $this->newTestUser(['name' => 'admin']);
+        $user1 = create(\App\User::class, ['name' => 'admin']);
         $user2 = create(\App\SocialiteUser::class, ['name' => 'abc']);
         $cond1 = ['userable_id' => $user1->id, 'userable_type' => 'App\User'];
         $cond2 = ['userable_id' => $user2->id, 'userable_type' => 'App\SocialiteUser'];

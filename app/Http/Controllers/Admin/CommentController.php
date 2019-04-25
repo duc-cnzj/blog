@@ -8,6 +8,7 @@ use App\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class CommentController
@@ -25,7 +26,7 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $comments = Comment::with(['article:id,title', 'userable'])
-            ->whereHas('article', function ($q) {
+            ->whereHas('article', function (Builder $q) {
                 $q->where('author_id', \Auth::id());
             })
             ->where('userable_type', '<>', User::class)
@@ -50,7 +51,7 @@ class CommentController extends Controller
         $htmlContent = $parsedown->text($content);
 
         /** @var Article $article */
-        $article = Article::findOrFail($articleId);
+        $article = Article::query()->findOrFail($articleId);
 
         $comment = $article->comments()->create([
             'visitor'          => $request->ip(),

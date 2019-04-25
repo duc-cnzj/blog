@@ -111,7 +111,6 @@ class AuthController extends Controller
      */
     public function updateInfo(Request $request)
     {
-        info('更新用户信息，user_id：' . \Auth::id());
         $this->validate($request, [
             'avatar' => 'image',
             'bio'    => 'string',

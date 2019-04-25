@@ -191,7 +191,6 @@ class ReadArticleTest extends TestCase
         $r->seeStatusCode(404);
     }
 
-//
 //    /** @test */
 //    public function user_can_search_visible_article()
 //    {
@@ -203,7 +202,7 @@ class ReadArticleTest extends TestCase
 //            'title' => 'duc',
 //        ]);
 //    }
-
+//
 //    /** @test */
 //    public function user_can_not_search_invisible_article()
 //    {

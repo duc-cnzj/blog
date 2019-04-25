@@ -51,9 +51,9 @@ class AuthControllerTest extends TestCase
 
         $this->get('/login/github/callback');
         $this->seeInDatabase('socialite_users', ['name' => 'nickname']);
-        $this->assertEquals(1, SocialiteUser::count());
+        $this->assertEquals(1, SocialiteUser::query()->count());
         $this->get('/login/github/callback');
-        $this->assertEquals(1, SocialiteUser::count());
+        $this->assertEquals(1, SocialiteUser::query()->count());
     }
 
     /** @test */
@@ -79,7 +79,7 @@ class AuthControllerTest extends TestCase
         $this->get('/login/github/callback')
             ->seeInDatabase('socialite_users', ['name' => 'nickname']);
 
-        $this->assertEquals(1, SocialiteUser::count());
+        $this->assertEquals(1, SocialiteUser::query()->count());
 
         $this->get('/login/github/callback')->seeStatusCode(401);
     }
@@ -102,7 +102,7 @@ class AuthControllerTest extends TestCase
 
         $this->get('/login/github/callback')
             ->seeInDatabase('socialite_users', ['name' => 'nickname']);
-        $this->assertEquals(1, SocialiteUser::count());
+        $this->assertEquals(1, SocialiteUser::query()->count());
 
         $this->get('/login/github/callback')->seeStatusCode(500);
     }

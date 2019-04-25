@@ -23,7 +23,8 @@ class CommentController extends Controller
      */
     public function index($id, Request $request)
     {
-        $comments = Comment::where('article_id', $id)
+        $comments = Comment::query()
+            ->where('article_id', $id)
             ->get([
                 'visitor',
                 'content',

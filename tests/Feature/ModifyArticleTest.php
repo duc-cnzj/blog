@@ -64,7 +64,7 @@ class ModifyArticleTest extends TestCase
         ])->seeStatusCode(201);
         $this->assertEquals(1, $article->comments->count());
         $article->delete();
-        $this->assertEquals(0, \App\Comment::where('article_id', $article->id)->count());
+        $this->assertEquals(0, \App\Comment::query()->where('article_id', $article->id)->count());
     }
 
     /** @test */
@@ -153,8 +153,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function user_can_not_update_article_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user2);
         $article = create(Article::class, ['title' => 'title1', 'author_id' => $user1->id]);
 
@@ -171,8 +171,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function super_admin_can_update_article_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user1);
         $article = create(Article::class, ['title' => 'title1', 'author_id' => $user2->id]);
 
@@ -236,8 +236,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function user_who_do_not_has_it_can_not_change_display()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $article = create(Article::class, ['author_id' => $user1->id]);
         $this->signIn([], $user2);
         $this->json('PUT', '/admin/article_change_display/' . $article->id)
@@ -248,8 +248,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function super_admin_who_do_not_has_it_can_change_display()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $article = create(Article::class, ['author_id' => $user2->id]);
         $this->signIn([], $user1);
         $this->json('PUT', '/admin/article_change_display/' . $article->id)
@@ -269,8 +269,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function user_can_not_set_top_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user2);
         $article = create(Article::class, ['author_id' => $user1->id]);
         $this->json('PUT', '/admin/article_set_top/' . $article->id)
@@ -280,8 +280,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function super_admin_can_set_top_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user1);
         $article = create(Article::class, ['author_id' => $user2->id]);
         $this->json('PUT', '/admin/article_set_top/' . $article->id)
@@ -300,8 +300,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function user_can_not_cancel_top_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user2);
         $article = create(Article::class, ['author_id' => $user1->id]);
         $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
@@ -311,8 +311,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function super_admin_can_cancel_top_if_not_own()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user1);
         $article = create(Article::class, ['author_id' => $user2->id]);
         $this->json('PUT', '/admin/article_cancel_set_top/' . $article->id)
@@ -322,8 +322,8 @@ class ModifyArticleTest extends TestCase
     /** @test */
     public function user_can_not_delete_other_article()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $this->signIn([], $user2);
         $article = create(Article::class, ['author_id' => $user1->id]);
         $this->json('delete', '/admin/articles/' . $article->id)

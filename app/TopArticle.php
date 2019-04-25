@@ -19,7 +19,7 @@ class TopArticle implements TopArticleImp
      */
     public function getTopArticles(): array
     {
-        $all = Redis::zrevrange($this->topArticleCacheKey(), 0, -1);
+        $all = Redis::connection()->zrevrange($this->topArticleCacheKey(), 0, -1);
         $invisible = (new Trending())->getInvisibleIds();
         $ids = array_diff($all, $invisible);
 
@@ -38,7 +38,9 @@ class TopArticle implements TopArticleImp
         /** @var Carbon $time */
         $time = $article->top_at;
 
-        return Redis::ZADD($this->topArticleCacheKey(), $time->getTimestamp(), $article->id);
+        return Redis::connection()->zadd($this->topArticleCacheKey(), [
+            $article->id => $time->getTimestamp(),
+        ]);
     }
 
     /**
@@ -50,7 +52,7 @@ class TopArticle implements TopArticleImp
      */
     public function removeTopArticle(Article $article): bool
     {
-        return Redis::ZREM($this->topArticleCacheKey(), $article->id);
+        return Redis::connection()->zrem($this->topArticleCacheKey(), $article->id);
     }
 
     /**
@@ -70,6 +72,6 @@ class TopArticle implements TopArticleImp
      */
     public function reset(): void
     {
-        Redis::del($this->topArticleCacheKey());
+        Redis::connection()->del([$this->topArticleCacheKey()]);
     }
 }

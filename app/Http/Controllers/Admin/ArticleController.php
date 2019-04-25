@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use App\Article;
 use App\Category;
+use Laravel\Scout\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -56,7 +57,7 @@ class ArticleController extends Controller
         list($category, $tagIds) = $this->dealRequest($request);
 
         /** @var Article $article */
-        $article = Article::create([
+        $article = Article::query()->create([
             'author_id'   => \Auth::id(),
             'head_image'  => $request->input('head_image'),
             'title'       => $request->input('title'),
@@ -105,7 +106,7 @@ class ArticleController extends Controller
         ]);
 
         /** @var Article $article */
-        $article = Article::findOrFail($id);
+        $article = Article::query()->findOrFail($id);
 
         $this->authorize('own', $article);
 
@@ -126,15 +127,16 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @author duc <1025434218@qq.com>
      */
     public function destroy(int $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::query()->findOrFail($id);
 
         $this->authorize('own', $article);
 
@@ -155,7 +157,7 @@ class ArticleController extends Controller
         $ids = [];
 
         foreach ($names as $name) {
-            $tag = Tag::firstOrCreate([
+            $tag = Tag::query()->firstOrCreate([
                 'name' => $name,
             ], [
                 'user_id' => \Auth::id(),
@@ -176,7 +178,7 @@ class ArticleController extends Controller
      */
     private function dealRequest(Request $request): array
     {
-        $category = Category::firstOrCreate(
+        $category = Category::query()->firstOrCreate(
             [
                 'name' => $request->input('category'), // string 'php'
             ],
@@ -203,17 +205,13 @@ class ArticleController extends Controller
         $query = $request->query('q');
 
         if (! is_null($query)) {
-            $q = Article::search($query)
+            $articles = Article::search($query)
                 ->rule(\App\ES\ArticleRule::class);
-            $q->limit = 10000;
-            $articles = $q->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display', 'top_at'])
+            $articles->limit = 10000;
+            $articles = $articles->select(['id', 'author_id', 'category_id', 'desc', 'title', 'head_image', 'created_at', 'display', 'top_at'])
                 ->when(! ! $request->input('all'), function ($q) {
-                    info('amdin search all');
-
                     return $q;
-                }, function ($q) {
-                    info('amdin search not all');
-
+                }, function (Builder $q) {
                     return $q->where('author.id', \Auth::id());
                 })
                 ->get()
@@ -234,7 +232,7 @@ class ArticleController extends Controller
      */
     public function changeDisplay(int $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::query()->findOrFail($id);
 
         $this->authorize('own', $article);
 
@@ -252,7 +250,7 @@ class ArticleController extends Controller
      */
     public function setTop(int $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::query()->findOrFail($id);
 
         $this->authorize('own', $article);
 
@@ -271,7 +269,7 @@ class ArticleController extends Controller
      */
     public function cancelSetTop(int $id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::query()->findOrFail($id);
 
         $this->authorize('own', $article);
 

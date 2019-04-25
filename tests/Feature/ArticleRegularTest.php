@@ -11,7 +11,7 @@ class ArticleRegularTest extends TestCase
     public function user_can_see_his_own_regulars()
     {
         $this->signIn();
-        $user1 = $this->newTestUser();
+        $user1 = create(\App\User::class);
         $rule = '^\d+';
         $this->json('post', '/admin/article_regulars', [
             'rule'   => ['express' => $rule, 'replace' => 'duc'],
@@ -25,7 +25,7 @@ class ArticleRegularTest extends TestCase
         $data = json_decode($res->response->content());
 
         $this->assertEquals(1, count(data_get($data, 'data')));
-        $this->assertEquals(4, ArticleRegular::count());
+        $this->assertEquals(4, ArticleRegular::query()->count());
     }
 
     /** @test */
@@ -71,8 +71,8 @@ class ArticleRegularTest extends TestCase
     /** @test */
     public function user_cannot_delete_others_regulars()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $authUser = $this->signIn([], $user2);
 
         $this->assertFalse($authUser->isAdmin());
@@ -85,8 +85,8 @@ class ArticleRegularTest extends TestCase
     /** @test */
     public function admin_can_delete_others_regulars()
     {
-        $user1 = $this->newTestUser();
-        $user2 = $this->newTestUser();
+        $user1 = create(\App\User::class);
+        $user2 = create(\App\User::class);
         $authUser = $this->signIn([], $user1);
 
         $this->assertTrue($authUser->isAdmin());

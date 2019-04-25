@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Article;
 use App\Trending;
 
 trait ArticleTrendingTrait
@@ -14,7 +15,7 @@ trait ArticleTrendingTrait
             }
         });
 
-        static::updated(function ($model) {
+        static::updated(function (Article $model) {
             if ($model->isDirty('display')) {
                 $model->getDirty()['display']
                     ? app(Trending::class)->removeInvisible($model->id)

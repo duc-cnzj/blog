@@ -21,7 +21,7 @@ class ArticleRegularController extends Controller
      */
     public function index()
     {
-        $regulars = ArticleRegular::where('user_id', \Auth::id())
+        $regulars = ArticleRegular::query()->where('user_id', \Auth::id())
             ->get();
 
         return ArticleRegularResource::collection($regulars);
@@ -40,7 +40,7 @@ class ArticleRegularController extends Controller
             'rule' => new RuleFormat,
         ]);
 
-        $regular = ArticleRegular::create([
+        $regular = ArticleRegular::query()->create([
             'user_id' => \Auth::id(),
             'rule'    => $request->input('rule'),
             'status'  => $request->input('status', true),
@@ -50,15 +50,16 @@ class ArticleRegularController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @author duc <1025434218@qq.com>
      */
     public function destroy(int $id)
     {
-        $regular = ArticleRegular::findOrFail($id);
+        $regular = ArticleRegular::query()->findOrFail($id);
 
         $this->authorize('own', $regular);
 
@@ -94,7 +95,7 @@ class ArticleRegularController extends Controller
      */
     public function changeStatus(Request $request)
     {
-        $rule = ArticleRegular::findOrFail($request->input('id'));
+        $rule = ArticleRegular::query()->findOrFail($request->input('id'));
 
         $this->authorize('own', $rule);
 

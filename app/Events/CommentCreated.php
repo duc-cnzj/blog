@@ -15,7 +15,6 @@ class CommentCreated extends Event implements ShouldBroadcastNow
 
     public function __construct($comment)
     {
-        info('CommentCreated', $comment->toArray());
         $this->comment = $comment;
     }
 

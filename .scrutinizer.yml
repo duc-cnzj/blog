@@ -1,9 +1,11 @@
 filter:
-    paths: [app/*, test/*, config/*, database/*, routes/*]
+    paths: [app/*, config/*, database/*, routes/*, bootstrap/*]
     excluded_paths:
       - "app/Console/*"
 before_commands:
     - 'composer install --dev --prefer-source'
+    - 'cp .env.example .env'
+    - 'php artisan jwt:secret -f'
 tools:
     external_code_coverage: true
     php_mess_detector: true

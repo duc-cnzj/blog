@@ -7,10 +7,22 @@ use App\Category;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class ArticleTableSeeder
+ */
 class ArticleTableSeeder extends Seeder
 {
+    /**
+     * @var int
+     */
     protected $tagNums = 6;
+    /**
+     * @var int
+     */
     protected $categoryNums = 6;
+    /**
+     * @var int
+     */
     protected $articleNums = 60;
 
     /**
@@ -21,22 +33,25 @@ class ArticleTableSeeder extends Seeder
      */
     public function run()
     {
-        $adminMobile = env('ADMIN_MOBILE') ?: '123456789';
-
-        $admin = User::query()->where('mobile', $adminMobile)->first();
+        $admin = User::query()->find(1);
 
         if ($admin) {
-            $this->seedArticle($admin->id);
+            $this->seedArticle(1);
         } else {
             $this->command->warn('管理员还未创建，现在自动创建管理员！');
 
             $this->call(CreateAdminSeeder::class);
-            $admin = User::query()->where('mobile', $adminMobile)->first();
 
-            $this->seedArticle($admin->id);
+            $this->seedArticle(1);
         }
     }
 
+    /**
+     * @param  int  $id
+     * @throws Exception
+     *
+     * @author duc <1025434218@qq.com>
+     */
     public function seedArticle(int $id): void
     {
         $this->command->info('开始填充文章数据！');
