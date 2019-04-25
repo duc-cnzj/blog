@@ -1,8 +1,5 @@
 <?php
 
-use App\User;
-use Faker\Factory;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
