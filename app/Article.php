@@ -24,7 +24,11 @@ use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
  */
 class Article extends Model
 {
-    use Searchable, PivotEventTrait, ArticleCacheTrait, ArticleTrendingTrait, TopArticleTrait;
+    use Searchable,
+        TopArticleTrait,
+        PivotEventTrait,
+        ArticleCacheTrait,
+        ArticleTrendingTrait;
 
     /**
      * @var string
@@ -121,24 +125,24 @@ class Article extends Model
     {
         parent::boot();
 
-        static::created(function (Article $model) {
-            if ($model->display) {
-                event(new ArticleCreated($model->makeHidden('content')->load('author')));
+        static::created(function (Article $article) {
+            if ($article->display) {
+                event(new ArticleCreated($article->makeHidden('content')->load('author')));
             }
         });
 
-        static::deleted(function ($model) {
-            $model->comments->each->delete();
+        static::deleted(function (Article $article) {
+            $article->comments->each->delete();
         });
 
-        static::pivotAttached(function (Article $model, $relationName, $pivotIds, $pivotIdsAttributes) {
-            if (! $model->shouldBeSearchable()) {
-                $model->unsearchable();
+        static::pivotAttached(function (Article $article) {
+            if (! $article->shouldBeSearchable()) {
+                $article->unsearchable();
 
                 return;
             }
 
-            $model->searchable();
+            $article->searchable();
         });
     }
 

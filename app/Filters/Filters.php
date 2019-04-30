@@ -74,9 +74,12 @@ abstract class Filters implements Filter
      */
     public function getFilters()
     {
-        return array_filter($this->request->only($this->getKeys()), function ($item) {
-            return ! is_null($item);
-        });
+        return array_filter(
+            $this->request->only($this->getKeys()),
+            function ($item) {
+                return $item !== '';
+            }
+        );
     }
 
     /**
@@ -105,9 +108,12 @@ abstract class Filters implements Filter
     {
         $prefix = Str::endsWith($this->prefix, '_') ? $this->prefix : $this->prefix . '_';
 
-        return array_merge(array_map(function ($key) use ($prefix) {
-            return $prefix . $key;
-        }, $this->filters), $this->withoutPrefix);
+        return array_merge(
+                array_map(function ($key) use ($prefix) {
+                    return $prefix . $key;
+                }, $this->filters),
+            $this->withoutPrefix
+        );
     }
 
     /**

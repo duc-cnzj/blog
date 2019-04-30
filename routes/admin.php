@@ -38,6 +38,8 @@ $router->group([
 
     $router->post('/articles/{articleId}/comments', 'CommentController@store');
 
+    $router->delete('/comments/{id}', 'CommentController@destroy');
+
     $router->get('/users', 'UserController@index');
 
     $router->get('/users/{id}', 'UserController@show');
@@ -89,4 +91,6 @@ $router->group([
     $router->post('/ip_white_lists', 'WhiteListIpController@store');
 
     $router->delete('/ip_white_lists', 'WhiteListIpController@destroy');
+
+    $router->get('/socialite_users', 'SocialiteUserController@index');
 });
