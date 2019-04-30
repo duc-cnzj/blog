@@ -30,12 +30,16 @@ class Comment extends Model
     {
         parent::boot();
 
-        static::created(function (Comment $model) {
+        static::created(function (Comment $comment) {
             app(Factory::class)->event(
                 new CommentCreated(
-                    $model->load(['article:id', 'userable'])
+                    $comment->load(['article:id', 'userable'])
                 )
             )->toOthers();
+        });
+
+        static::deleted(function (Comment $comment) {
+            $comment->replies->each->delete();
         });
     }
 

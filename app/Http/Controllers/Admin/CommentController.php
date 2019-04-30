@@ -86,4 +86,22 @@ class CommentController extends Controller
             ],
         ]);
     }
+
+    /**
+     * @param  int  $id
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     * @throws \Exception
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    public function destroy(int $id)
+    {
+        $comment = Comment::query()->findOrFail($id);
+
+        $this->authorize('own', $comment);
+
+        $comment->delete();
+
+        return response('', 204);
+    }
 }

@@ -18,6 +18,8 @@ class SocialiteUserResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'avatar'        => $this->avatar,
+            'identity_type' => $this->identity_type,
+            'created_at'    => $this->created_at,
             'last_login_at' => optional($this->last_login_at)->diffForHumans(),
         ];
     }

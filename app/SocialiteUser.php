@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasFilter;
 use App\Traits\HasHistory;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
@@ -16,7 +17,10 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
  */
 class SocialiteUser extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasHistory;
+    use Authenticatable,
+        Authorizable,
+        HasHistory,
+        HasFilter;
 
     /**
      * @var array
