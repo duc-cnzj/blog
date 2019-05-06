@@ -21,32 +21,32 @@ class SocialiteUserFilter extends Filters
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param int $id
      *
      * @author duc <1025434218@qq.com>
      */
-    public function id()
+    public function id(int $id)
     {
-        return $this->builder->where('id', (int) $this->getValueBy(__FUNCTION__));
+        $this->builder->where('id', $id);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $name
      *
      * @author duc <1025434218@qq.com>
      */
-    public function name()
+    public function name(string $name)
     {
-        return $this->builder->where('name', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('name', 'LIKE', "%{$name}%");
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $type
      *
      * @author duc <1025434218@qq.com>
      */
-    public function identityType()
+    public function identityType(string $type)
     {
-        return $this->builder->where('identity_type', $this->getValueBy(__FUNCTION__));
+        $this->builder->where('identity_type', $type);
     }
 }

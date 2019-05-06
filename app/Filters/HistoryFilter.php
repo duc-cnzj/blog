@@ -34,146 +34,138 @@ class HistoryFilter extends Filters
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $ip
      *
      * @author duc <1025434218@qq.com>
      */
-    public function ip()
+    public function ip(string $ip)
     {
-        return $this->builder->where('ip', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('ip', 'LIKE', "%{$ip}%");
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $method
      *
      * @author duc <1025434218@qq.com>
      */
-    public function method()
+    public function method(string $method)
     {
-        return $this->builder->where('method', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('method', 'LIKE', "%{$method}%");
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $url
      *
      * @author duc <1025434218@qq.com>
      */
-    public function url()
+    public function url(string $url)
     {
-        return $this->builder->where('url', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('url', 'LIKE', "%{$url}%");
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param int $code
      *
      * @author duc <1025434218@qq.com>
      */
-    public function statusCode()
+    public function statusCode(int $code)
     {
-        return $this->builder->where('status_code', (int)$this->getValueBy(__FUNCTION__));
+        $this->builder->where('status_code', $code);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $address
      *
      * @author duc <1025434218@qq.com>
      */
-    public function address()
+    public function address(string $address)
     {
-        return $this->builder->where('address', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('address', 'LIKE', "%{$address}%");
     }
 
-    //    /**
-    //     * @return \Illuminate\Database\Eloquent\Builder
-    //     *
-    //     * @author duc <1025434218@qq.com>
-    //     */
-    //    public function content()
-    //    {
-    //        return $this->builder->whereJsonContains('content', "%{$this->getValueBy(__FUNCTION__)}%");
-    //    }
+//    /**
+//     * @param string $value
+//     *
+//     * @author duc <1025434218@qq.com>
+//     */
+//    public function content(string $value)
+//    {
+//        $this->builder->whereJsonContains('content', "%{$value}%");
+//    }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $value
      *
      * @author duc <1025434218@qq.com>
      */
-    public function response()
+    public function response(string $value)
     {
-        return $this->builder->where('response', 'LIKE', "%{$this->getValueBy(__FUNCTION__)}%");
+        $this->builder->where('response', 'LIKE', "%{$value}%");
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $date
      *
      * @author duc <1025434218@qq.com>
      */
-    public function visitTimeAfter()
+    public function visitTimeAfter(string $date)
     {
         try {
-            $carbon = Carbon::parse($this->getValueBy(__FUNCTION__));
+            $carbon = Carbon::parse($date);
 
-            return $this->builder->where('visited_at', '>', $carbon);
+            $this->builder->where('visited_at', '>', $carbon);
         } catch (\Exception $e) {
-            return $this->builder;
         }
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $date
      *
      * @author duc <1025434218@qq.com>
      */
-    public function visitTimeBefore()
+    public function visitTimeBefore(string $date)
     {
         try {
-            $carbon = Carbon::parse($this->getValueBy(__FUNCTION__));
+            $carbon = Carbon::parse($date);
 
-            return $this->builder->where('visited_at', '<', $carbon);
+            $this->builder->where('visited_at', '<', $carbon);
         } catch (\Exception $e) {
-            return $this->builder;
         }
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param int $id
      *
      * @author duc <1025434218@qq.com>
      */
-    public function userId()
+    public function userId(int $id)
     {
-        return $this->builder->where('userable_id', (int)$this->getValueBy(__FUNCTION__));
+        $this->builder->where('userable_id', $id);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $type
      *
      * @author duc <1025434218@qq.com>
      */
-    public function userType()
+    public function userType(string $type)
     {
-        $type = $this->getValueBy(__FUNCTION__);
-
         if (in_array($type, ['admin', 'frontend'])) {
             $realType = ($type == 'admin')
                 ? 'App\User'
                 : 'App\SocialiteUser';
 
-            return $this->builder->where('userable_type', $realType);
-        } else {
-            return $this->builder;
+            $this->builder->where('userable_type', $realType);
         }
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param string $type
      *
      * @author duc <1025434218@qq.com>
      */
-    public function onlySee()
+    public function onlySee(string $type)
     {
-        $type = $this->getValueBy(__FUNCTION__);
-
-        return $this->builder->onlySee($type);
+        $this->builder->onlySee($type);
     }
 }

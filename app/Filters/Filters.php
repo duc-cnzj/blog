@@ -83,23 +83,6 @@ abstract class Filters implements Filter
     }
 
     /**
-     * @param string $field
-     * @return mixed
-     *
-     * @author duc <1025434218@qq.com>
-     */
-    public function getValueBy(string $field)
-    {
-        $field = Str::snake($field);
-
-        if (in_array($field, $this->withoutPrefix)) {
-            return $this->request->input($field);
-        }
-
-        return $this->request->input($this->prefix . '_' . $field);
-    }
-
-    /**
      * @return array
      *
      * @author duc <1025434218@qq.com>
