@@ -15,13 +15,13 @@ class CommentResource extends JsonResource
     public function toArray($request)
     {
         return [
-           'id' => $this->id,
-           'body' => $this->content,
+           'id'         => $this->id,
+           'body'       => $this->content,
            'created_at' => $this->created_at->diffForHumans(),
-            "author" => [
-                "id" => 1,
-                "name" => "duc",
-                "avatar" => "images/comment_author_1.jpg"
+            'author'    => [
+                'id'     => 1,
+                'name'   => 'duc',
+                'avatar' => 'images/comment_author_1.jpg',
             ],
         ];
     }

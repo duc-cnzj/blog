@@ -27,7 +27,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'mobile' => 'required',
+            'mobile'   => 'required',
             'password' => 'required',
         ]);
 
@@ -36,9 +36,9 @@ class AuthController extends Controller
         if (! $token = \Auth::attempt($credentials)) {
             return response()->json([
                 'error' => [
-                    'code' => 401,
-                    'message' => 'Unauthorized.'
-                ]
+                    'code'    => 401,
+                    'message' => 'Unauthorized.',
+                ],
             ], 401);
         }
 
@@ -89,8 +89,8 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => \Auth::factory()->getTTL() * 60
+            'token_type'   => 'bearer',
+            'expires_in'   => \Auth::factory()->getTTL() * 60,
         ]);
     }
 }

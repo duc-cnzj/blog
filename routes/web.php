@@ -9,7 +9,6 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\CategoryResource;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +25,7 @@ require_once __DIR__.'/admin.php';
 
 $router->get('/', function () use ($router) {
     return UserResource::collection(User::all());
+
     return $router->app->version();
 });
 
@@ -58,15 +58,15 @@ $router->get('/categories', function () {
 
 $router->get('/nav_links', function () {
     return [
-        "data" => [
-            ["title" => "首页", "link" => "/"],
-            ["title" => "分类", "link" => "/categories"],
-            ["title" => "文章", "link" => "/articles"],
+        'data' => [
+            ['title' => '首页', 'link' => '/'],
+            ['title' => '分类', 'link' => '/categories'],
+            ['title' => '文章', 'link' => '/articles'],
             // ["title" => "装置", "link" => "/gadgets"],
             // ["title" => "生活方式", "link" => "/lifestyle"],
             // ["title" => "视频", "link" => "/video"],
             // ["title" => "联系", "link" => "/contact"]
-        ]
+        ],
     ];
 });
 
@@ -75,9 +75,9 @@ $router->post('/articles/{id}/comments', function ($id, Request $request) {
     $article = Article::findOrFail($id);
 
     $comment = $article->comments()->create([
-        'visitor' => $request->ip(),
-        'content' => $request->content,
-        'comment_id' => $request->comment_id ?? 0
+        'visitor'    => $request->ip(),
+        'content'    => $request->content,
+        'comment_id' => $request->comment_id ?? 0,
     ]);
 
     return new CommentResource($comment);
