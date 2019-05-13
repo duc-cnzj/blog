@@ -30,26 +30,25 @@ class ArticleController extends Controller
 
         $processContent = json_encode([
             'html' => $mdContent,
-            'md' => $content
+            'md'   => $content,
         ]);
-
 
         $category = Category::firstOrCreate([
             'name' => $request->category, // string 'php'
         ], [
-           'user_id' => \Auth::id()
+           'user_id' => \Auth::id(),
         ]);
 
         $tagNames = $request->tags; // array ['php', 'js']
         $tagIds = $this->getTagIdsBy($tagNames);
 
         $article = Article::create([
-            'author_id' => \Auth::id(),
-            'head_image' => $request->head_image,
-            'title' => $request->title,
-            'desc' => $request->desc,
-            'content' => $processContent,
-            'category_id' => $category->id
+            'author_id'   => \Auth::id(),
+            'head_image'  => $request->head_image,
+            'title'       => $request->title,
+            'desc'        => $request->desc,
+            'content'     => $processContent,
+            'category_id' => $category->id,
         ]);
 
         $article->tags()->sync($tagIds);
@@ -73,12 +72,12 @@ class ArticleController extends Controller
 
         $processContent = json_encode([
             'html' => $mdContent,
-            'md' => $content
+            'md'   => $content,
         ]);
         $category = Category::firstOrCreate([
             'name' => $request->category, // string 'php'
         ], [
-           'user_id' => \Auth::id()
+           'user_id' => \Auth::id(),
         ]);
 
         $tagNames = $request->tags; // array ['php', 'js']
@@ -86,12 +85,12 @@ class ArticleController extends Controller
 
         $article = Article::findOrFail($id);
         $article->update([
-            'author_id' => \Auth::id(),
-            'head_image' => $request->head_image,
-            'title' => $request->title,
-            'desc' => $request->desc,
-            'content' => $processContent,
-            'category_id' => $category->id
+            'author_id'   => \Auth::id(),
+            'head_image'  => $request->head_image,
+            'title'       => $request->title,
+            'desc'        => $request->desc,
+            'content'     => $processContent,
+            'category_id' => $category->id,
         ]);
 
         $article->tags()->sync($tagIds);
@@ -110,11 +109,10 @@ class ArticleController extends Controller
     {
         $ids = [];
         foreach ($names as $name) {
-
             $tag = Tag::firstOrCreate([
-                'name' => $name
+                'name' => $name,
             ], [
-                'user_id' => \Auth::id()
+                'user_id' => \Auth::id(),
             ]);
 
             $ids[] = $tag->id;

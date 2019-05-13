@@ -29,13 +29,13 @@ class Article extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    public function getRecommendArticlesAttribute($value='')
+    public function getRecommendArticlesAttribute($value = '')
     {
         return [
             [
-              "id" =>  3,
-              "category" =>  "Linux",
-              "title" =>  "1"
+              'id'       => 3,
+              'category' => 'Linux',
+              'title'    => '1',
             ],
         ];
     }
@@ -49,7 +49,6 @@ class Article extends Model
         } else {
             return null;
         }
-
     }
 
     public function getContentMdAttribute()

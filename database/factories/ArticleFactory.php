@@ -18,12 +18,12 @@ $factory->define(App\Article::class, function () {
 
     return [
         'author_id' => 1,
-        'content' => json_encode([
+        'content'   => json_encode([
             'html' => $faker->sentence,
-            'md' => $faker->sentence,
+            'md'   => $faker->sentence,
         ]),
-        'desc' => $faker->sentence,
-        'title' => $faker->title,
-        'head_image' => $faker->imageUrl
+        'desc'       => $faker->sentence,
+        'title'      => $faker->title,
+        'head_image' => $faker->imageUrl,
     ];
 });

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App;
-
 
 use Illuminate\Support\Facades\Redis;
 
@@ -16,14 +14,14 @@ class Trending
     public function push($article)
     {
         Redis::zincrby($this->cacheKey(), 1, json_encode([
-            'id'  => $article->id,
-            'title' => $article->title,
-            'headImage' => $article->head_image,
+            'id'         => $article->id,
+            'title'      => $article->title,
+            'headImage'  => $article->head_image,
             'created_at' => $article->created_at->toDateTimeString(),
-            'author' => [
-                'id' => $article->author->id,
-                'name' => $article->author->name
-            ]
+            'author'     => [
+                'id'   => $article->author->id,
+                'name' => $article->author->name,
+            ],
         ]));
     }
 

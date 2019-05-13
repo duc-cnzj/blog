@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\TagResource;
-use App\Http\Resources\CommentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -17,25 +15,25 @@ class ArticleResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id'     => $this->id,
             'author' => $this->whenLoaded('author', function () {
                 return [
-                   'id' => $this->author->id,
-                   'name' => $this->author->name,
+                   'id'     => $this->author->id,
+                   'name'   => $this->author->name,
                    'avatar' => $this->author->avatar,
                 ];
             }),
-            'headImage' => $this->head_image,
-            'category' => array_random(['php', 'Linux', 'Js']),
-            'content' => $this->content_html,
-            'content_md' => $this->content_md,
-            'title' => $this->title,
-            'desc' => $this->desc,
-            'tags' => $this->whenLoaded('tags', TagResource::collection($this->tags)),
-            'comments' => $this->whenLoaded('comments', CommentResource::collection($this->comments)),
+            'headImage'         => $this->head_image,
+            'category'          => array_random(['php', 'Linux', 'Js']),
+            'content'           => $this->content_html,
+            'content_md'        => $this->content_md,
+            'title'             => $this->title,
+            'desc'              => $this->desc,
+            'tags'              => $this->whenLoaded('tags', TagResource::collection($this->tags)),
+            'comments'          => $this->whenLoaded('comments', CommentResource::collection($this->comments)),
             'recommendArticles' => $this->when($this->recommendArticles, $this->recommendArticles),
-            'created_at' => $this->created_at->diffForHumans(),
-            'updated_at' => $this->updated_at->diffForHumans(),
+            'created_at'        => $this->created_at->diffForHumans(),
+            'updated_at'        => $this->updated_at->diffForHumans(),
         ];
     }
 }

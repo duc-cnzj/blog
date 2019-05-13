@@ -18,6 +18,6 @@ $factory->define(App\Category::class, function () {
 
     return [
         'user_id' => 1,
-        'name' => $faker->word
+        'name'    => $faker->word,
     ];
 });
