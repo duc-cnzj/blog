@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Resources\CategoryResource;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class CategoryController
@@ -18,6 +19,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Category::all(['name', 'id']));
+        return CategoryResource::collection(
+            Category::query()
+                ->whereHas('articles', function (Builder $q) {
+                    $q->visible();
+                })
+                ->get(['name', 'id'])
+        );
     }
 }
