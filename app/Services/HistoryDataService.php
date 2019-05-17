@@ -25,7 +25,7 @@ class HistoryDataService
     {
         $times = $this->getPeriodSections($unit, $section, $subWeek);
 
-        list($totalVisits, $result, $formatTimes) = $this->getDetailTotalVisitsAndTimes($unit, $times, $from);
+        [$totalVisits, $result, $formatTimes] = $this->getDetailTotalVisitsAndTimes($unit, $times, $from);
 
         return [
             'times'        => $formatTimes,
