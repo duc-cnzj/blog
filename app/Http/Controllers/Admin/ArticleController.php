@@ -54,7 +54,7 @@ class ArticleController extends Controller
             'display'     => 'required|boolean',
         ]);
 
-        list($category, $tagIds) = $this->dealRequest($request);
+        [$category, $tagIds] = $this->dealRequest($request);
 
         /** @var Article $article */
         $article = Article::query()->create([
@@ -111,7 +111,7 @@ class ArticleController extends Controller
         $this->authorize('own', $article);
 
         DB::transaction(function () use ($article, $request) {
-            list($category, $tagIds) = $this->dealRequest($request);
+            [$category, $tagIds] = $this->dealRequest($request);
             $article->update([
                 'head_image'  => $request->input('head_image'),
                 'title'       => $request->input('title'),
