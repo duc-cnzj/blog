@@ -16,7 +16,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name'     => $faker->name,
         'email'    => Str::random(12) . $faker->unique()->safeEmail,
-        'mobile'   => $faker->phoneNumber,
+        'mobile'   => $faker->unique()->phoneNumber,
         'bio'      => $faker->text,
         'avatar'   => $faker->imageUrl,
         'password' => 'secret', // secret
