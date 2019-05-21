@@ -113,7 +113,7 @@ class HistoryFilter extends Filters
         try {
             $carbon = Carbon::parse($date);
 
-            $this->builder->where('visited_at', '>', $carbon);
+            $this->builder->where('visited_at', '>=', $carbon);
         } catch (\Exception $e) {
         }
     }
@@ -128,7 +128,7 @@ class HistoryFilter extends Filters
         try {
             $carbon = Carbon::parse($date);
 
-            $this->builder->where('visited_at', '<', $carbon);
+            $this->builder->where('visited_at', '<=', $carbon);
         } catch (\Exception $e) {
         }
     }
