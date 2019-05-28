@@ -265,32 +265,30 @@ class HistoryLogTest extends TestCase
     /** @test */
     public function admin_can_filter_result_by_visit_time_after_and_visit_time_before()
     {
-        $cond1 = ['visited_at' => \Carbon\Carbon::parse('2015-2-1')];
-        $cond2 = ['visited_at' => \Carbon\Carbon::parse('2017-2-1')];
+        $cond1 = ['visited_at' => \Carbon\Carbon::parse('2015-2-1 12:00')];
+        $cond2 = ['visited_at' => \Carbon\Carbon::parse('2017-2-1 12:00')];
 
         create(\App\History::class, $cond1);
         create(\App\History::class, $cond2);
-        $params1 = "?{$this->prefix}_visit_time_after=2015-1-1";
-        $params2 = "?{$this->prefix}_visit_time_after=2018-1-1";
-        $params3 = "?{$this->prefix}_visit_time_after=2015-1-1&{$this->prefix}_visit_time_before=2016-1-1";
-        $params4 = "?{$this->prefix}_visit_time_after=2016-1-1&{$this->prefix}_visit_time_before=2016-3-1";
-        $params5 = "?{$this->prefix}_visit_time_after=2017-1-1&{$this->prefix}_visit_time_before=2019-3-1";
-        $params6 = "?{$this->prefix}_visit_time_after=123123qwe4";
 
         $this->signIn();
-        $res1 = $this->get('/admin/histories' . $params1)->response->content();
-        $res2 = $this->get('/admin/histories' . $params2)->response->content();
-        $res3 = $this->get('/admin/histories' . $params3)->response->content();
-        $res4 = $this->get('/admin/histories' . $params4)->response->content();
-        $res5 = $this->get('/admin/histories' . $params5)->response->content();
-        $res6 = $this->get('/admin/histories' . $params6)->response->content();
 
-        $this->assertEquals(2, count(json_decode($res1, JSON_OBJECT_AS_ARRAY)['data']));
-        $this->assertEquals(0, count(json_decode($res2, JSON_OBJECT_AS_ARRAY)['data']));
-        $this->assertEquals(1, count(json_decode($res3, JSON_OBJECT_AS_ARRAY)['data']));
-        $this->assertEquals(0, count(json_decode($res4, JSON_OBJECT_AS_ARRAY)['data']));
-        $this->assertEquals(1, count(json_decode($res5, JSON_OBJECT_AS_ARRAY)['data']));
-        $this->assertEquals(2, count(json_decode($res6, JSON_OBJECT_AS_ARRAY)['data']));
+        $asserts = [
+            "?{$this->prefix}_visit_time_after=2018-1-1"                                            => 0,
+            "?{$this->prefix}_visit_time_after=123123qwe4"                                          => 2,
+            "?{$this->prefix}_visit_time_after=2015-2-1 12:00"                                      => 2,
+            "?{$this->prefix}_visit_time_after=2015-2-1 12:01"                                      => 1,
+            "?{$this->prefix}_visit_time_before=2017-2-1 12:00"                                     => 2,
+            "?{$this->prefix}_visit_time_before=2017-2-1 11:59"                                     => 1,
+            "?{$this->prefix}_visit_time_after=2015-1-1&{$this->prefix}_visit_time_before=2016-1-1" => 1,
+            "?{$this->prefix}_visit_time_after=2016-1-1&{$this->prefix}_visit_time_before=2016-3-1" => 0,
+            "?{$this->prefix}_visit_time_after=2017-1-1&{$this->prefix}_visit_time_before=2019-3-1" => 1,
+        ];
+
+        foreach ($asserts as $query => $count) {
+            $res = $this->get('/admin/histories' . $query)->response->content();
+            $this->assertEquals($count, count(json_decode($res, JSON_OBJECT_AS_ARRAY)['data']));
+        }
     }
 
     /** @test */
