@@ -33,11 +33,11 @@ class UserFeatureTest extends TestCase
             'avatar'   => UploadedFile::fake()->image('avatar.jpg'),
         ])->seeStatusCode(422)
             ->seeJson([
-                'field'   => 'mobile',
-        ])
-        ->seeJson([
-                'field'   => 'email',
-        ]);
+                'field' => 'mobile',
+            ])
+            ->seeJson([
+                'field' => 'email',
+            ]);
 
         $this->post('/admin/users', [
             'name'     => 'duc',
@@ -61,20 +61,20 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function only_admin_can_update_other_user_profile()
     {
-        $user = $this->signIn(['name'=>'admin']);
+        $user = $this->signIn(['name' => 'admin']);
         $user2 = create(\App\User::class, [
             'name'  => 'user2',
             'email' => '2@q.com',
         ]);
 
         $this->json('PUT', "/admin/users/{$user2->id}", [
-           'name'  => 'user3',
-           'email' => '1234..', // fail
+            'name'  => 'user3',
+            'email' => '1234..', // fail
         ])->seeStatusCode(422);
 
         $this->json('PUT', "/admin/users/{$user2->id}", [
-           'name'  => 'user3',
-           'email' => '7@q.com', // fail
+            'name'  => 'user3',
+            'email' => '7@q.com', // fail
         ])->seeStatusCode(204);
         $this->assertEquals('user3', $user2->fresh()->name);
         $this->assertEquals('7@q.com', $user2->fresh()->email);
@@ -82,7 +82,8 @@ class UserFeatureTest extends TestCase
         $this->actingAs($user2, 'api');
         $this->json('PUT', "/admin/users/{$user->id}", [
             'name' => 'admin1',
-        ])->seeStatusCode(403);
+        ])->seeStatusCode(403)
+            ->seeJsonContains(['message' => '你没有操作权限！']);
         $this->assertEquals('admin', $user->fresh()->name);
     }
 

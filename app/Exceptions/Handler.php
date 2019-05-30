@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $message = '';
         $rendered = parent::render($request, $exception);
         $statusCode = $rendered->getStatusCode();
 
@@ -62,20 +63,20 @@ class Handler extends ExceptionHandler
             } catch (\Exception $e) {
                 info('重新创建索引失败');
             }
-        }
-
-        if ($exception instanceof HttpException) {
+        } elseif ($exception instanceof HttpException) {
             return $this->formatHttpException($exception);
+        } elseif ($exception instanceof ValidationException) {
+            return $this->invalidJson($request, $exception);
+        } elseif ($exception instanceof AuthorizationException) {
+            $message = '你没有操作权限！';
         }
 
-        if ($exception instanceof ValidationException) {
-            return $this->invalidJson($request, $exception);
-        }
+        $message = $message ?: $exception->getMessage();
 
         return response()->json([
             'error' => [
                 'code'    => $statusCode,
-                'message' => $exception->getMessage(),
+                'message' => $message,
             ],
         ], $statusCode);
     }
