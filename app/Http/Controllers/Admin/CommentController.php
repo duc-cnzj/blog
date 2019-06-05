@@ -60,8 +60,9 @@ class CommentController extends Controller
             'userable_id'      => \Auth::id(),
             'userable_type'    => User::class,
         ]);
+        $comment->unsetRelation('article');
 
-        return new CommentResource($comment->load('userable'));
+        return new CommentResource($comment->loadMissing('userable'));
     }
 
     /**
