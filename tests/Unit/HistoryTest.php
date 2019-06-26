@@ -1,6 +1,5 @@
 <?php
 
-
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
 class HistoryTest extends TestCase
