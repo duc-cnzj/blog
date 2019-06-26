@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -69,6 +70,8 @@ class Handler extends ExceptionHandler
             return $this->invalidJson($request, $exception);
         } elseif ($exception instanceof AuthorizationException) {
             $message = '你没有操作权限！';
+        } elseif ($exception instanceof TokenExpiredException) {
+            $message = '身份令牌过期，请重新登陆！';
         }
 
         $message = $message ?: $exception->getMessage();

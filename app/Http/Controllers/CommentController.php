@@ -65,8 +65,9 @@ class CommentController extends Controller
             'userable_id'      => is_null($user) ? 0 : $user->id,
             'userable_type'    => is_null($user) ? '' : get_class($user),
         ]);
+        $comment->unsetRelation('article');
 
-        return (new CommentResource($comment->load('userable')))
+        return (new CommentResource($comment->loadMissing('userable')))
             ->additional([
                 'data' => [
                     'replies' => [],
