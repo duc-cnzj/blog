@@ -71,7 +71,8 @@ class Kernel extends ConsoleKernel
      *
      * @author 神符 <1025434218@qq.com>
      */
-    protected function fillNullHistoryAddress (Schedule $schedule): void {
+    protected function fillNullHistoryAddress(Schedule $schedule): void
+    {
         $schedule->call(function () {
             History::query()->whereNull('address')->get()->each(function (History $history) {
                 $address = app('ip')->setIp($history->ip)->getAddress();
