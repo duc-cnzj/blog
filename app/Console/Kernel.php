@@ -76,7 +76,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             History::query()->whereNull('address')->get()->each(function (History $history) {
                 $address = app('ip')->setIp($history->ip)->getAddress();
-                $history->update(['address' => $address]);
+                if ($address) {
+                    $history->update(['address' => $address]);
+                }
             });
         })->hourly();
     }
