@@ -90,6 +90,7 @@ $app->singleton('ip', function () {
 $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
     \App\Http\Middleware\HistoryLog::class,
+    \Fideloper\Proxy\TrustProxies::class,
 ]);
 
 $app->routeMiddleware([
@@ -109,6 +110,7 @@ $app->routeMiddleware([
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
+$app->register(Fideloper\Proxy\TrustedProxyServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
