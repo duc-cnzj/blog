@@ -90,7 +90,7 @@ $app->singleton('ip', function () {
 $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
     \App\Http\Middleware\HistoryLog::class,
-    \Fideloper\Proxy\TrustProxies::class
+    \Fideloper\Proxy\TrustProxies::class,
 ]);
 
 $app->routeMiddleware([
