@@ -47,7 +47,7 @@ class HistoryLog
         $userableType = $user ? get_class($user) : '';
 
         $data = [
-            'ip'            => $request->ip(),
+            'ip'            => $request->getClientIp(),
             'url'           => $request->getPathInfo(),
             'method'        => $request->getMethod(),
             'content'       => $request->input(),
