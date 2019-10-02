@@ -119,6 +119,7 @@ class ModifyArticleTest extends TestCase
             'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ]);
 
         $parsedown = new \Parsedown();
@@ -165,6 +166,7 @@ class ModifyArticleTest extends TestCase
             'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ])->seeStatusCode(403);
     }
 
@@ -174,7 +176,7 @@ class ModifyArticleTest extends TestCase
         $user1 = create(\App\User::class);
         $user2 = create(\App\User::class);
         $this->signIn([], $user1);
-        $article = create(Article::class, ['title' => 'title1', 'author_id' => $user2->id]);
+        $article = create(Article::class, ['title' => 'title1', 'author_id' => $user2->id, 'display' => true]);
 
         $this->json('PUT', '/admin/articles/' . $article->id, [
             'content'    => 'content',
@@ -183,8 +185,10 @@ class ModifyArticleTest extends TestCase
             'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => false,
         ])->seeStatusCode(200);
         $this->assertTrue(\Auth::user()->isAdmin());
+        $this->assertFalse($article->refresh()->display);
     }
 
     /** @test */
@@ -195,17 +199,17 @@ class ModifyArticleTest extends TestCase
 
         $user = $this->signIn();
 
-        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status' => true, 'rule' => [
             'express' => 'a',
             'replace' => 'A',
         ]]);
 
-        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status' => true, 'rule' => [
             'express' => 'b',
             'replace' => 'B',
         ]]);
 
-        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status'=>true, 'rule' => [
+        create(\App\ArticleRegular::class, ['user_id' => $user->id, 'status' => true, 'rule' => [
             'express' => '[a-z]',
             'replace' => '*',
         ]]);
