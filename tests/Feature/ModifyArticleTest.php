@@ -119,6 +119,7 @@ class ModifyArticleTest extends TestCase
             'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ]);
 
         $parsedown = new \Parsedown();
@@ -165,6 +166,7 @@ class ModifyArticleTest extends TestCase
             'desc'       => Str::random(32),
             'category'   => 'php',
             'tags'       => ['php', 'js'],
+            'display'    => true,
         ])->seeStatusCode(403);
     }
 
