@@ -103,6 +103,7 @@ class ArticleController extends Controller
             'content'     => 'required|string',
             'category'    => 'required|string',
             'tags'        => 'required|array',
+            'display'     => 'required|boolean',
         ]);
 
         /** @var Article $article */
@@ -118,6 +119,7 @@ class ArticleController extends Controller
                 'desc'        => $request->input('desc'),
                 'content'     => $request->input('content'),
                 'category_id' => $category->id,
+                'display'     => $request->input('display'),
             ]);
 
             $article->tags()->sync($tagIds);
