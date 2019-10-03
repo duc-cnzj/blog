@@ -13,4 +13,12 @@ class ExampleTest extends TestCase
             $res->response->content()
         );
     }
+
+    /** @test */
+    public function response_has_function_timing()
+    {
+        $res = $this->get('/');
+
+        $this->assertTrue($res->response->headers->has(config('duc.function_timing_key')));
+    }
 }

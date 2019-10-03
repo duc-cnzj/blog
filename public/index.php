@@ -1,5 +1,7 @@
 <?php
 
+define('APP_START', microtime(true));
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

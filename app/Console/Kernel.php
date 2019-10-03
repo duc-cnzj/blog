@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
     /**
      * @param Schedule $schedule
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     protected function backupDB(Schedule $schedule): void
     {
@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
     /**
      * @param Schedule $schedule
      *
-     * @author 神符 <1025434218@qq.com>
+     * @author duc <1025434218@qq.com>
      */
     protected function fillNullHistoryAddress(Schedule $schedule): void
     {

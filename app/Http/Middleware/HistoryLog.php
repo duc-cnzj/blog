@@ -42,7 +42,7 @@ class HistoryLog
             return;
         }
 
-        $user = getAuthUser();
+        $user = get_auth_user();
         $userableId = $user ? $user->id : 0;
         $userableType = $user ? get_class($user) : '';
 

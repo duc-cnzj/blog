@@ -37,7 +37,7 @@ class CommentController extends Controller
 
         return response()->json([
             'data' => array_reverse(
-                recursiveReplies(CommentResource::collection($comments)->toArray($request))
+                $this->recursiveReplies(CommentResource::collection($comments)->toArray($request))
             ),
         ], 200);
     }
@@ -55,7 +55,7 @@ class CommentController extends Controller
         $content = $request->input('content');
         $parsedown = new \Parsedown();
         $htmlContent = $parsedown->text($content);
-        $user = getAuthUser();
+        $user = get_auth_user();
 
         /** @var Article $article */
         $comment = $article->comments()->create([
@@ -73,5 +73,26 @@ class CommentController extends Controller
                     'replies' => [],
                 ],
             ]);
+    }
+
+    /**
+     * @param array $comments
+     * @param int $pid
+     * @return array
+     *
+     * @author duc <1025434218@qq.com>
+     */
+    private function recursiveReplies(array $comments, $pid = 0)
+    {
+        $arr = [];
+        foreach ($comments as $item) {
+            if ((int) $item['comment_id'] === $pid) {
+                $data = $this->recursiveReplies($comments, $item['id']);
+                $item['replies'] = $data;
+                $arr[] = $item;
+            }
+        }
+
+        return $arr;
     }
 }
