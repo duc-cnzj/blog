@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\User;
 use App\Contracts\ArticleRepoImp;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -72,11 +73,11 @@ class ArticleRepoCache implements ArticleRepoImp
      *
      * @param array $ids
      *
-     * @return array
+     * @return Collection
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids): array
+    public function getMany(array $ids): Collection
     {
         $arr = [];
         if ($ids) {
@@ -85,7 +86,7 @@ class ArticleRepoCache implements ArticleRepoImp
             }
         }
 
-        return $arr;
+        return collect($arr);
     }
 
     /**

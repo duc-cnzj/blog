@@ -3,6 +3,7 @@
 namespace App\Contracts;
 
 use App\User;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -35,11 +36,11 @@ interface ArticleRepoImp
      *
      * @param array $ids
      *
-     * @return array
+     * @return Collection
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids): array;
+    public function getMany(array $ids): Collection;
 
     /**
      * 移除文章

@@ -138,7 +138,7 @@ class ArticleController extends Controller
         $articleIds = $trending->get();
         $articles = $repo->getMany($articleIds);
 
-        return ArticleResource::collection(collect($articles));
+        return ArticleResource::collection(collect($articles)->map->removeAttribute('content'));
     }
 
     /**
@@ -155,6 +155,6 @@ class ArticleController extends Controller
 
         $articles = $repo->getMany($articleIds);
 
-        return ArticleResource::collection(collect($articles));
+        return ArticleResource::collection(collect($articles)->map->removeAttribute('content'));
     }
 }

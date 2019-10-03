@@ -5,6 +5,7 @@ namespace App\Services;
 use App\User;
 use App\Article;
 use App\Contracts\ArticleRepoImp;
+use Illuminate\Support\Collection;
 
 class ArticleRepo implements ArticleRepoImp
 {
@@ -22,13 +23,13 @@ class ArticleRepo implements ArticleRepoImp
     /**
      * @param array $ids
      *
-     * @return array
+     * @return Collection
      *
      * @author duc <1025434218@qq.com>
      */
-    public function getMany(array $ids): array
+    public function getMany(array $ids): Collection
     {
-        return Article::with('category', 'tags', 'author')->findMany($ids)->toArray();
+        return Article::with('category', 'tags', 'author')->findMany($ids);
     }
 
     /**

@@ -39,6 +39,16 @@ class TopArticleTest extends TestCase
     }
 
     /** @test */
+    public function top_article_list_content_is_null()
+    {
+        create(Article::class, ['top_at' => \Carbon\Carbon::now()]);
+        $res = $this->json('GET', '/top_articles');
+        $data = json_decode($res->response->content());
+        $this->assertNull(data_get($data, 'data.0.content'));
+        $this->assertNull(data_get($data, 'data.0.content_md'));
+    }
+
+    /** @test */
     public function guest_can_see_top_articles()
     {
         $this->assertEmpty($this->trending->getInvisibleIds());

@@ -91,7 +91,7 @@ $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
     \App\Http\Middleware\HistoryLog::class,
     \Fideloper\Proxy\TrustProxies::class,
-    \App\Http\Middleware\TimingRequest::class,
+//    \App\Http\Middleware\TimingRequest::class,
 ]);
 
 $app->routeMiddleware([

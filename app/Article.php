@@ -332,4 +332,14 @@ class Article extends Model
             ]
         );
     }
+
+    public function removeAttribute ($field) {
+        $attributes = is_array($field) ? $field : func_get_args();
+
+        foreach ($attributes as $attribute) {
+            unset($this->attributes[$attribute]);
+        }
+
+        return $this;
+    }
 }
