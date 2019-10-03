@@ -127,7 +127,7 @@ class Article extends Model
 
         static::created(function (Article $article) {
             if ($article->display) {
-                event(new ArticleCreated($article->makeHidden('content')->load('author')));
+                event(new ArticleCreated($article->load('author')));
             }
         });
 
@@ -299,12 +299,12 @@ class Article extends Model
         $categoryField = 'article_category.name';
 
         return [
-                'content'  => is_null($h->content) ? null : implode('......', $h->content),
-                'desc'     => is_null($h->desc) ? null : implode('......', $h->desc),
-                'title'    => $h->title[0],
-                'category' => $h->{$categoryField}[0],
-                'tags'     => is_null($h->tags) ? null : implode(',', $h->tags),
-            ];
+            'content'  => is_null($h->content) ? null : implode('......', $h->content),
+            'desc'     => is_null($h->desc) ? null : implode('......', $h->desc),
+            'title'    => $h->title[0],
+            'category' => $h->{$categoryField}[0],
+            'tags'     => is_null($h->tags) ? null : implode(',', $h->tags),
+        ];
     }
 
     /**
@@ -333,13 +333,15 @@ class Article extends Model
         );
     }
 
-    public function removeAttribute ($field) {
-        $attributes = is_array($field) ? $field : func_get_args();
-
-        foreach ($attributes as $attribute) {
-            unset($this->attributes[$attribute]);
+    public function __get($key)
+    {
+        if (! $key) {
+            return null;
+        }
+        if (in_array($key, $this->getHidden())) {
+            return null;
         }
 
-        return $this;
+        return parent::__get($key);
     }
 }

@@ -20,24 +20,14 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     {
         parent::setUp();
 
+        $this->clearTestingCache();
+
+        $this->beforeApplicationDestroyed(function () {
+            $this->clearTestingCache();
+        });
+
         $this->withoutEvents();
         $this->withoutJobs();
-    }
-
-    protected function tearDown(): void
-    {
-        $cacheTestingKeys = Redis::connection('cache')->keys('*testing*');
-        if (count($cacheTestingKeys) > 0) {
-            Redis::connection('cache')->del($cacheTestingKeys);
-        }
-
-        $testingKeys = Redis::connection('default')->keys('*testing*');
-
-        if (count($testingKeys) > 0) {
-            Redis::connection('default')->del($testingKeys);
-        }
-
-        parent::tearDown();
     }
 
     public function signIn($custom = [], $user = null)
@@ -49,5 +39,19 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         $this->actingAs($user, 'api');
 
         return $user;
+    }
+
+    protected function clearTestingCache(): void
+    {
+        $cacheTestingKeys = Redis::connection('cache')->keys('*testing*');
+        if (count($cacheTestingKeys) > 0) {
+            Redis::connection('cache')->del($cacheTestingKeys);
+        }
+
+        $testingKeys = Redis::connection('default')->keys('*testing*');
+
+        if (count($testingKeys) > 0) {
+            Redis::connection('default')->del($testingKeys);
+        }
     }
 }

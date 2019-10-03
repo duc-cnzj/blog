@@ -52,7 +52,7 @@ class ArticleController extends Controller
 
         $trending->push($article);
 
-        return new ArticleResource($article);
+        return new ArticleResource($article->makeHidden('content_md'));
     }
 
     /**
@@ -138,7 +138,7 @@ class ArticleController extends Controller
         $articleIds = $trending->get();
         $articles = $repo->getMany($articleIds);
 
-        return ArticleResource::collection(collect($articles)->map->removeAttribute('content'));
+        return ArticleResource::collection(collect($articles)->map->makeHidden('content'));
     }
 
     /**
@@ -155,6 +155,6 @@ class ArticleController extends Controller
 
         $articles = $repo->getMany($articleIds);
 
-        return ArticleResource::collection(collect($articles)->map->removeAttribute('content'));
+        return ArticleResource::collection(collect($articles)->map->makeHidden('content'));
     }
 }

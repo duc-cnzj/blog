@@ -102,23 +102,4 @@ class ArticleTest extends TestCase
         $this->expectsEvents(ArticleCreated::class);
         create(Article::class);
     }
-
-    /** @test */
-    public function it_can_remove_attribute () {
-        $article = create(Article::class);
-        $this->assertNotNull($article->content);
-
-        $article->removeAttribute('content');
-        $this->assertNull($article->content);
-    }
-
-    /** @test */
-    public function it_can_remove_multiple_attribute () {
-        $article = create(Article::class);
-        $this->assertNotNull($article->content);
-
-        $article->removeAttribute('content', 'id');
-        $this->assertNull($article->content);
-        $this->assertNull($article->id);
-    }
 }
