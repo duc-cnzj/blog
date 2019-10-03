@@ -104,7 +104,8 @@ class ArticleTest extends TestCase
     }
 
     /** @test */
-    public function it_can_remove_attribute () {
+    public function it_can_remove_attribute()
+    {
         $article = create(Article::class);
         $this->assertNotNull($article->content);
 
@@ -113,7 +114,8 @@ class ArticleTest extends TestCase
     }
 
     /** @test */
-    public function it_can_remove_multiple_attribute () {
+    public function it_can_remove_multiple_attribute()
+    {
         $article = create(Article::class);
         $this->assertNotNull($article->content);
 
