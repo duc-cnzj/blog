@@ -10,7 +10,7 @@ class ArticleResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -20,30 +20,30 @@ class ArticleResource extends JsonResource
         }
 
         return [
-            'id'     => $this->id,
-            'is_top' => $this->is_top,
-            'author' => $this->whenLoaded('author', function () {
+            'id'                => $this->id,
+            'is_top'            => $this->is_top,
+            'author'            => $this->whenLoaded('author', function () {
                 return [
-                   'id'     => $this->author->id,
-                   'name'   => $this->author->name,
-                   'avatar' => $this->author->avatar,
+                    'id'     => $this->author->id,
+                    'name'   => $this->author->name,
+                    'avatar' => $this->author->avatar,
                 ];
             }),
-            'headImage' => $this->head_image,
-            'category'  => $this->whenloaded('category', function () {
+            'head_image'        => $this->head_image,
+            'category'          => $this->whenloaded('category', function () {
                 return [
                     'id'   => $this->category->id,
                     'name' => $this->category->name,
                 ];
             }),
-            'content'           => $this->content_html,
-            'content_md'        => $this->content_md,
-            'title'             => $this->title,
-            'desc'              => $this->desc,
-            'display'           => $this->display,
-            'tags'              => TagResource::collection($this->whenLoaded('tags')),
-            'comments'          => CommentResource::collection($this->whenLoaded('comments')),
-            'recommendArticles' => $this->when($request->path() === 'home_articles', function () {
+            'content'            => $this->content_html,
+            'content_md'         => $this->content_md,
+            'title'              => $this->title,
+            'desc'               => $this->desc,
+            'display'            => $this->display,
+            'tags'               => TagResource::collection($this->whenLoaded('tags')),
+            'comments'           => CommentResource::collection($this->whenLoaded('comments')),
+            'recommend_articles' => $this->when($request->path() === 'home_articles', function () {
                 return $this->getRecommendArticles();
             }),
             'created_at'        => optional($this->created_at)->diffForHumans(),
