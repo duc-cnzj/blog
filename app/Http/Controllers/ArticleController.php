@@ -77,7 +77,7 @@ class ArticleController extends Controller
 
             return ArticleResource::collection($articles);
         } else {
-            return ArticleResource::collection([]);
+            return ArticleResource::collection(collect([]));
         }
     }
 
