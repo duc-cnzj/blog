@@ -14,11 +14,11 @@ class ExampleTest extends TestCase
         );
     }
 
-   /** @test */
-   public function response_has_function_timing()
-   {
-       $res = $this->get('/');
+    /** @test */
+    public function response_has_function_timing()
+    {
+        $res = $this->get('/');
 
-       $this->assertTrue($res->response->headers->has(config('duc.function_timing_key')));
-   }
+        $this->assertTrue($res->response->headers->has(config('duc.function_timing_key')));
+    }
 }
