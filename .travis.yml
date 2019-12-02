@@ -12,7 +12,6 @@ services:
   - redis-server
 
 before_install:
-  - phpenv config-add myconfig.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 before_script:
