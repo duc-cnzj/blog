@@ -301,8 +301,8 @@ class Article extends Model
         return [
             'content'  => is_null($h->content) ? null : implode('......', $h->content),
             'desc'     => is_null($h->desc) ? null : implode('......', $h->desc),
-            'title'    => $h->title[0],
-            'category' => $h->{$categoryField}[0],
+            'title'    => $h->title[0] ?? '',
+            'category' => $h->{$categoryField}[0] ?? '',
             'tags'     => is_null($h->tags) ? null : implode(',', $h->tags),
         ];
     }

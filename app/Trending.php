@@ -76,7 +76,7 @@ class Trending
      */
     public function hasKey(int $id)
     {
-        return Redis::connection()->zrank($this->cacheKey(), $id) !== null;
+        return Redis::connection()->zrank($this->cacheKey(), $id) !== false;
     }
 
     /**
@@ -98,7 +98,7 @@ class Trending
      */
     public function addInvisible(int $id): bool
     {
-        return Redis::connection()->sadd($this->invisibleKey(), [$id]);
+        return Redis::connection()->sadd($this->invisibleKey(), $id);
     }
 
     /**

@@ -47,7 +47,7 @@ class IpRedisCacheStore extends CacheStore
      */
     public function forget($key)
     {
-        return Redis::connection('cache')->hdel($this->getCacheKey(), [$key]);
+        return Redis::connection('cache')->hdel($this->getCacheKey(), $key);
     }
 
     /**

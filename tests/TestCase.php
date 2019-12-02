@@ -2,7 +2,7 @@
 
 define('APP_START', microtime(true));
 
-use Illuminate\Support\Facades\Redis;
+use \Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
