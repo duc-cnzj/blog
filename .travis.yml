@@ -3,13 +3,17 @@ language: php
 php:
   - "7.2"
   - "7.3"
-  - "7.4"
+  - "7.4snapshot"
 
 git:
   depth: 1
 
 services:
   - redis-server
+
+before_install:
+  - phpenv config-add myconfig.ini
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 before_script:
   - composer self-update
