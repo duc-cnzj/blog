@@ -2,6 +2,7 @@
 
 define('APP_START', microtime(true));
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
@@ -13,7 +14,10 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function createApplication()
     {
-        return require __DIR__ . '/../bootstrap/app.php';
+        $app = require __DIR__ . '/../bootstrap/app.php';
+        Hash::setRounds(4);
+
+        return $app;
     }
 
     public function setUp(): void

@@ -166,7 +166,7 @@ class Article extends Model
     {
         $model = $this->load(['category', 'author', 'tags']);
 
-        $result = [
+        return [
             'author'           => [
                 'id'   => $model->author->id,
                 'name' => $model->author->name,
@@ -181,8 +181,6 @@ class Article extends Model
             'tags'             => $model->tags()->pluck('name')->toArray(),
             'display'          => $model->display,
         ];
-
-        return $result;
     }
 
     /**
