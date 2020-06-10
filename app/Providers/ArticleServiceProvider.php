@@ -11,6 +11,7 @@ use App\Contracts\ArticleRepoImp;
 use App\Services\ArticleRepoCache;
 use App\Services\ArticleTransformRule;
 use Illuminate\Support\ServiceProvider;
+use App\Services\Decorators\ArticleRepoCacheInGolang;
 
 /**
  * Class ArticleServiceProvider
@@ -45,8 +46,10 @@ class ArticleServiceProvider extends ServiceProvider
                 $useCache = config('duc.article_use_cache');
 
                 if ($useCache) {
-                    return new ArticleRepoCache(
-                        new ArticleRepo
+                    return new ArticleRepoCacheInGolang(
+                        new ArticleRepoCache(
+                            new ArticleRepo
+                        )
                     );
                 } else {
                     return new ArticleRepo;
