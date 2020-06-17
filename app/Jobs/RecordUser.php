@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\History;
+use App\Services\IpService;
 
 /**
  *
@@ -33,10 +34,7 @@ class RecordUser extends Job
     {
         $history = History::query()->create($this->data);
 
-        $address = app('ip')
-            ->setProviderConfig('ali', config('duc.ip.ali'))
-            ->setProviderConfig('baidu', config('duc.ip.baidu'))
-            ->use('baidu', 'ali', 'taobao')
+        $address = IpService::make()
             ->setIp($history->ip)
             ->getAddress();
 

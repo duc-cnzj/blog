@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\History;
+use App\Services\IpService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\RefreshImportCommand;
@@ -75,7 +76,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             History::query()->whereNull('address')->get()->each(function (History $history) {
-                $address = app('ip')->setIp($history->ip)->getAddress();
+                $address = IpService::make()
+                    ->setIp($history->ip)
+                    ->getAddress();
                 if ($address) {
                     $history->update(['address' => $address]);
                 }
