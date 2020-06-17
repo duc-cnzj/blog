@@ -80,10 +80,7 @@ class Kernel extends ConsoleKernel
                 ->orWhere('address', '')
                 ->get()
                 ->each(function (History $history) {
-                    $address = IpService::make()
-                        ->setIp($history->ip)
-                        ->getAddress();
-                    if ($address) {
+                    if ($address = app('ip')->setIp($history->ip)->getAddress()) {
                         $history->update(['address' => $address]);
                     }
                 });

@@ -73,7 +73,9 @@ $app->singleton(Factory::class, function ($app) {
 $app->singleton('ip', function () {
     return (new IpClient())
         ->setCacheStore(new IpRedisCacheStore)
-        ->use('taobao');
+        ->setProviderConfig('ali', config('duc.ip.ali'))
+        ->setProviderConfig('baidu', config('duc.ip.baidu'))
+        ->use('baidu', 'ali', 'taobao');
 });
 
 /*

@@ -34,7 +34,7 @@ class RecordUser extends Job
     {
         $history = History::query()->create($this->data);
 
-        $address = IpService::make()
+        $address = app('ip')
             ->setIp($history->ip)
             ->getAddress();
 
