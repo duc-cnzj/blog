@@ -75,14 +75,18 @@ class Kernel extends ConsoleKernel
     protected function fillNullHistoryAddress(Schedule $schedule): void
     {
         $schedule->call(function () {
-            History::query()->whereNull('address')->get()->each(function (History $history) {
-                $address = IpService::make()
-                    ->setIp($history->ip)
-                    ->getAddress();
-                if ($address) {
-                    $history->update(['address' => $address]);
-                }
-            });
+            History::query()
+                ->whereNull('address')
+                ->orWhere('address', '')
+                ->get()
+                ->each(function (History $history) {
+                    $address = IpService::make()
+                        ->setIp($history->ip)
+                        ->getAddress();
+                    if ($address) {
+                        $history->update(['address' => $address]);
+                    }
+                });
         })->hourly();
     }
 }
