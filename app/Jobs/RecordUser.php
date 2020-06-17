@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\History;
-use App\Services\IpService;
 
 /**
  *

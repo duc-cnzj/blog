@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\History;
-use App\Services\IpService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\RefreshImportCommand;
