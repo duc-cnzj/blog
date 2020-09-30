@@ -93,8 +93,8 @@ abstract class Filters implements Filter
 
         return array_merge(
             array_map(function ($key) use ($prefix) {
-                    return $prefix . $key;
-                }, $this->filters),
+                return $prefix . $key;
+            }, $this->filters),
             $this->withoutPrefix
         );
     }

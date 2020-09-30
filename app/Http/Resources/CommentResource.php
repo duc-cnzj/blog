@@ -22,13 +22,13 @@ class CommentResource extends JsonResource
             'author'     => $this->when(
                 ! is_null($this->userable),
                 function () {
-                $data = [
+                    $data = [
                     'name'   => $this->userable->name,
                     'avatar' => $this->userable->avatar,
                 ];
 
-                return $data;
-            },
+                    return $data;
+                },
                 [
                 'name'   => $this->visitor,
                 'avatar' => '',
