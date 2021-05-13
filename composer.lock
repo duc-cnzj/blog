@@ -3076,6 +3076,10 @@
                 "laravel",
                 "lumen"
             ],
+            "support": {
+                "issues": "https://github.com/laravel/lumen-framework/issues",
+                "source": "https://github.com/laravel/lumen-framework"
+            },
             "time": "2020-03-13T20:24:43+00:00"
         },
         {
@@ -8610,5 +8614,5 @@
         "php": ">=7.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
