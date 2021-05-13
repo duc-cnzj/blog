@@ -92,7 +92,7 @@ abstract class Filters implements Filter
         $prefix = Str::endsWith($this->prefix, '_') ? $this->prefix : $this->prefix . '_';
 
         return array_merge(
-                array_map(function ($key) use ($prefix) {
+            array_map(function ($key) use ($prefix) {
                     return $prefix . $key;
                 }, $this->filters),
             $this->withoutPrefix
